@@ -7,17 +7,16 @@ push: null
 
 pull:
   - prefect.deployments.steps.git_clone:
-      repository: git@github.com:leoxlin/hydra-hmlb.git
+      repository: https://github.com/leoxlin/hydra-hmlb.git
       branch: main
-      access_token: "{{ prefect.blocks.secret.github-token }}"
+      access_token: "{{ prefect.blocks.secret.github-access-token }}"
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
-- name: fs-snapraid
+- entrypoint: flows/sysadmin.py:snapraid_sync
   description: "Snapshot the snapraid fs"
+  name: default
   schedule: {}
-  flow_name: sysadmin
-  entrypoint: flows/sysadmin.py:snapraid_fs
   parameters: {}
   work_pool:
     name: metal-local
