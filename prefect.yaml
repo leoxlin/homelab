@@ -17,7 +17,8 @@ deployments:
   description: "Run snapraid sync to ensure parity"
   name: default
   schedule: {}
-  parameters: {}
+  parameters:
+    snapraid_conf: /etc/snapraid/union-01
   work_pool:
     name: metal-local
     job_variables: {}
