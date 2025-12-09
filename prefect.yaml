@@ -1,0 +1,25 @@
+name: hydra-hmlb
+prefect-version: 3.6.5
+
+build: null
+
+push: null
+
+pull:
+  - prefect.deployments.steps.git_clone:
+      repository: git@github.com:leoxlin/hydra-hmlb.git
+      branch: main
+      access_token: "{{ prefect.blocks.secret.github-token }}"
+
+# the deployments section allows you to provide configuration for deploying flows
+deployments:
+- name: fs-snapraid
+  description: "Snapshot the snapraid fs"
+  schedule: {}
+  flow_name: sysadmin
+  entrypoint: flows/sysadmin.py:snapraid_fs
+  parameters: {}
+  work_pool:
+    name: metal-local
+    work_queue_name: null
+    job_variables: {}
