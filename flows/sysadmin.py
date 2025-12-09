@@ -3,13 +3,8 @@ from prefect_shell import ShellOperation
 from typing import List
 
 def run_shell(cmd: str) -> List[str]:
-    with ShellOperation(
-            commands=[cmd]
-    ) as cmd:
-        proc = cmd.trigger()
-        proc.wait_for_completion()
-        res = proc.fetch_result()
-        return res
+    op = ShellOperation(commands=[cmd])
+    return op.run()
 
 @flow(log_prints=True)
 def sysadmin_backup():
