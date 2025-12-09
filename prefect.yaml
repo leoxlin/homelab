@@ -18,7 +18,7 @@ deployments:
   name: default
   schedule: {}
   parameters:
-    snapraid_conf: /etc/snapraid/union-01
+    snapraid_conf: /etc/snapraid/union-01.conf
   work_pool:
     name: metal-local
     job_variables: {}
