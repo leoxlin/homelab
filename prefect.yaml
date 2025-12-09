@@ -14,11 +14,10 @@ pull:
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
 - entrypoint: flows/sysadmin.py:snapraid_sync
-  description: "Snapshot the snapraid fs"
+  description: "Run snapraid sync to ensure parity"
   name: default
   schedule: {}
   parameters: {}
   work_pool:
     name: metal-local
-    work_queue_name: null
     job_variables: {}
