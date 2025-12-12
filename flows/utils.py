@@ -1,7 +1,5 @@
 import subprocess
-from typing import Any, AnyStr, Callable
-
-from prefect.blocks.abstract import LoggerOrAdapter
+from typing import Callable
 
 
 def run_shell(*cmd: str):

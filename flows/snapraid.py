@@ -3,7 +3,7 @@ from prefect.blocks.abstract import LoggerOrAdapter
 from prefect.exceptions import FailedRun
 from prefect.logging import get_run_logger
 
-from .docker import stop_container, start_container
+from .docker import start_container, stop_container
 from .utils import run_shell, run_stream
 
 WRITER_CONTAINERS = ["bazarr", "plex", "nzbget", "qbittorrent"]
@@ -36,7 +36,11 @@ def run_sync(log: LoggerOrAdapter, snapraid_conf: str):
     code = run_stream(
         lambda o: log.info(o),
         lambda o: log.error(o),
-        "sudo", "snapraid", "--conf", snapraid_conf, "sync",
+        "sudo",
+        "snapraid",
+        "--conf",
+        snapraid_conf,
+        "sync",
     )
     if code != 0:
         raise FailedRun(f"Failed to run snapraid sync on {snapraid_conf}")
@@ -44,13 +48,13 @@ def run_sync(log: LoggerOrAdapter, snapraid_conf: str):
 
 def stop_writer_containers(log: LoggerOrAdapter):
     for container in WRITER_CONTAINERS:
-        if not stop_container(log, container)
+        if not stop_container(log, container):
             raise FailedRun(f"Failed to stop containers: {container}")
 
 
 def start_writer_containers(log: LoggerOrAdapter):
     for container in WRITER_CONTAINERS:
-        if not start_container(log, container)
+        if not start_container(log, container):
             raise FailedRun(f"Failed to start container: {container}")
 
 
