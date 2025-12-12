@@ -16,7 +16,9 @@ deployments:
   - entrypoint: flows/snapraid.py:snapraid
     description: "Run snapraid sync to ensure parity"
     name: sync
-    schedule: {}
+    schedule:
+      timezone: "America/New_York"
+      cron: "0 3 * * 1-6"
     parameters:
       mode: sync
       snapraid_conf: /etc/snapraid/union-01.conf
