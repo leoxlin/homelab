@@ -42,11 +42,6 @@ def run_diff(
 
 
 @flow(log_prints=True)
-def sysadmin_backup():
-    print("boop")
-
-
-@flow(log_prints=True)
 def snapraid(snapraid_conf: str):
     log = get_run_logger()
     _ = run_diff(log, snapraid_conf)
