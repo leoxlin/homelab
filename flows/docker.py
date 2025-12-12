@@ -4,6 +4,7 @@ from .utils import run_shell
 
 
 def stop_container(log: LoggerOrAdapter, container_name: str) -> bool:
+    log.info(f"Stopping container: {container_name}")
     run_code, _, run_err = run_shell(
         "sudo", "docker", "stop", "-t", "10", container_name
     )
@@ -14,6 +15,7 @@ def stop_container(log: LoggerOrAdapter, container_name: str) -> bool:
 
 
 def start_container(log: LoggerOrAdapter, container_name: str) -> bool:
+    log.info(f"Starting container: {container_name}")
     run_code, _, run_err = run_shell("sudo", "docker", "start", container_name)
     if len(run_err) > 0:
         err = "\n" + "\n".join(run_err)
