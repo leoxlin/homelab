@@ -1,6 +1,6 @@
 from prefect import flow
 from prefect.blocks.abstract import LoggerOrAdapter
-from prefect.exceptions import FailedRun, MissingFlowError
+from prefect.exceptions import MissingFlowError
 from prefect.main import get_run_logger
 
 from .utils import must_run, run_shell
