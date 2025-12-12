@@ -1,6 +1,8 @@
 import subprocess
 from typing import Callable
 
+from prefect.exceptions import FailedRun
+
 
 def run_shell(*cmd: str):
     out = subprocess.run(
@@ -29,3 +31,14 @@ def run_stream(
         err_func(line)
     _ = out.wait()
     return out.returncode
+
+
+def must_run(*cmd: str):
+    out = subprocess.run(
+        [arg for c in cmd for arg in c.split()],
+        check=False,
+        text=True,
+        shell=True,
+    )
+    if out.returncode != 0:
+        raise FailedRun(f"Failed to run command: {' '.join(cmd)}")

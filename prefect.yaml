@@ -25,3 +25,12 @@ deployments:
     work_pool:
       name: metal-local
       job_variables: {}
+  - entrypoint: flows/docker.py:docker
+    description: "Run docker prune"
+    name: prune
+    schedule: {}
+    parameters:
+      mode: prune
+    work_pool:
+      name: metal-local
+      job_variables: {}
