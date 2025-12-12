@@ -18,6 +18,7 @@ deployments:
     name: sync
     schedule: {}
     parameters:
+      mode: sync
       snapraid_conf: /etc/snapraid/union-01.conf
     work_pool:
       name: metal-local
