@@ -1,8 +1,9 @@
+import logging
 import subprocess
-from typing import Dict, Tuple
 
 from prefect import flow
 from prefect.logging import get_run_logger
+from prefect.logging.loggers import LoggingAdapter
 
 
 def run_shell(*cmd: str):
@@ -15,7 +16,9 @@ def run_shell(*cmd: str):
     return out.returncode, out.stdout.splitlines(), out.stderr.splitlines()
 
 
-def run_diff(log, snapraid_conf: str) -> Tuple[bool, Dict[str, int]]:
+def run_diff(
+    log: logging.Logger | LoggingAdapter, snapraid_conf: str
+) -> tuple[bool, dict[str, int]]:
     diff_code, diff_out, diff_err = run_shell(
         "sudo", "snapraid", "--conf", snapraid_conf, "diff"
     )
