@@ -42,7 +42,6 @@ def run_sync(log: LoggerOrAdapter, snapraid_conf: str):
         raise FailedRun(f"Failed to run snapraid sync on {snapraid_conf}")
 
 
-
 def stop_writer_containers(log: LoggerOrAdapter):
     for container in WRITER_CONTAINERS:
         if not stop_container(log, container)
