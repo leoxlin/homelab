@@ -1,0 +1,23 @@
+name: openwebui
+
+networks:
+  application:
+    name: openwebui
+  proxy:
+    name: proxy
+    external: true
+
+services:
+  openwebui:
+    container_name: openwebui
+    image: ghcr.io/open-webui/open-webui:main
+    restart: unless-stopped
+    volumes:
+      - /share/docker/openwebui:/app/backend/data
+    env_file: .env
+    networks:
+      - application
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openwebui.rule=Host(`ai.hydrahmlb.cc`)"
