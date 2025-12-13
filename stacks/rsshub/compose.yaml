@@ -1,0 +1,83 @@
+name: rsshub
+
+networks:
+  proxy:
+    name: proxy
+    external: true
+  application:
+    name: rsshub
+
+services:
+  rsshub:
+    image: ghcr.io/diygod/rsshub:2025-12-13
+    container_name: rsshub
+    restart: unless-stopped
+    ports:
+      - "1200:1200"
+    networks:
+      - application
+      - proxy
+    environment:
+      NODE_ENV: production
+      CACHE_TYPE: redis
+      REDIS_URL: "redis://rsshub-redis:6379/"
+      PUPPETEER_WS_ENDPOINT: "ws://rsshub-browserless:3000"
+      PUPPETEER_REAL_BROWSER_SERVICE: "http://rsshub-puppeteer:3000"
+      ALLOW_USER_HOTLINK_TEMPLATE: true
+      HOTLINK_TEMPLATE: "https://images.weserv.nl?url=$${href_ue}"
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:1200/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    depends_on:
+      - redis
+      - browserless
+    labels:
+      - "traefik.enable=true"
+
+  real-browser:
+    image: ghcr.io/hyoban/puppeteer-real-browser-hono:sha-6c6cbbc
+    container_name: rsshub-puppeteer
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    networks:
+      - application
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  browserless:
+    image: browserless/chrome:latest
+    container_name: rsshub-browserless
+    restart: unless-stopped
+    ulimits:
+      core:
+        hard: 0
+        soft: 0
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/pressure"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - application
+
+  redis:
+    image: redis:alpine3.22
+    container_name: rsshub-redis
+    restart: unless-stopped
+    volumes:
+      - /share/docker/rsshub/redis:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
+    networks:
+      - application
