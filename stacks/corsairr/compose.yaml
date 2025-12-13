@@ -1,0 +1,191 @@
+name: corsairr
+
+networks:
+  application:
+    name: corsairr
+  proxy:
+    name: proxy
+    external: true
+
+services:
+  gluetun:
+    image: qmcgaw/gluetun:v3
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - /share/docker/gluetun:/gluetun
+    env_file: stack.env
+    networks:
+      - application
+      - proxy
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+      - 6887:6887
+      - 6789:6789
+      - 6887:6887/udp
+
+  nzbget:
+    image: lscr.io/linuxserver/nzbget:latest
+    container_name: nzbget
+    environment:
+      - PUID=2222
+      - PGID=3333
+      - TZ=America/New_York
+      - NZBGET_USER=
+      - NZBGET_PASS=
+    volumes:
+      - /share/docker/nzbget:/config
+      - /share/docker/nzbget/staging:/staging
+      - /srv/mergerfs/union_01/media/Downloads:/downloads
+    depends_on:
+      - gluetun
+    network_mode: "service:gluetun"
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nzbget.rule=Host(`usenet.hydrahmlb.cc`)"
+      - "traefik.http.routers.nzbget.service=nzbget"
+      - "traefik.http.routers.nzbget.middlewares=tinyauth@docker"
+      - "traefik.http.services.nzbget.loadbalancer.server.port=6789"
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=2222
+      - PGID=3333
+      - TZ=America/New_York
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6887
+    volumes:
+      - /share/docker/qbittorrent:/config
+      - /share/docker/qbittorrent/staging:/staging
+      - /srv/mergerfs/union_01/media/Downloads:/downloads
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.qbittorrent.rule=Host(`torrent.hydrahmlb.cc`)"
+      - "traefik.http.routers.qbittorrent.service=qbittorrent"
+      - "traefik.http.routers.qbittorrent.middlewares=tinyauth@docker"
+      - "traefik.http.services.qbittorrent.loadbalancer.server.port=8080"
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=2222
+      - PGID=3333
+      - TZ=America/New_York
+    volumes:
+      - /share/docker/bazarr:/config
+      - /srv/mergerfs/union_01/media/Movies:/movies
+      - /srv/mergerfs/union_01/media/Shows:/tv
+      - /srv/mergerfs/union_01/media/.Trash-Quasarr/bazarr:/trash
+    networks:
+      - application
+      - proxy
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bazarr.middlewares=tinyauth@docker"
+
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=2222
+      - PGID=3333
+      - TZ=America/New_York
+    volumes:
+      - /share/docker/sonarr:/config
+      - /srv/mergerfs/union_01/media/Shows:/tv
+      - /srv/mergerfs/union_01/media/Downloads:/downloads
+      - /srv/mergerfs/union_01/media/.Trash-Quasarr/sonarr:/trash
+    networks:
+      - application
+      - proxy
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sonarr.middlewares=tinyauth@docker"
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=2222
+      - PGID=3333
+      - TZ=America/New_York
+    volumes:
+      - /share/docker/radarr:/config
+      - /srv/mergerfs/union_01/media/Movies:/movies
+      - /srv/mergerfs/union_01/media/Downloads:/downloads
+      - /srv/mergerfs/union_01/media/.Trash-Quasarr/radarr:/trash
+    networks:
+      - application
+      - proxy
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.radarr.middlewares=tinyauth@docker"
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=2222
+      - PGID=3333
+      - TZ=America/New_York
+    volumes:
+      - /share/docker/lidarr:/config
+      - /srv/mergerfs/union_01/media/Music:/music
+      - /srv/mergerfs/union_01/media/Downloads:/downloads
+      - /srv/mergerfs/union_01/media/.Trash-Quasarr/lidarr:/trash
+    networks:
+      - application
+      - proxy
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.lidarr.middlewares=tinyauth@docker"
+
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    user: 1000:1000
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - LOG_FILE=${LOG_FILE:-none}
+      - LOG_HTML=${LOG_HTML:-false}
+      - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
+      - TZ=Europe/London
+    volumes:
+      - /share/docker/flaresolverr:/config
+    networks:
+      - application
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=2222
+      - PGID=3333
+      - TZ=America/New_York
+    volumes:
+      - /share/docker/prowlarr:/config
+    networks:
+      - application
+      - proxy
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prowlarr.middlewares=tinyauth@docker"
