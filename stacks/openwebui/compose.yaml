@@ -10,7 +10,7 @@ networks:
 services:
   openwebui:
     container_name: openwebui
-    image: ghcr.io/open-webui/open-webui:main
+    image: ghcr.io/open-webui/open-webui:v0.6.41
     restart: unless-stopped
     volumes:
       - /share/docker/openwebui:/app/backend/data
