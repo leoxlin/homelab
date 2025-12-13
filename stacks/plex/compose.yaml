@@ -1,0 +1,22 @@
+name: plex
+
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=2222
+      - PGID=3333
+      - TZ=America/New_York
+      - VERSION=docker
+      - PLEX_CLAIM=${PLEX_CLAIM}
+    volumes:
+      - /share/docker/plex:/config
+      - /srv/mergerfs/union_01/media/Shows:/tv
+      - /srv/mergerfs/union_01/media/Movies:/movies
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.plex=Host(`plex.hydrahmlb.cc`)"
+      - "traefik.http.services.plex.loadbalancer.server.port=32400"
