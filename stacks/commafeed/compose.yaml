@@ -1,3 +1,5 @@
+name: commafeed
+
 networks:
   application:
     name: commafeed
