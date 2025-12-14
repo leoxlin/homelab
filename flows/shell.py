@@ -45,6 +45,6 @@ def must_run(*cmd: str):
 def shell(mode: str):
     match mode:
         case "scrub_history":
-            must_run("sudo", "rm", "/root/.bash_history")
+            must_run("sudo", "rm", "-f", "/root/.bash_history")
         case _:
             raise MissingFlowError(f"Unknown mode for shell flow: {mode}")
