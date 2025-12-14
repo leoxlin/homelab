@@ -1,0 +1,47 @@
+name: wyoming
+
+networks:
+  default:
+    name: wyoming
+
+services:
+  piper:
+    image: lscr.io/linuxserver/piper:2.1.2-gpu
+    container_name: piper
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - PIPER_VOICE=en_US-hfc_female-medium
+      - LOCAL_ONLY= #optional
+      - PIPER_LENGTH=1.0 #optional
+      - PIPER_NOISE=0.667 #optional
+      - PIPER_NOISEW=0.333 #optional
+      - PIPER_SPEAKER=0 #optional
+      - NO_STREAMING= #optional
+      - NVIDIA_VISIBLE_DEVICES=all
+    runtime: nvidia
+    volumes:
+      - /share/docker/wyoming/piper:/config
+    ports:
+      - 10200:10200
+    restart: unless-stopped
+
+  whisper:
+    image: lscr.io/linuxserver/faster-whisper:gpu-v3.0.2-ls15
+    container_name: whisper
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - WHISPER_MODEL=tiny-int8
+      - LOCAL_ONLY= #optional
+      - WHISPER_BEAM=1 #optional
+      - WHISPER_LANG=en #optional
+      - NVIDIA_VISIBLE_DEVICES=all
+    runtime: nvidia
+    volumes:
+      - /share/docker/wyoming/whisper:/config
+    ports:
+      - 10300:10300
+    restart: unless-stopped
