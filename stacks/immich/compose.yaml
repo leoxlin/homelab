@@ -82,9 +82,3 @@ services:
 
 volumes:
   model-cache:
-    name: immich-model-cache
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ${MODEL_CACHE_LOCATION}
