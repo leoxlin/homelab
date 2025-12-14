@@ -17,7 +17,6 @@ services:
       # If you want to mount a custom directory, change the volume mapping to:
       # - /path/to/your/directory:/data
       - /share/docker/karakeep:/data
-
     env_file:
       - .env
     environment:
@@ -36,6 +35,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.karakeep.rule=Host(`kara.hydrahmlb.cc`)"
       - "traefik.http.services.karakeep.loadbalancer.server.port=3000"
+
   chrome:
     container_name: karakeep-chrome
     image: gcr.io/zenika-hub/alpine-chrome:124
@@ -49,6 +49,7 @@ services:
       - --hide-scrollbars
     networks:
       - application
+
   meilisearch:
     container_name: karakeep-search
     image: getmeili/meilisearch:v1.13.3
