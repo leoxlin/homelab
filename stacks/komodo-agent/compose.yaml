@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     environment:
       PERIPHERY_ROOT_DIRECTORY: ${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}
-      PERIPHERY_PASSKEYS: abc123
+      PERIPHERY_PASSKEYS: ${PERIPHERY_PASSKEYS:-}
       PERIPHERY_SSL_ENABLED: true
       PERIPHERY_DISABLE_TERMINALS: false
       PERIPHERY_INCLUDE_DISK_MOUNTS: /etc/hostname
