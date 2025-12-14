@@ -32,10 +32,30 @@ def docker(mode: str):
     log.info(f"Running docker flow: {mode}")
     match mode:
         case "prune":
-            must_run("docker", "container", "prune", "--filter", "until=24h", "--force")
-            must_run("docker", "image", "prune", "--filter", "until=24h", "--force")
-            must_run("docker", "network", "prune", "--filter", "until=24h", "--force")
-            must_run("docker", "volume", "prune", "--filter", "label!=keep", "--force")
+            must_run(
+                "sudo",
+                "docker",
+                "container",
+                "prune",
+                "--filter",
+                "until=24h",
+                "--force",
+            )
+            must_run(
+                "sudo", "docker", "image", "prune", "--filter", "until=24h", "--force"
+            )
+            must_run(
+                "sudo", "docker", "network", "prune", "--filter", "until=24h", "--force"
+            )
+            must_run(
+                "sudo",
+                "docker",
+                "volume",
+                "prune",
+                "--filter",
+                "label!=keep",
+                "--force",
+            )
         case _:
             log.error(f"Unknown mode for docker flow: {mode}")
             raise MissingFlowError()
