@@ -1,0 +1,14 @@
+name: vector
+
+networks:
+  default:
+    name: vector
+
+services:
+  vector:
+    image: timberio/vector:0.51.1-debian
+    container_name: vector
+    volumes:
+      - ./${VECTOR_CONFIG_FILE:-vector.yaml}:/etc/vector/vector.yaml:ro
+    ports:
+      - "8686:8686"
