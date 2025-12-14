@@ -36,7 +36,7 @@ deployments:
     work_pool:
       name: metal-local
       job_variables: {}
-  - entrypoint: flows/shell.py:scrub_history
+  - entrypoint: flows/shell.py:shell
     description: "Run scrub root bash history"
     name: scrub_history
     schedule:
