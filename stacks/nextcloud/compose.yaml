@@ -21,6 +21,7 @@ services:
       - "5432:5432"
     networks:
       - application
+
   nextcloud-dsp:
     image: lscr.io/linuxserver/socket-proxy:latest
     container_name: nextcloud-dsp
@@ -45,6 +46,7 @@ services:
     read_only: true
     tmpfs:
       - /run
+
   nextcloud:
     image: lscr.io/linuxserver/nextcloud:31.0.12-previous
     container_name: nextcloud
@@ -64,3 +66,14 @@ services:
       - "traefik.http.routers.nextcloud.middlewares=nextcloud-secure"
       - "traefik.http.middlewares.nextcloud-secure.headers.hostsProxyHeaders=X-Forwarded-Host"
       - "traefik.http.middlewares.nextcloud-secure.headers.referrerPolicy=same-origin"
+
+  nextcloud-collabora:
+    image: collabora/code:25.04.7.3.1
+    container_name: nextcloud-collabora
+    restart: always
+    ports:
+      - "9980:9980"
+    environment:
+      - extra_params=--o:ssl.enable=false --o:user_interface.use_integration_theme=false
+    networks:
+      - application
