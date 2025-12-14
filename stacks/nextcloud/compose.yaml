@@ -47,7 +47,7 @@ services:
     tmpfs:
       - /run
   nextcloud:
-    image: lscr.io/linuxserver/nextcloud:latest
+    image: lscr.io/linuxserver/nextcloud:31.0.12-previous
     container_name: nextcloud
     environment:
       - PUID=1000
