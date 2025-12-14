@@ -25,6 +25,18 @@ deployments:
     work_pool:
       name: metal-local
       job_variables: {}
+  - entrypoint: flows/snapraid.py:snapraid
+    description: "Run snapraid scrub to prevent bitrot"
+    name: scrub
+    schedule:
+      timezone: "America/New_York"
+      cron: "0 3 * * 7"
+    parameters:
+      mode: scrub
+      snapraid_conf: /etc/snapraid/union-01.conf
+    work_pool:
+      name: metal-local
+      job_variables: {}
   - entrypoint: flows/docker.py:docker
     description: "Run docker prune"
     name: prune
