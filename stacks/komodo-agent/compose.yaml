@@ -1,5 +1,9 @@
 name: komodo-agent
 
+networks:
+  application:
+    name: komodo
+
 services:
   komodo-agent:
     image: ghcr.io/moghtech/komodo-periphery:${COMPOSE_KOMODO_IMAGE_TAG:-latest}
@@ -17,6 +21,7 @@ services:
       - ${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}:${PERIPHERY_ROOT_DIRECTORY:-/etc/komodo}
     labels:
       - "komodo.skip=" # Exclude from Komodo
-    network_mode: host
+    networks:
+      - application
     ports:
       - 8120:8120
