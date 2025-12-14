@@ -28,7 +28,9 @@ deployments:
   - entrypoint: flows/docker.py:docker
     description: "Run docker prune"
     name: prune
-    schedule: {}
+    schedule:
+      timezone: "America/New_York"
+      cron: "0 2 * * *"
     parameters:
       mode: prune
     work_pool:
