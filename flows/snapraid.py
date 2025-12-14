@@ -1,3 +1,5 @@
+from profile import run
+
 from prefect import flow
 from prefect.blocks.abstract import LoggerOrAdapter
 from prefect.exceptions import FailedRun, MissingFlowError
@@ -46,6 +48,24 @@ def run_sync(log: LoggerOrAdapter, snapraid_conf: str):
         raise FailedRun(f"Failed to run snapraid sync on {snapraid_conf}")
 
 
+def run_scrub(log: LoggerOrAdapter, snapraid_conf: str):
+    code = run_stream(
+        lambda o: log.info(o),
+        lambda o: log.error(o),
+        "sudo",
+        "snapraid",
+        "--conf",
+        snapraid_conf,
+        "scrub",
+        "-p",
+        "100",
+        "-o",
+        "7",
+    )
+    if code != 0:
+        raise FailedRun(f"Failed to run snapraid sync on {snapraid_conf}")
+
+
 def stop_writer_containers(log: LoggerOrAdapter):
     for container in WRITER_CONTAINERS:
         if not stop_container(log, container):
@@ -68,6 +88,12 @@ def snapraid(mode: str, snapraid_conf: str):
                 return
             stop_writer_containers(log)
             run_sync(log, snapraid_conf)
+            start_writer_containers(log)
+        case "scrub":
+            diff, _ = run_diff(log, snapraid_conf)
+            stop_writer_containers(log)
+            run_sync(log, snapraid_conf)
+            run_scrub(log, snapraid_conf)
             start_writer_containers(log)
         case _:
             raise MissingFlowError(f"Unknown mode for snapraid flow: {mode}")
