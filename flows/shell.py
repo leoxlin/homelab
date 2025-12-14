@@ -1,7 +1,8 @@
 import subprocess
 from typing import Callable
 
-from prefect.exceptions import FailedRun
+from prefect import flow
+from prefect.exceptions import FailedRun, MissingFlowError
 from prefect.logging import get_run_logger
 
 
@@ -38,3 +39,12 @@ def must_run(*cmd: str):
     log = get_run_logger()
     if run_stream(log.info, log.error, *cmd) != 0:
         raise FailedRun(f"Failed to run command: {' '.join(cmd)}")
+
+
+@flow(log_prints=True)
+def shell(mode: str):
+    match mode:
+        case "scrub_history":
+            must_run("sudo", "rm", "/root/.bash_history")
+        case _:
+            raise MissingFlowError(f"Unknown mode for shell flow: {mode}")

@@ -1,10 +1,10 @@
 from prefect import flow
 from prefect.blocks.abstract import LoggerOrAdapter
-from prefect.exceptions import FailedRun
+from prefect.exceptions import FailedRun, MissingFlowError
 from prefect.logging import get_run_logger
 
 from .docker import start_container, stop_container
-from .utils import run_shell, run_stream
+from .shell import run_shell, run_stream
 
 WRITER_CONTAINERS = ["bazarr", "plex", "nzbget", "qbittorrent"]
 
@@ -70,4 +70,4 @@ def snapraid(mode: str, snapraid_conf: str):
             run_sync(log, snapraid_conf)
             start_writer_containers(log)
         case _:
-            log.error(f"Cannot run unknown mode {mode} for snapraid")
+            raise MissingFlowError(f"Unknown mode for snapraid flow: {mode}")

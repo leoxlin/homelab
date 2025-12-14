@@ -3,7 +3,7 @@ from prefect.blocks.abstract import LoggerOrAdapter
 from prefect.exceptions import MissingFlowError
 from prefect.main import get_run_logger
 
-from .utils import must_run, run_shell
+from .shell import must_run, run_shell
 
 
 def stop_container(log: LoggerOrAdapter, container_name: str) -> bool:
@@ -57,5 +57,4 @@ def docker(mode: str):
                 "--force",
             )
         case _:
-            log.error(f"Unknown mode for docker flow: {mode}")
-            raise MissingFlowError()
+            raise MissingFlowError(f"Unknown mode for docker flow: {mode}")
