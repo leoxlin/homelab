@@ -9,7 +9,6 @@ services:
   nextcloud-db:
     container_name: nextcloud-db
     image: postgres:17
-    user: 1000:1000
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USERNAME}
