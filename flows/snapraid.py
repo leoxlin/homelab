@@ -1,5 +1,3 @@
-from profile import run
-
 from prefect import flow
 from prefect.blocks.abstract import LoggerOrAdapter
 from prefect.exceptions import FailedRun, MissingFlowError
