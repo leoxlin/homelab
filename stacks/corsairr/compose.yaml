@@ -214,6 +214,8 @@ services:
     networks:
       - application
       - proxy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
