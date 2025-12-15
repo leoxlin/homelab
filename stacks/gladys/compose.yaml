@@ -24,9 +24,7 @@ services:
       - /run/udev:/run/udev:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.gladys.rule=Host(`gladys.example.com`)"
-      - "traefik.http.routers.gladys.entrypoints=websecure"
-      - "traefik.http.routers.gladys.tls=true"
+      - "traefik.http.routers.gladys.rule=Host(`gladys.hydrahmlb.cc`)"
       - "traefik.http.services.gladys.loadbalancer.server.port=5080"
   watchtower:
     image: nickfedor/watchtower
