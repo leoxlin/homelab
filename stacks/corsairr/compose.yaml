@@ -193,7 +193,8 @@ services:
   recyclarr:
     image: ghcr.io/recyclarr/recyclarr:7.5.2
     container_name: recyclarr
-    networks: [recyclarr]
+    networks:
+      - application
     volumes:
       - ./recyclarr.yml:/config/recyclarr.yml
     environment:
