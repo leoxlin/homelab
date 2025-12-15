@@ -166,7 +166,7 @@ services:
       - LOG_FILE=${LOG_FILE:-none}
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
-      - TZ=Europe/London
+      - TZ=America/New_York
     volumes:
       - /share/docker/flaresolverr:/config
     networks:
@@ -189,3 +189,12 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.prowlarr.middlewares=tinyauth@docker"
+
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr:7.5.2
+    container_name: recyclarr
+    networks: [recyclarr]
+    volumes:
+      - ./recyclarr.yml:/config/recyclarr.yml
+    environment:
+      - TZ=America/New_York
