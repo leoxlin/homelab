@@ -197,4 +197,6 @@ services:
     volumes:
       - ./recyclarr.yml:/config/recyclarr.yml
     environment:
+      - RADARR_API_KEY=${RADARR_API_KEY}
+      - SONARR_API_KEY=${SONARR_API_KEY}
       - TZ=America/New_York
