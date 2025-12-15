@@ -15,7 +15,7 @@ services:
     environment:
       NODE_ENV: production
       SQLITE_FILE_PATH: /var/lib/gladysassistant/gladys-production.db
-      SERVER_PORT: 80
+      SERVER_PORT: 5080
       TZ: America/New_York
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -27,7 +27,7 @@ services:
       - "traefik.http.routers.gladys.rule=Host(`gladys.example.com`)"
       - "traefik.http.routers.gladys.entrypoints=websecure"
       - "traefik.http.routers.gladys.tls=true"
-      - "traefik.http.services.gladys.loadbalancer.server.port=80"
+      - "traefik.http.services.gladys.loadbalancer.server.port=5080"
   watchtower:
     image: nickfedor/watchtower
     restart: always
