@@ -213,6 +213,7 @@ services:
       - /share/docker/overseerr/config:/config
     networks:
       - application
+      - proxy
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
