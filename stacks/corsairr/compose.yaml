@@ -201,3 +201,18 @@ services:
       - RADARR_API_KEY=${RADARR_API_KEY}
       - SONARR_API_KEY=${SONARR_API_KEY}
       - TZ=America/New_York
+
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    environment:
+      - PUID=2000
+      - PGID=2000
+      - TZ=America/New_York
+    volumes:
+      - /share/docker/overseerr/config:/config
+    networks:
+      - application
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
