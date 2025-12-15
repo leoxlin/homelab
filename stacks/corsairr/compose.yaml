@@ -25,7 +25,20 @@ services:
       - 6887:6887
       - 6789:6789
       - 6887:6887/udp
-
+  gluetun-ma:
+    image: qmcgaw/gluetun
+    container_name: gluetun-ma
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    volumes:
+      - /share/docker/gluetun:/gluetun
+    environment:
+      - VPN_SERVICE_PROVIDER=private internet access
+      - OPENVPN_USER=${OPENVPN_USER}
+      - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
+      - SERVER_REGIONS="US Massachusetts"
   nzbget:
     image: lscr.io/linuxserver/nzbget:latest
     container_name: nzbget
@@ -40,8 +53,8 @@ services:
       - /share/docker/nzbget/staging:/staging
       - /srv/mergerfs/union_01/media/Downloads:/downloads
     depends_on:
-      - gluetun
-    network_mode: "service:gluetun"
+      - gluetun-ma
+    network_mode: "service:gluetun-ma"
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
@@ -63,9 +76,9 @@ services:
       - /share/docker/qbittorrent:/config
       - /share/docker/qbittorrent/staging:/staging
       - /srv/mergerfs/union_01/media/Downloads:/downloads
-    network_mode: "service:gluetun"
+    network_mode: "service:gluetun-ma"
     depends_on:
-      - gluetun
+      - gluetun-ma
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
