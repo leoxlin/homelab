@@ -1,5 +1,5 @@
 networks:
-  appplication:
+  application:
     name: kestra
   proxy:
     name: proxy
