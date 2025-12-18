@@ -22,16 +22,11 @@ services:
       RUNDECK_SERVER_CONTEXT_PATH: "/"
       RUNDECK_GRAILS_SERVER_SESSION_COOKIE_SECURE: "false"
       RUNDECK_GRAILS_SERVER_SESSION_COOKIE_HTTP_ONLY: "true"
-      RUNDECK_PREAUTH_ENABLED: "true"
-      RUNDECK_PREAUTH_USER_NAME_HEADER: "X-Forwarded-User"
-      RUNDECK_PREAUTH_USER_ROLES_HEADER: "X-Forwarded-Groups"
-      RUNDECK_PREAUTH_ROLES_ATTRIBUTE: "user,admin"
     networks:
       - application
       - proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.rundeck.middlewares=tinyauth@docker"
     volumes:
       - /share/docker/rundeck/libext:/home/rundeck/libext
       - /share/docker/rundeck/config/realm.properties:/home/rundeck/server/config/realm.properties
