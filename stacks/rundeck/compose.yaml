@@ -17,6 +17,11 @@ services:
       RUNDECK_DATABASE_PASSWORD: ${MYSQL_DB_PASS}
       RUNDECK_DATABASE_URL: jdbc:mysql://rundeck-mysql:3306/rundeck?autoReconnect=true&useSSL=false
       RUNDECK_GRAILS_URL: https://rundeck.hydrahmlb.cc
+      RUNDECK_SERVER_FORWARDED: "true"
+      RUNDECK_SERVER_ADDRESS: "0.0.0.0"
+      RUNDECK_SERVER_CONTEXT_PATH: "/"
+      RUNDECK_GRAILS_SERVER_SESSION_COOKIE_SECURE: "false"
+      RUNDECK_GRAILS_SERVER_SESSION_COOKIE_HTTP_ONLY: "true"
     networks:
       - application
       - proxy
@@ -29,7 +34,6 @@ services:
       - "traefik.http.middlewares.rundeck-secure.headers.browserXssFilter=true"
     volumes:
       - /share/docker/rundeck/libext:/home/rundeck/libext
-      - ./rundeck-config.properties:/home/rundeck/server/config/rundeck-config.properties
   rundeck-mysql:
     image: mysql:5.7
     container_name: rundeck-mysql
