@@ -87,7 +87,7 @@ services:
       - st2redis
       - st2api
     networks:
-      - private
+      - application
     volumes:
       - ./files/st2.docker.conf:/etc/st2/st2.docker.conf:ro
       - ./files/st2.user.conf:/etc/st2/st2.user.conf:ro
@@ -249,20 +249,20 @@ services:
     image: mongo:4.4
     restart: on-failure
     networks:
-      - private
+      - application
     volumes:
       - /share/docker/stackstorm/mongodb:/data/db
   st2rabbitmq:
     image: rabbitmq:3.12
     restart: on-failure
     networks:
-      - private
+      - application
     volumes:
       - /share/docker/stackstorm/rabbitmq:/var/lib/rabbitmq
   st2redis:
     image: redis:7.2
     restart: on-failure
     networks:
-      - private
+      - application
     volumes:
       - /share/docker/stackstorm/redis:/data
