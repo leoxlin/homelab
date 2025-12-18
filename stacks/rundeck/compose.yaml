@@ -29,7 +29,7 @@ services:
       - MYSQL_DATABASE=rundeck
       - MYSQL_USER=rundeck
       - MYSQL_PASSWORD=${MYSQL_DB_PASS}
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASS}
     volumes:
       - /share/docker/rundeck/mysql:/var/lib/mysql
     networks:
