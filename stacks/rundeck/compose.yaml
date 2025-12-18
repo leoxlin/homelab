@@ -27,6 +27,9 @@ services:
       - "traefik.http.middlewares.rundeck-secure.headers.stsSeconds=31536000"
       - "traefik.http.middlewares.rundeck-secure.headers.contentTypeNosniff=true"
       - "traefik.http.middlewares.rundeck-secure.headers.browserXssFilter=true"
+    volumes:
+      - /share/docker/rundeck/libext:/home/rundeck/libext
+      - ./rundeck-config.properties:/home/rundeck/server/config/rundeck-config.properties
   rundeck-mysql:
     image: mysql:5.7
     container_name: rundeck-mysql
