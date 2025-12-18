@@ -16,7 +16,7 @@ services:
       RUNDECK_DATABASE_USERNAME: rundeck
       RUNDECK_DATABASE_PASSWORD: ${MYSQL_DB_PASS}
       RUNDECK_DATABASE_URL: jdbc:mysql://rundeck-mysql:3306/rundeck?autoReconnect=true&useSSL=false
-      RUNDECK_GRAILS_URL: rundeck.hydrahmlb.cc
+      RUNDECK_GRAILS_URL: localhost:4440
     networks:
       - application
       - proxy
