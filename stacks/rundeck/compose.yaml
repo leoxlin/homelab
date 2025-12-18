@@ -1,0 +1,36 @@
+networks:
+  application:
+    name: rundeck
+  proxy:
+    name: proxy
+    external: true
+
+services:
+  rundeck:
+    image: rundeck/rundeck:5.18.0
+    container_name: rundeck
+    links:
+      - rundeck-mysql
+    environment:
+      RUNDECK_DATABASE_DRIVER: org.mariadb.jdbc.Driver
+      RUNDECK_DATABASE_USERNAME: rundeck
+      RUNDECK_DATABASE_PASSWORD: ${MYSQL_DB_PASS}
+      RUNDECK_DATABASE_URL: jdbc:mysql://rundeck-mysql:3306/rundeck?autoReconnect=true&useSSL=false
+      RUNDECK_GRAILS_URL: localhost:4440
+    networks:
+      - application
+      - proxy
+    labels:
+      - "traefik.enable=true"
+  rundeck-mysql:
+    image: mysql:5.7
+    container_name: rundeck-mysql
+    environment:
+      - MYSQL_DATABASE=rundeck
+      - MYSQL_USER=rundeck
+      - MYSQL_PASSWORD=${MYSQL_DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - /share/docker/rundeck/mysql:/var/lib/mysql
+    networks:
+      - application
