@@ -22,6 +22,11 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.rundeck.middlewares=rundeck-secure"
+      - "traefik.http.middlewares.rundeck-secure.headers.sslredirect=true"
+      - "traefik.http.middlewares.rundeck-secure.headers.stsSeconds=31536000"
+      - "traefik.http.middlewares.rundeck-secure.headers.contentTypeNosniff=true"
+      - "traefik.http.middlewares.rundeck-secure.headers.browserXssFilter=true"
   rundeck-mysql:
     image: mysql:5.7
     container_name: rundeck-mysql
