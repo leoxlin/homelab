@@ -5,6 +5,7 @@ networks:
     name: kestra
   proxy:
     name: proxy
+    external: true
 
 services:
   kestra-db:
