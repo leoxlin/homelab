@@ -7,6 +7,7 @@ networks:
 
 services:
   st2web:
+    container_name: st2web
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2web:${ST2_VERSION:-latest}
     restart: on-failure
     environment:
@@ -40,6 +41,7 @@ services:
       - "traefik.http.routers.stackstorm.rule=Host(`st.hydrahmlb.cc`)"
       - "traefik.http.services.stackstorm.loadbalancer.server.port=80"
   st2makesecrets:
+    container_name: st2makesecrets
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2actionrunner:${ST2_VERSION:-latest}
     restart: on-failure
     networks:
@@ -49,6 +51,7 @@ services:
       - /share/docker/stackstorm/keys:/etc/st2/keys:rw
     command: /makesecrets.sh
   st2api:
+    container_name: st2api
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2api:${ST2_VERSION:-latest}
     restart: on-failure
     depends_on:
@@ -71,6 +74,7 @@ services:
       - /share/docker/stackstorm/configs:/opt/stackstorm/configs:rw
       - /share/docker/stackstorm/packs:/opt/stackstorm/packs:rw
   st2stream:
+    container_name: st2stream
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2stream:${ST2_VERSION:-latest}
     restart: on-failure
     depends_on:
@@ -81,6 +85,7 @@ services:
       - ./files/st2.docker.conf:/etc/st2/st2.docker.conf:ro
       - ./files/st2.user.conf:/etc/st2/st2.user.conf:ro
   st2scheduler:
+    container_name: st2scheduler
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2scheduler:${ST2_VERSION:-latest}
     restart: on-failure
     depends_on:
@@ -92,6 +97,7 @@ services:
       - ./files/st2.docker.conf:/etc/st2/st2.docker.conf:ro
       - ./files/st2.user.conf:/etc/st2/st2.user.conf:ro
   st2workflowengine:
+    container_name: st2workflowengine
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2workflowengine:${ST2_VERSION:-latest}
     restart: on-failure
     depends_on:
@@ -104,6 +110,7 @@ services:
       - ./files/st2.user.conf:/etc/st2/st2.user.conf:ro
       - /share/docker/stackstorm/keys:/etc/st2/keys:ro
   st2auth:
+    container_name: st2auth
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2auth:${ST2_VERSION:-latest}
     restart: on-failure
     depends_on:
@@ -115,6 +122,7 @@ services:
       - ./files/st2.user.conf:/etc/st2/st2.user.conf:ro
       - ./files/htpasswd:/etc/st2/htpasswd:ro
   st2actionrunner:
+    container_name: st2actionrunner
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2actionrunner:${ST2_VERSION:-latest}
     restart: on-failure
     depends_on:
@@ -134,6 +142,7 @@ services:
       - /share/docker/stackstorm/virtualenvs:/opt/stackstorm/virtualenvs:rw
       - /share/docker/stackstorm/ssh:/home/stanley/.ssh
   st2garbagecollector:
+    container_name: st2garbagecollector
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2garbagecollector:${ST2_VERSION:-latest}
     restart: on-failure
     depends_on:
@@ -144,6 +153,7 @@ services:
       - ./files/st2.docker.conf:/etc/st2/st2.docker.conf:ro
       - ./files/st2.user.conf:/etc/st2/st2.user.conf:ro
   st2notifier:
+    container_name: st2notifier
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2notifier:${ST2_VERSION:-latest}
     restart: on-failure
     depends_on:
@@ -155,6 +165,7 @@ services:
       - ./files/st2.docker.conf:/etc/st2/st2.docker.conf:ro
       - ./files/st2.user.conf:/etc/st2/st2.user.conf:ro
   st2rulesengine:
+    container_name: st2rulesengine
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2rulesengine:${ST2_VERSION:-latest}
     restart: on-failure
     depends_on:
@@ -165,6 +176,7 @@ services:
       - ./files/st2.docker.conf:/etc/st2/st2.docker.conf:ro
       - ./files/st2.user.conf:/etc/st2/st2.user.conf:ro
   st2sensorcontainer:
+    container_name: st2sensorcontainer
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2sensorcontainer:${ST2_VERSION:-latest}
     restart: on-failure
     depends_on:
@@ -179,6 +191,7 @@ services:
       - /share/docker/stackstorm/packs:/opt/stackstorm/packs:ro
       - /share/docker/stackstorm/configs:/opt/stackstorm/configs:ro
   st2timersengine:
+    container_name: st2timersengine
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2timersengine:${ST2_VERSION:-latest}
     restart: on-failure
     depends_on:
@@ -188,6 +201,7 @@ services:
     volumes:
       - ./files/st2.docker.conf:/etc/st2/st2.docker.conf:ro
   st2client:
+    container_name: st2client
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2actionrunner:${ST2_VERSION:-latest}
     restart: on-failure
     depends_on:
@@ -218,6 +232,7 @@ services:
       - /share/docker/stackstorm/configs:/opt/stackstorm/configs:rw
       - /share/docker/stackstorm/packs:/opt/stackstorm/packs:rw
   st2chatops:
+    container_name: st2chatops
     image: ${ST2_IMAGE_REPO:-stackstorm/}st2chatops:${ST2_VERSION:-latest}
     restart: on-failure:5
     depends_on:
@@ -246,6 +261,7 @@ services:
       - ./scripts/st2chatops-startup.sh:/st2chatops-startup.sh
   # external services
   st2mongo:
+    container_name: st2mongo
     image: mongo:4.4
     restart: on-failure
     networks:
@@ -253,6 +269,7 @@ services:
     volumes:
       - /share/docker/stackstorm/mongodb:/data/db
   st2rabbitmq:
+    container_name: st2rabbitmq
     image: rabbitmq:3.12
     restart: on-failure
     networks:
@@ -260,6 +277,7 @@ services:
     volumes:
       - /share/docker/stackstorm/rabbitmq:/var/lib/rabbitmq
   st2redis:
+    container_name: st2redis
     image: redis:7.2
     restart: on-failure
     networks:
