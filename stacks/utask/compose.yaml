@@ -16,7 +16,7 @@ services:
       POSTGRES_USER: utask
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - /share/docker/utask:/var/lib/postgresql/data
+      - /share/docker/utask/data:/var/lib/postgresql/data
     networks:
       - application
     healthcheck:
