@@ -17,6 +17,7 @@ services:
       - N8N_PROTOCOL=https
       - N8N_RUNNERS_ENABLED=true
       - NODE_ENV=production
+      - N8N_PROXY_HOPS=1
       - WEBHOOK_URL=https://n8n.hydrahmlb.cc/
       - GENERIC_TIMEZONE=America/New_York
       - TZ=America/New_York
