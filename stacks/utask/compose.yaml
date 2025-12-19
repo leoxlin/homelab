@@ -40,7 +40,9 @@ services:
       UTASK_PLUGINS_AVAILABLE: "subtask,notify,email,script,http"
       UTASK_METRICS_ENABLED: "true"
     volumes:
-      - ../../utask:/app
+      - ../../utask/functions:/app/functions:ro
+      - ../../utask/templates:/app/templates:ro
+      - ../../utask/scripts:/app/scripts:ro
     depends_on:
       utask-db:
         condition: service_healthy
