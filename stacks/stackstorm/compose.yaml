@@ -1,3 +1,5 @@
+name: stackstorm
+
 networks:
   application:
     name: st2
