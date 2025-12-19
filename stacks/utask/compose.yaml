@@ -1,0 +1,48 @@
+name: utask
+
+networks:
+  application:
+    name: utask
+  proxy:
+    name: proxy
+    external: true
+
+services:
+  postgres:
+    container_name: utask
+    image: postgres:14-alpine
+    environment:
+      POSTGRES_DB: utask
+      POSTGRES_USER: utask
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - /share/docker/utask:/var/lib/postgresql/data
+    networks:
+      - application
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U utask"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  utask:
+    image: ovhcom/utask:v1.33.3
+    environment:
+      UTASK_DB_HOST: postgres
+      UTASK_DB_PORT: 5432
+      UTASK_DB_NAME: utask
+      UTASK_DB_USER: utask
+      UTASK_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      UTASK_PORT: 8081
+      UTASK_HTTP_PORT: 8081
+
+      UTASK_ENCRYPTION_KEY: ${ENCRYPTION_KEY:-your-32-char-encryption-key-here}
+      UTASK_PLUGINS_AVAILABLE: "subtask,notify,email,script,http"
+      UTASK_METRICS_ENABLED: "true"
+    volumes:
+      - ../../utask:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - utask-network
