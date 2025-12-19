@@ -1,0 +1,30 @@
+networks:
+  application:
+    name: n8n
+  proxy:
+    name: proxy
+    external: true
+
+services:
+  n8n:
+    container_name: n8n
+    image: docker.n8n.io/n8nio/n8n
+    restart: always
+    environment:
+      - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      - N8N_HOST=n8n.hydrahmlb.cc
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - N8N_RUNNERS_ENABLED=true
+      - NODE_ENV=production
+      - WEBHOOK_URL=https://n8n.hydrahmlb.cc/
+      - GENERIC_TIMEZONE=America/New_York
+      - TZ=America/New_York
+    volumes:
+      - /share/docker/n8n:/home/node/.n8n
+      - ../../n8n:/files
+    networks:
+      - application
+      - proxy
+    labels:
+      - traefik.enable=true
