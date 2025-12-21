@@ -7,13 +7,13 @@ OMV_KEY_DIR="/var/lib/openmediavault/ssh/authorized_keys"
 
 bootstrap_user() {
     local USER=$1
-    local UID=$2
-    local KEY=$3
+    local USER_ID=$2
+    local PUBLIC_KEY=$3
 
     if ! id -u $USER > /dev/null 2>&1; then
         echo "Creating $USER user and group..."
-        groupadd -g $UID $USER
-        useradd -u $UID -g $UID -m -s /bin/bash $USER
+        groupadd -g $USER_ID $USER
+        useradd -u $USER_ID -g $USER_ID -m -s /bin/bash $USER
     fi
 
     if [ ! -f /etc/sudoers.d/$USER ]; then
@@ -24,13 +24,13 @@ bootstrap_user() {
     if [ ! -d /home/$USER/.ssh ]; then
         mkdir -p /home/$USER/.ssh
         chmod 700 /home/$USER/.ssh
-        echo "$KEY" > /home/$USER/.ssh/authorized_keys
+        echo "$PUBLIC_KEY" > /home/$USER/.ssh/authorized_keys
         chmod 600 /home/$USER/.ssh/authorized_keys
         chown -R $USER:$USER /home/$USER/.ssh
     fi
 
     if [ -d $OMV_KEY_DIR ] && [ ! -f $OMV_KEY_DIR/$USER ]; then
-        echo "$KEY" > $OMV_KEY_DIR/$USER
+        echo "$PUBLIC_KEY" > $OMV_KEY_DIR/$USER
         chmod 600 $OMV_KEY_DIR/$USER
         chown -R $USER:root $OMV_KEY_DIR/$USER
     fi
