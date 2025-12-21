@@ -30,6 +30,8 @@ bootstrap_user() {
     fi
 
     if [ -d $OMV_KEY_DIR ] && [ ! -f $OMV_KEY_DIR/$USER ]; then
+        usermod -aG _ssh $USER
+        usermod -aG sudo $USER
         echo "$PUBLIC_KEY" > $OMV_KEY_DIR/$USER
         chmod 600 $OMV_KEY_DIR/$USER
         chown -R $USER:root $OMV_KEY_DIR/$USER
@@ -38,7 +40,7 @@ bootstrap_user() {
 
 echo "Bootstrapping ansible user and group"
 
-bootstrap_user hydra 1111 $AGENT_SSH_PUBLIC_KEY
-bootstrap_user llin 1000 $HUMAN_SSH_PUBLIC_KEY
+bootstrap_user hydra 1111 "$AGENT_SSH_PUBLIC_KEY"
+bootstrap_user llin 1000 "$HUMAN_SSH_PUBLIC_KEY"
 
 echo "Bootstrapped users and groups!"
