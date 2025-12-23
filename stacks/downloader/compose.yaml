@@ -63,3 +63,19 @@ services:
     depends_on:
       - gluetun
     restart: unless-stopped
+
+  brave:
+    image: lscr.io/linuxserver/brave:latest
+    container_name: brave
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - CUSTOM_PORT=6787
+    volumes:
+      - /share/docker/brave:/config
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    shm_size: "1gb"
+    restart: unless-stopped
