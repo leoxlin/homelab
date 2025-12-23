@@ -1,0 +1,18 @@
+http:
+  routers:
+    openmediavault:
+      entryPoints:
+        - websecure
+      rule: "Host(`marten.hydrahmlb.cc`)"
+      service: openmediavault
+  services:
+    openmediavault:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:8400"
+tls:
+  certificates:
+    - certFile: "/etc/letsencrypt/live/hydrahmlb.cc/fullchain.pem"
+      keyFile: "/etc/letsencrypt/live/hydrahmlb.cc/privkey.pem"
+    - certFile: "/etc/letsencrypt/live/marten.hydrahmlb.cc/fullchain.pem"
+      keyFile: "/etc/letsencrypt/live/marten.hydrahmlb.cc/privkey.pem"

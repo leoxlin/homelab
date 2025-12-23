@@ -1,0 +1,25 @@
+networks:
+  proxy:
+    name: proxy
+    external: true
+  application:
+    name: tinyauth
+
+services:
+  tinyauth:
+    image: ghcr.io/steveiliop56/tinyauth:v4.1.0
+    container_name: tinyauth
+    restart: unless-stopped
+    env_file: tinyauth.env
+    volumes:
+      - "/share/docker/tinyauth/tinyauth.txt:/etc/users.txt"
+      - "/share/docker/tinyauth/resources:/data/resources"
+    networks:
+      - proxy
+      - application
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tinyauth.rule=Host(`tiny.hydrahmlb.cc`)"
+      - "traefik.http.middlewares.tinyauth.forwardauth.address=http://tinyauth:3000/api/auth/traefik"
+      - "traefik.http.middlewares.tinyauth.forwardauth.trustForwardHeader=true"
+      - "traefik.http.middlewares.tinyauth.forwardauth.authResponseHeaders=X-Forwarded-User"
