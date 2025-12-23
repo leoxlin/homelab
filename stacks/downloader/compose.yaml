@@ -16,14 +16,12 @@ services:
       - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
       - SERVER_REGIONS="US Massachusetts"
     restart: unless-stopped
+    network_mode: host
     ports:
       - 8080:8080
       - 6887:6887
       - 6789:6789
       - 6887:6887/udp
-    networks:
-      - application
-      - proxy
 
   nzbget:
     image: lscr.io/linuxserver/nzbget:latest
