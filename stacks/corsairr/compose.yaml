@@ -36,8 +36,8 @@ services:
     image: lscr.io/linuxserver/nzbget:latest
     container_name: nzbget
     environment:
-      - PUID=2000
-      - PGID=2000
+      - PUID=1121
+      - PGID=1121
       - TZ=America/New_York
       - NZBGET_USER=
       - NZBGET_PASS=
@@ -60,8 +60,8 @@ services:
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     environment:
-      - PUID=2000
-      - PGID=2000
+      - PUID=1121
+      - PGID=1121
       - TZ=America/New_York
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6887
@@ -84,8 +84,8 @@ services:
     image: lscr.io/linuxserver/bazarr:latest
     container_name: bazarr
     environment:
-      - PUID=2000
-      - PGID=2000
+      - PUID=1121
+      - PGID=1121
       - TZ=America/New_York
     volumes:
       - /share/docker/bazarr:/config
@@ -104,8 +104,8 @@ services:
     image: lscr.io/linuxserver/sonarr:latest
     container_name: sonarr
     environment:
-      - PUID=2000
-      - PGID=2000
+      - PUID=1121
+      - PGID=1121
       - TZ=America/New_York
     volumes:
       - /share/docker/sonarr:/config
@@ -124,8 +124,8 @@ services:
     image: lscr.io/linuxserver/radarr:latest
     container_name: radarr
     environment:
-      - PUID=2000
-      - PGID=2000
+      - PUID=1121
+      - PGID=1121
       - TZ=America/New_York
     volumes:
       - /share/docker/radarr:/config
@@ -144,8 +144,8 @@ services:
     image: lscr.io/linuxserver/lidarr:latest
     container_name: lidarr
     environment:
-      - PUID=2000
-      - PGID=2000
+      - PUID=1121
+      - PGID=1121
       - TZ=America/New_York
     volumes:
       - /share/docker/lidarr:/config
@@ -180,8 +180,8 @@ services:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
     environment:
-      - PUID=2000
-      - PGID=2000
+      - PUID=1121
+      - PGID=1121
       - TZ=America/New_York
     volumes:
       - /share/docker/prowlarr:/config
@@ -209,8 +209,8 @@ services:
     image: lscr.io/linuxserver/overseerr:latest
     container_name: overseerr
     environment:
-      - PUID=2000
-      - PGID=2000
+      - PUID=1121
+      - PGID=1121
       - TZ=America/New_York
     volumes:
       - /share/docker/overseerr/config:/config
