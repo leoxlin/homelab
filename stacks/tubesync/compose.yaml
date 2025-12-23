@@ -14,3 +14,6 @@ services:
       - PUID=1121
       - PGID=1121
       - TZ=America/New_York
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prowlarr.middlewares=tinyauth@docker"
