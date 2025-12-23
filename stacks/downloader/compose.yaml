@@ -73,6 +73,7 @@ services:
       - PGID=1000
       - TZ=America/New_York
       - CUSTOM_PORT=6787
+      - SELKIES_SCALING_DPI=150
     volumes:
       - /share/docker/brave:/config
     network_mode: "service:gluetun"
