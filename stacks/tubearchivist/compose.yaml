@@ -70,4 +70,5 @@ services:
     networks:
       - application
     volumes:
-      - /share/docker/tubearchivist/elasticsearch:/usr/share/elasticsearch/data
+      - /share/docker/tubearchivist/elasticsearch/config:/usr/share/elasticsearch/config
+      - /share/docker/tubearchivist/elasticsearch/data:/usr/share/elasticsearch/data
