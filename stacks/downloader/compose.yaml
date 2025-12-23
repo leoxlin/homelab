@@ -1,5 +1,9 @@
 name: downloader
 
+networks:
+  tunnel:
+    name: gluetun
+
 services:
   gluetun:
     image: qmcgaw/gluetun
@@ -16,7 +20,8 @@ services:
       - OPENVPN_PASSWORD=${OPENVPN_PASSWORD}
       - SERVER_REGIONS="US Massachusetts"
     restart: unless-stopped
-    network_mode: host
+    networks:
+      - tunnel
     ports:
       - 8080:8080
       - 6887:6887
