@@ -80,3 +80,4 @@ services:
       - gluetun
     shm_size: "1gb"
     restart: unless-stopped
+    runtime: nvidia
