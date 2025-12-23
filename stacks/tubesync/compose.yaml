@@ -16,4 +16,4 @@ services:
       - TZ=America/New_York
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.prowlarr.middlewares=tinyauth@docker"
+      - "traefik.http.routers.tubesync.middlewares=tinyauth@docker"
