@@ -43,6 +43,7 @@ services:
   tubearchivist-redis:
     image: redis
     container_name: tubearchivist-redis
+    user: 1120:1120
     restart: unless-stopped
     networks:
       - application
@@ -54,6 +55,7 @@ services:
   tubearchivist-es:
     image: bbilly1/tubearchivist-es
     container_name: tubearchivist-es
+    user: 1120:1120
     restart: unless-stopped
     environment:
       - "ELASTIC_PASSWORD=${TA_ES_PASSWORD}"
