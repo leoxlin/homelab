@@ -29,7 +29,7 @@ services:
       - ELASTIC_PASSWORD=${TA_ES_PASSWORD}
       - TZ=America/New_York
       - TA_LOGIN_AUTH_MODE=forwardauth
-      - TA_AUTH_PROXY_USERNAME_HEADER=HTTP_REMOTE_USER
+      - TA_AUTH_PROXY_USERNAME_HEADER=REMOTE_USER
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
       interval: 2m
