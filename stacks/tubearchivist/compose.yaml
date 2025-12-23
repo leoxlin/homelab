@@ -1,12 +1,20 @@
 name: tubearchivist
 
+networks:
+  application:
+    name: tubearchivist
+  proxy:
+    name: proxy
+    external: true
+
 services:
   tubearchivist:
     container_name: tubearchivist
     restart: unless-stopped
     image: bbilly1/tubearchivist
-    ports:
-      - 8000:8000
+    networks:
+      - application
+      - proxy
     volumes:
       - /share/docker/tubearchivist/cache:/cache
       - /srv/mergerfs/union_01/media/YouTube:/youtube
@@ -29,17 +37,19 @@ services:
     depends_on:
       - tubearchivist-es
       - tubearchivist-redis
+    labels:
+      - "traefik.enable=true"
 
   tubearchivist-redis:
     image: redis
     container_name: tubearchivist-redis
     restart: unless-stopped
-    expose:
-      - "6379"
+    networks:
+      - application
     volumes:
       - /share/docker/tubearchivist/redis:/data
     depends_on:
-      - archivist-es
+      - tubearchivist-es
 
   tubearchivist-es:
     image: bbilly1/tubearchivist-es
@@ -55,7 +65,7 @@ services:
       memlock:
         soft: -1
         hard: -1
+    networks:
+      - application
     volumes:
       - /share/docker/tubearchivist/elasticsearch:/usr/share/elasticsearch/data
-    expose:
-      - "9200"
