@@ -26,7 +26,7 @@ services:
       - TA_HOST=http://tubearchivist.local:8000
       - TA_USERNAME=admin
       - TA_PASSWORD=${TA_ADMIN_PASSWORD}
-      - ELASTIC_PASSWORD={TA_ES_PASSWORD}
+      - ELASTIC_PASSWORD=${TA_ES_PASSWORD}
       - TZ=America/New_York
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/api/health/"]
