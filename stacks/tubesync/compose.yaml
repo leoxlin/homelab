@@ -1,0 +1,16 @@
+services:
+  tubesync:
+    image: ghcr.io/meeb/tubesync:latest
+    container_name: tubesync
+    restart: unless-stopped
+    stop_grace_period: 30m
+    ports:
+      - 4848:4848
+    volumes:
+      - /share/docker/tubesync/config:/config
+      - /share/docker/tubesync/staging:/staging
+      - /srv/mergerfs/union_01/media/Downloads/tubesync:/downloads
+    environment:
+      - PUID=1121
+      - PGID=1121
+      - TZ=America/New_York
