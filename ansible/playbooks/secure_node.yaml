@@ -1,5 +1,5 @@
 ---
-- name: Security and User Configuration
+- name: Secure server nodes
   hosts: servers
   become: true
   tasks:
