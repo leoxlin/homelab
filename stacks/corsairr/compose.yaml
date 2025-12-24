@@ -91,7 +91,7 @@ services:
       - /share/docker/bazarr:/config
       - /srv/mergerfs/union_01/media/Movies:/movies
       - /srv/mergerfs/union_01/media/Shows:/tv
-      - /srv/mergerfs/union_01/media/.Trash-Quasarr/bazarr:/trash
+      - /srv/mergerfs/union_01/media/.trash/bazarr:/trash
     networks:
       - application
       - proxy
@@ -111,7 +111,7 @@ services:
       - /share/docker/sonarr:/config
       - /srv/mergerfs/union_01/media/Shows:/tv
       - /srv/mergerfs/union_01/media/Downloads:/downloads
-      - /srv/mergerfs/union_01/media/.Trash-Quasarr/sonarr:/trash
+      - /srv/mergerfs/union_01/media/.trash/sonarr:/trash
     networks:
       - application
       - proxy
@@ -131,7 +131,7 @@ services:
       - /share/docker/radarr:/config
       - /srv/mergerfs/union_01/media/Movies:/movies
       - /srv/mergerfs/union_01/media/Downloads:/downloads
-      - /srv/mergerfs/union_01/media/.Trash-Quasarr/radarr:/trash
+      - /srv/mergerfs/union_01/media/.trash/radarr:/trash
     networks:
       - application
       - proxy
@@ -151,7 +151,7 @@ services:
       - /share/docker/lidarr:/config
       - /srv/mergerfs/union_01/media/Music:/music
       - /srv/mergerfs/union_01/media/Downloads:/downloads
-      - /srv/mergerfs/union_01/media/.Trash-Quasarr/lidarr:/trash
+      - /srv/mergerfs/union_01/media/.trash/lidarr:/trash
     networks:
       - application
       - proxy
