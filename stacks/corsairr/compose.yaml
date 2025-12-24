@@ -140,26 +140,6 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.radarr.middlewares=tinyauth@docker"
 
-  lidarr:
-    image: lscr.io/linuxserver/lidarr:latest
-    container_name: lidarr
-    environment:
-      - PUID=1121
-      - PGID=1121
-      - TZ=America/New_York
-    volumes:
-      - /share/docker/lidarr:/config
-      - /srv/mergerfs/union_01/media/Music:/music
-      - /srv/mergerfs/union_01/media/Downloads:/downloads
-      - /srv/mergerfs/union_01/media/.trash/lidarr:/trash
-    networks:
-      - application
-      - proxy
-    restart: unless-stopped
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.lidarr.middlewares=tinyauth@docker"
-
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
