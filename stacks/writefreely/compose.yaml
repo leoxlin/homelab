@@ -8,7 +8,7 @@ networks:
 services:
   writefreely:
     container_name: writefreely
-    restart: no
+    restart: unless-stopped
     image: ghcr.io/writefreely/writefreely:latest
     user: root
     entrypoint: sh -c '/go/setup.sh'
