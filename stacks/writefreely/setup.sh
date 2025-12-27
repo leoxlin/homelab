@@ -17,11 +17,9 @@ EOF > /go/config.ini
 
 # Initialize the DB and create the admin user
 if [[ ! -f /go/data/writefreely.db ]]; then
-  set -x
   writefreely db init
   writefreely user create --admin "${WF_ADMIN_USER}:${WF_ADMIN_PASSWORD}"
   cp ./writefreely.db ./data/writefreely.db
-  set +x
 else
   echo "DB already initialized"
 fi
@@ -38,7 +36,6 @@ fi
 rm -f /go/config.ini
 eval "cat << EOF
 $(cat template.ini)
-EOF
-" > /go/config.ini
+EOF" > /go/config.ini
 
 writefreely serve
