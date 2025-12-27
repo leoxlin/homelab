@@ -16,7 +16,7 @@ services:
     volumes:
       - /share/docker/writefreely/keys:/go/keys
       - /share/docker/writefreely/data:/go/data
-      - ./template.ini:/go/deploy.ini
+      - ./template.ini:/go/template.ini
       - ./setup.sh:/go/setup.sh
     environment:
       - WF_ADMIN_USER=${WF_ADMIN_USER:-writer}
