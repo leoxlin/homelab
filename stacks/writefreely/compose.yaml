@@ -29,3 +29,4 @@ services:
       - proxy
     labels:
       - "traefik.enable=true"
+      - "traefik.http.routers.writefreely.rule=Host(`blog.hydrahmlb.cc`)"
