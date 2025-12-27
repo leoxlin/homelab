@@ -27,3 +27,4 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.writefreely.rule=Host(`blog.hydrahmlb.cc`)"
+      - "traefik.http.services.writefreely.server.port=8080"
