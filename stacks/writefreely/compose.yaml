@@ -1,3 +1,5 @@
+name: writefreely
+
 networks:
   application:
     name: writefreely
