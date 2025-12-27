@@ -11,8 +11,7 @@ services:
     restart: unless-stopped
     image: ghcr.io/writefreely/writefreely:latest
     user: root
-    entrypoint: sh
-    command: /go/setup.sh
+    entrypoint: sh -c '/go/setup.sh'
     volumes:
       - /share/docker/writefreely/keys:/go/keys
       - /share/docker/writefreely/data:/go/data
