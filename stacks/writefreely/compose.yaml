@@ -1,6 +1,9 @@
 networks:
   application:
     name: writefreely
+  proxy:
+    name: proxy
+    external: true
 
 services:
   writefreely:
@@ -19,8 +22,8 @@ services:
       - ADMIN_USER=${ADMIN_USER:-writer}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:-password}
       - WF_HOST=${WF_HOST:-http://localhost:8080}
-    network_mode: host
-    ports:
-      - 8080:8080
+    networks:
+      - application
+      - proxy
     labels:
       - "traefik.enable=true"
