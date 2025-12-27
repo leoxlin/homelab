@@ -5,7 +5,7 @@ alias writefreely='/go/cmd/writefreely/writefreely'
 
 # Must use an config.ini where the database file ins't in a folder
 # other wise writefreely db init does not initialize the sqliteDB
-cat << EOF
+eval "cat << EOF
 [server]
 port                 = 8080
 bind                 = localhost
@@ -13,7 +13,8 @@ bind                 = localhost
 [database]
 type     = sqlite3
 filename = writefreely.db
-EOF > /go/config.ini
+EOF
+" > /go/config.ini
 
 # Initialize the DB and create the admin user
 if [[ ! -f /go/data/writefreely.db ]]; then
@@ -36,6 +37,7 @@ fi
 rm -f /go/config.ini
 eval "cat << EOF
 $(cat template.ini)
-EOF" > /go/config.ini
+EOF
+" > /go/config.ini
 
 writefreely serve
