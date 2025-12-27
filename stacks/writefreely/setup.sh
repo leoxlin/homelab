@@ -19,7 +19,7 @@ EOF > /go/config.ini
 if [[ ! -f /go/data/writefreely.db ]]; then
   set -x
   writefreely db init
-  writefreely user create --admin "${ADMIN_USER}:${ADMIN_PASSWORD}"
+  writefreely user create --admin "${WF_ADMIN_USER}:${WF_ADMIN_PASSWORD}"
   cp ./writefreely.db ./data/writefreely.db
   set +x
 else

@@ -19,8 +19,8 @@ services:
       - ./template.ini:/go/deploy.ini
       - ./setup.sh:/go/setup.sh
     environment:
-      - ADMIN_USER=${ADMIN_USER:-writer}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-password}
+      - WF_ADMIN_USER=${WF_ADMIN_USER:-writer}
+      - WF_ADMIN_PASSWORD=${WF_ADMIN_PASSWORD:-password}
       - WF_HOST=${WF_HOST:-http://localhost:8080}
     networks:
       - application
