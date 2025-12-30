@@ -9,6 +9,7 @@ networks:
 
 services:
   semaphore:
+    user: root
     image: semaphoreui/semaphore:v2.16.47
     container_name: semaphore
     restart: unless-stopped
@@ -18,6 +19,9 @@ services:
       SEMAPHORE_ADMIN_PASSWORD: ${SEMAPHORE_ADMIN_PASSWORD}
       SEMAPHORE_ADMIN_NAME: Admin
       SEMAPHORE_ADMIN_EMAIL: admin@hydrahmlb.cc
+    networks:
+      - application
+      - proxy
     volumes:
       - /share/docker/semaphore/data:/var/lib/semaphore
       - /share/docker/semaphore/config:/etc/semaphore
