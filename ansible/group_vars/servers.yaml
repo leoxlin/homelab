@@ -1,0 +1,2 @@
+ansible_user: hydra
+ansible_ssh_private_key_file: "{{ lookup('env', 'HOME') }}/.ssh/agent_ed25519"
