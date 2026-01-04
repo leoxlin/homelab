@@ -12,8 +12,8 @@ services:
     container_name: syncthing
     restart: unless-stopped
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=1120
+      - PGID=1120
       - TZ=Etc/New_York
     volumes:
       - /share/docker/syncthing/config:/config
