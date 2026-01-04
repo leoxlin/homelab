@@ -51,8 +51,8 @@ services:
     image: lscr.io/linuxserver/nextcloud:31.0.12-previous
     container_name: nextcloud
     environment:
-      - PUID=1000
-      - PGID=1000
+      - PUID=1120
+      - PGID=1120
       - TZ=America/New_York
     volumes:
       - /share/docker/nextcloud/config:/config

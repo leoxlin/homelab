@@ -1,0 +1,6 @@
+services:
+  syncthing:
+    volumes:
+      - /share/docker/syncthing/config:/config
+      - /srv/mergerfs/union_01/immich:/var/lib/immich
+      - /srv/mergerfs/union_01/nextcloud:/var/lib/nextcloud
