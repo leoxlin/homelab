@@ -14,7 +14,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=Etc/New_York
     volumes:
       - /share/docker/syncthing/config:/config
     ports:
