@@ -11,9 +11,9 @@ services:
   immich-server:
     container_name: immich-server
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
-    user: 1121:1121
+    user: 1120:1120
     volumes:
-      - ${UPLOAD_LOCATION}:/data
+      - /var/lib/immich/data:/data
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env
