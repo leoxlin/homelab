@@ -3,3 +3,4 @@ services:
     volumes:
       - /share/docker/syncthing/config:/config
       - /var/lib/immich:/var/lib/immich
+      - /var/lib/nextcloud:/var/lib/nextcloud
