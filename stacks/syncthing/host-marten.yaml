@@ -1,5 +1,0 @@
-services:
-  syncthing:
-    volumes:
-      - /share/docker/syncthing/config:/config
-      - /var/lib/immich:/var/lib/immich

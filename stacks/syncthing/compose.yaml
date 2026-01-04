@@ -17,6 +17,7 @@ services:
       - TZ=Etc/New_York
     volumes:
       - /share/docker/syncthing/config:/config
+      - /var/lib/immich:/var/lib/immich
     ports:
       - 8384:8384
       - 22000:22000/tcp
