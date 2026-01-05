@@ -20,6 +20,9 @@ services:
     volumes:
       - /share/docker/vikunja/files:/app/vikunja/files
       - /share/docker/vikunja/db:/db
+    networks:
+      - application
+      - proxy
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.vikunja.rule=Host(`todo.hydrahmlb.cc`)"
