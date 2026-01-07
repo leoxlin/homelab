@@ -17,11 +17,13 @@ bootstrap_user() {
     fi
 
     if [ ! -f /etc/sudoers.d/$USER ]; then
-        echo "hydra ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER
+      echo "Setting up $USER sudo access"
+        echo "$USER ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/$USER
         chmod 440 /etc/sudoers.d/$USER
     fi
 
     if [ ! -d /home/$USER/.ssh ]; then
+        echo "Setting up $USER ssh access"
         mkdir -p /home/$USER/.ssh
         chmod 700 /home/$USER/.ssh
         echo "$PUBLIC_KEY" > /home/$USER/.ssh/authorized_keys
@@ -30,6 +32,7 @@ bootstrap_user() {
     fi
 
     if [ -d $OMV_KEY_DIR ] && [ ! -f $OMV_KEY_DIR/$USER ]; then
+      echo "Setting up $USER omv ssh and sudo access"
         usermod -aG _ssh $USER
         usermod -aG sudo $USER
         echo "$PUBLIC_KEY" > $OMV_KEY_DIR/$USER
@@ -38,8 +41,28 @@ bootstrap_user() {
     fi
 }
 
-echo "Bootstrapping ansible user and group"
+rename_dietpi_user() {
+  if [[ "$(getent passwd 1000 | cut -d: -f1)" == "dietpi" ]]; then
+    echo "Renaming dietpi to llin"
+    local OLD_USER="$(getent passwd 1000 | cut -d: -f1)"
+    usermod -l llin $OLD_USER
+    usermod -d /home/llin -m llin
+  fi
 
+  if [[ "$(getent group 1000 | cut -d: -f1)" == "dietpi" ]]; then
+    echo "Renaming dietpi to llin"
+    local OLD_GROUP="$(getent group 1000 | cut -d: -f1)"
+    groupmod -n llin $OLD_GROUP
+  fi
+
+  if [ -f /etc/sudoers.d/dietpi ]; then
+    echo "Removing dietpi sudo access"
+    rm /etc/sudoers.d/dietpi
+  fi
+}
+
+echo "Bootstrapping ansible user and group"
+rename_dietpi_user
 bootstrap_user hydra 1111 "$AGENT_SSH_PUBLIC_KEY"
 bootstrap_user llin 1000 "$HUMAN_SSH_PUBLIC_KEY"
 
