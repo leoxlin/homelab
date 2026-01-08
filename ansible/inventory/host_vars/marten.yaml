@@ -1,0 +1,33 @@
+---
+security_firewall_enabled: true
+security_firewall_rules:
+  - port: "80"
+    proto: tcp
+    comment: "HTTP"
+  - port: "443"
+    proto: tcp
+    comment: "HTTPS"
+  - port: "2049"
+    proto: tcp
+    comment: "NFS"
+  - port: "8400"
+    proto: tcp
+    comment: "OMV Manage"
+  - port: "32400"
+    proto: tcp
+    comment: "Plex Web"
+  - port: "32401"
+    proto: tcp
+    comment: "Plex Web"
+  - port: "32600"
+    proto: tcp
+    comment: "Plex Discovery"
+  - port: "41637"
+    proto: tcp
+    comment: "Plex Discovery"
+
+security_fail2ban_enabled: true
+security_sysctl_hardening: true
+ip_forward_enabled: true
+system_timezone: America/New_York
+system_auto_updates: false

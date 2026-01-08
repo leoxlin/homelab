@@ -1,0 +1,23 @@
+---
+- name: Update package cache (Debian)
+  ansible.builtin.apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when: 'ansible_facts["os_family"] == "Debian"'
+
+- name: Update package cache (Arch)
+  community.general.pacman:
+    update_cache: yes
+  when: 'ansible_facts["os_family"] == "Archlinux"'
+
+- name: Install system packages
+  ansible.builtin.package:
+    name: "{{ system_packages }}"
+    state: present
+
+- name: Ensure essential services are running
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop: "{{ system_services }}"

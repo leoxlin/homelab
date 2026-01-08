@@ -1,0 +1,32 @@
+---
+- name: Apply sysctl security hardening
+  ansible.posix.sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    sysctl_set: yes
+    state: present
+    reload: yes
+  loop:
+    # Disable IP forwarding
+    - name: net.ipv4.ip_forward
+      value: "{{ '1' if ip_forward_enabled | default(false) else '0' }}"
+    # Disable ICMP redirects
+    - name: net.ipv4.conf.all.accept_redirects
+      value: "0"
+    - name: net.ipv4.conf.default.accept_redirects
+      value: "0"
+    # Disable source routing
+    - name: net.ipv4.conf.all.accept_source_route
+      value: "0"
+    - name: net.ipv4.conf.default.accept_source_route
+      value: "0"
+    # Enable SYN flood protection
+    - name: net.ipv4.tcp_syncookies
+      value: "1"
+    # Disable IPv6 if not needed
+    - name: net.ipv6.conf.all.disable_ipv6
+      value: "{{ '0' if ipv6_enabled | default(false) else '1' }}"
+    - name: net.ipv6.conf.default.disable_ipv6
+      value: "{{ '0' if ipv6_enabled | default(false) else '1' }}"
+  loop_control:
+    label: "{{ item.name }}"

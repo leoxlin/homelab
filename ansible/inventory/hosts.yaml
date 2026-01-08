@@ -1,0 +1,52 @@
+---
+all:
+  hosts:
+    ### Named Nodes ###
+    ocelot:
+      ansible_host: "{{ 'localhost' if inventory_hostname != 'ocelot' else '192.168.2.42' }}"
+      ansible_connection: "{{ 'local' if inventory_hostname != 'ocelot' else 'ssh' }}"
+    marten:
+      ansible_host: 192.168.2.40
+    ### Control Nodes ###
+    marmot-01:
+      ansible_host: 192.168.2.111
+    marmot-02:
+      ansible_host: 192.168.2.112
+    ### Worker Nodes ###
+    pika-01:
+      ansible_host: 192.168.2.101
+    pika-02:
+      ansible_host: 192.168.2.102
+    pika-03:
+      ansible_host: 192.168.2.103
+    pika-04:
+      ansible_host: 192.168.2.104
+
+drivers:
+  hosts:
+    ocelot:
+
+servers:
+  hosts:
+    marten:
+
+pika:
+  hosts:
+    pika-[01:04]:
+
+marmot:
+  hosts:
+    marmot-[01:02]:
+
+k3s:
+  hosts:
+    marmot-[01:02]:
+    pika-[01:04]:
+
+k3s_servers:
+  hosts:
+    marmot-[01:02]:
+
+k3s_agents:
+  hosts:
+    pika-[01:04]:

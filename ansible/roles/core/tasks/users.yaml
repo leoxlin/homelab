@@ -1,0 +1,25 @@
+---
+- name: Create custom groups
+  loop: "{{ custom_groups | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  ansible.builtin.group:
+    name: "{{ item.name }}"
+    gid: "{{ item.gid }}"
+    system: "{{ item.system | default(false) }}"
+    state: present
+
+- name: Create custom users
+  loop: "{{ custom_users | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  ansible.builtin.user:
+    name: "{{ item.name }}"
+    uid: "{{ item.uid }}"
+    group: "{{ item.group }}"
+    groups: "{{ item.groups | default([]) | join(',') }}"
+    comment: "{{ item.comment | default('') }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    create_home: "{{ item.create_home | default(true) }}"
+    system: "{{ item.system | default(false) }}"
+    state: present

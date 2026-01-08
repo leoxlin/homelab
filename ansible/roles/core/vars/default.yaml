@@ -1,0 +1,11 @@
+ssh_service_name: ssh
+
+system_packages:
+  - curl
+  - wget
+  - vim
+  - htop
+  - git
+  - rsync
+
+system_services: []

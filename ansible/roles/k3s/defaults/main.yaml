@@ -1,0 +1,21 @@
+---
+k3s_api_port: 6443
+k3s_node_type: ""
+k3s_rpi: false
+
+k3s_server_group: k3s_servers
+k3s_agent_group: k3s_agents
+
+k3s_server_location: "/var/lib/rancher/k3s"
+k3s_systemd_dir: "/etc/systemd/system"
+
+k3s_cluster_context: hydra
+k3s_use_external_database: false
+
+k3s_kubeconfig: ~/.kube/config.new
+k3s_user_kubectl: true
+
+k3s_extra_agent_args: ""
+k3s_extra_server_args: ""
+k3s_extra_install_envs:
+  INSTALL_K3S_EXEC: "--disable=traefik"

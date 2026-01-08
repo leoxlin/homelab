@@ -1,0 +1,52 @@
+---
+system_timezone: "UTC"
+system_set_hostname: false
+
+system_packages: []
+system_services: []
+
+custom_groups:
+  - name: runc
+    gid: 1120
+  - name: media
+    gid: 1121
+
+custom_users:
+  - name: runc
+    uid: 1120
+    group: runc
+    groups: []
+    comment: "Rootless container user"
+    shell: /sbin/nologin
+    create_home: false
+  - name: media
+    uid: 1121
+    group: media
+    groups: []
+    comment: "Media and servarr user"
+    shell: /sbin/nologin
+    create_home: false
+
+# SSH configuration
+ssh_port: 22
+
+# Firewall settings
+security_firewall_enabled: true
+security_firewall_rules: []
+
+# Fail2ban settings
+security_fail2ban_enabled: true
+fail2ban_bantime: 1h
+fail2ban_findtime: 10m
+fail2ban_maxretry: 5
+
+# Sysctl hardening
+security_sysctl_hardening: true
+ipv6_enabled: false
+ip_forward_enabled: false
+
+# Automatic updates (Debian only)
+system_auto_updates: true
+auto_updates_mail_to: ""
+auto_updates_reboot: false
+auto_updates_reboot_time: "02:00"

@@ -1,0 +1,10 @@
+---
+security_firewall_enabled: true
+security_fail2ban_enabled: false
+security_sysctl_hardening: true
+ip_forward_enabled: true
+system_set_timezone: false
+
+k3s_version: v1.35.0+k3s1
+k3s_node_type: agent
+k3s_rpi: true
