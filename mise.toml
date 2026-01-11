@@ -22,3 +22,12 @@ run = [
   "mise exec -- ansible-lint .",
 ]
 dir = "ansible"
+
+[tasks.ansible]
+description = "Run an ansible playbook"
+usage = '''
+arg "<playbook>"
+'''
+run = "mise exec -- ansible-playbook playbooks/${usage_playbook}.yml"
+dir = "ansible"
+alias = "a"
