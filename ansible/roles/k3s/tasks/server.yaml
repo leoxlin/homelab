@@ -14,7 +14,11 @@
 #   - we couldn't get k3s installed version in the first task of this role
 #   - the installed version of K3s on the nodes is older than the requested version in ansible vars
 - name: Download artifact only if needed
-  when: not ansible_check_mode and ( k3s_server_version_output.rc != 0 or k3s_server_installed_version is version(k3s_version, '<') )
+  when: |
+    not ansible_check_mode and (
+      k3s_server_version_output.rc != 0 or
+      k3s_server_installed_version is version(k3s_version, '<')
+    )
   block:
     - name: Download K3s install script
       ansible.builtin.get_url:
@@ -48,13 +52,16 @@
 - name: Determine if tls-san is already in config or args
   ansible.builtin.set_fact:
     _api_endpoint_in_config: >-
-      {% if k3s_server_config_yaml is defined and api_endpoint is defined and k3s_server_config_yaml | regex_search('tls-san:.*' + api_endpoint | regex_escape(), ignorecase=True) %}
+      {% if k3s_server_config_yaml is defined and
+            api_endpoint is defined and
+            k3s_server_config_yaml | regex_search('tls-san:.*' + api_endpoint | regex_escape(), ignorecase=True) %}
       true
       {% else %}
       false
       {% endif %}
     _api_endpoint_in_args: >-
-      {% if api_endpoint is defined and k3s_extra_server_args | regex_search('--tls-san[=\s]+' + api_endpoint | regex_escape(), ignorecase=True) %}
+      {% if api_endpoint is defined and
+         k3s_extra_server_args | regex_search('--tls-san[=\s]+' + api_endpoint | regex_escape(), ignorecase=True) %}
       true
       {% else %}
       false
@@ -148,7 +155,9 @@
         state: restarted
 
     - name: Enable and check K3s service
-      when: ansible_facts.services['k3s.service'] is not defined or ansible_facts.services['k3s.service'].state != 'running'
+      when: |
+        ansible_facts.services['k3s.service'] is not defined or
+        ansible_facts.services['k3s.service'].state != 'running'
       ansible.builtin.systemd:
         name: k3s
         daemon_reload: true
@@ -192,7 +201,8 @@
 
         - name: Change server address in kubeconfig on control node
           ansible.builtin.shell: |
-            KUBECONFIG={{ k3s_kubeconfig }} kubectl config set-cluster default --server=https://{{ api_endpoint }}:{{ k3s_api_port }}
+            KUBECONFIG={{ k3s_kubeconfig }} kubectl config set-cluster default \
+              --server=https://{{ api_endpoint }}:{{ k3s_api_port }}
           delegate_to: 127.0.0.1
           become: false
           register: k3s_server_csa_result
@@ -212,7 +222,8 @@
           when: kubeconfig == "~/.kube/config.new"
           ansible.builtin.shell: |
             TFILE=$(mktemp)
-            KUBECONFIG={{ k3s_kubeconfig }}:~/.kube/config kubectl config set-context {{ k3s_cluster_context }} --user={{ k3s_cluster_context }} --cluster={{ k3s_cluster_context }}
+            KUBECONFIG={{ k3s_kubeconfig }}:~/.kube/config kubectl config set-context {{ k3s_cluster_context }} \
+              --user={{ k3s_cluster_context }} --cluster={{ k3s_cluster_context }}
             KUBECONFIG={{ k3s_kubeconfig }}:~/.kube/config kubectl config view --flatten > ${TFILE}
             mv ${TFILE} ~/.kube/config
           delegate_to: 127.0.0.1
@@ -293,7 +304,9 @@
         state: restarted
 
     - name: Enable and check K3s service
-      when: ansible_facts.services['k3s.service'] is not defined or ansible_facts.services['k3s.service'].state != 'running'
+      when: |
+        ansible_facts.services['k3s.service'] is not defined or
+        ansible_facts.services['k3s.service'].state != 'running'
       ansible.builtin.systemd:
         name: k3s
         daemon_reload: true
@@ -306,7 +319,9 @@
         cmd: >
           k3s kubectl get nodes -l "node-role.kubernetes.io/control-plane=true" -o=jsonpath="{.items[*].metadata.name}"
       register: k3s_server_nodes
-      until: k3s_server_nodes.rc == 0 and (k3s_server_nodes.stdout.split() | length) == (groups[k3s_server_group] | length)
+      until: |
+        k3s_server_nodes.rc == 0 and
+        (k3s_server_nodes.stdout.split() | length) == (groups[k3s_server_group] | length)
       retries: 20
       delay: 10
       changed_when: false

@@ -1,3 +1,4 @@
+---
 ssh_service_name: ssh
 
 system_packages:
