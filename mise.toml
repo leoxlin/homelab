@@ -4,12 +4,19 @@
 "pipx:yamllint" = "latest"
 "pipx:ansible" = "13.2.0"
 
+[tasks.setup]
+description = "Setup environment"
+depends = ["setup-ansible"]
+
+[tasks.setup-ansible]
+run = "mise exec -- ansible-galaxy install -r requirements.yml"
+dir = "ansible"
+
 [tasks.lint]
 description = "Run all linters"
 depends = ["lint-ansible"]
 
 [tasks.lint-ansible]
-description = "Run ansible linters"
 run = [
   "mise exec -- yamllint .",
   "mise exec -- ansible-lint .",
