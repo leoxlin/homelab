@@ -2,39 +2,39 @@
 - name: Include OS-specific variables
   ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
-    - '{{ ansible_facts["distribution"] | lower }}.yaml'
-    - '{{ ansible_facts["os_family"] | lower }}.yaml'
-    - "default.yaml"
+    - '{{ ansible_facts["distribution"] | lower }}.yml'
+    - '{{ ansible_facts["os_family"] | lower }}.yml'
+    - "default.yml"
 
 - name: Include linux users tasks
-  ansible.builtin.include_tasks: users.yaml
+  ansible.builtin.include_tasks: users.yml
 
 - name: Include SSH hardening tasks
-  ansible.builtin.include_tasks: ssh.yaml
+  ansible.builtin.include_tasks: ssh.yml
 
 - name: Include firewall tasks
-  ansible.builtin.include_tasks: firewall.yaml
+  ansible.builtin.include_tasks: firewall.yml
   when: security_firewall_enabled | default(true)
 
 - name: Include fail2ban tasks
-  ansible.builtin.include_tasks: fail2ban.yaml
+  ansible.builtin.include_tasks: fail2ban.yml
   when: security_fail2ban_enabled | default(true)
 
 - name: Include sysctl hardening tasks
-  ansible.builtin.include_tasks: sysctl.yaml
+  ansible.builtin.include_tasks: sysctl.yml
   when: security_sysctl_hardening | default(true)
 
 - name: Include system packages tasks
-  ansible.builtin.include_tasks: packages.yaml
+  ansible.builtin.include_tasks: packages.yml
 
 - name: Include system hostname config tasks
-  ansible.builtin.include_tasks: hostname.yaml
+  ansible.builtin.include_tasks: hostname.yml
 
 - name: Include system timezone tasks
-  ansible.builtin.include_tasks: timezone.yaml
+  ansible.builtin.include_tasks: timezone.yml
 
 - name: Include automatic updates tasks
-  ansible.builtin.include_tasks: auto_updates.yaml
+  ansible.builtin.include_tasks: auto_updates.yml
   when:
     - system_auto_updates
     - ansible_os_family == "Debian"

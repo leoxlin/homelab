@@ -1,15 +1,15 @@
 ---
 - name: Include prereqrpi tasks
-  ansible.builtin.include_tasks: prereqrpi.yaml
+  ansible.builtin.include_tasks: prereqrpi.yml
   when: k3s_rpi
 
 - name: Include prereq tasks
-  ansible.builtin.include_tasks: prereq.yaml
+  ansible.builtin.include_tasks: prereq.yml
 
 - name: Include server tasks
-  ansible.builtin.include_tasks: server.yaml
+  ansible.builtin.include_tasks: server.yml
   when: k3s_node_type == "server"
 
 - name: Include agent tasks
-  ansible.builtin.include_tasks: agent.yaml
+  ansible.builtin.include_tasks: agent.yml
   when: k3s_node_type == "agent"
