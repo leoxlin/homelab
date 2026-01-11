@@ -1,0 +1,13 @@
+---
+profile: production
+
+exclude_paths:
+  - .venv/
+  - .git/
+
+warn_list:
+  - experimental
+
+offline: false
+
+use_default_rules: true

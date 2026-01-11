@@ -1,0 +1,16 @@
+[tools]
+"pipx" = "latest"
+"pipx:ansible-lint" = "latest"
+"pipx:yamllint" = "latest"
+
+[tasks.lint]
+description = "Run all linters"
+depends = ["lint-ansible"]
+
+[tasks.lint-ansible]
+description = "Run ansible linters"
+run = [
+  "mise exec -- yamllint .",
+  "mise exec -- ansible-lint .",
+]
+dir = "ansible"
