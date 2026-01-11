@@ -3,6 +3,7 @@
 "pipx:ansible-lint" = "latest"
 "pipx:yamllint" = "latest"
 "pipx:ansible" = "13.2.0"
+"helmfile" = "1.2.3"
 
 [tasks.setup]
 description = "Setup environment"
