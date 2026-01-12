@@ -219,7 +219,7 @@
           become: false
 
         - name: Merge with any existing kubeconfig on control node
-          when: kubeconfig == "~/.kube/config.new"
+          when: k3s_kubeconfig == "~/.kube/config.new"
           ansible.builtin.shell: |
             TFILE=$(mktemp)
             KUBECONFIG={{ k3s_kubeconfig }}:~/.kube/config kubectl config set-context {{ k3s_cluster_context }} \
