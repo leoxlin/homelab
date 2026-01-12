@@ -3,7 +3,8 @@
   hosts:
     - drivers
     - servers
-    - k3s
+    - marmot
+    - pika
   become: true
   roles:
     - role: core
