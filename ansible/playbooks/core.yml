@@ -1,6 +1,9 @@
 ---
 - name: Apply core configuration
-  hosts: all
+  hosts:
+    - drivers
+    - servers
+    - k3s
   become: true
   roles:
     - role: core

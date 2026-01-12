@@ -1,0 +1,15 @@
+---
+# EdgeOS connection settings
+ansible_network_os: edgeos
+ansible_connection: ansible.netcommon.network_cli
+
+edgeos_bgp_neighbors:
+  # Control plane nodes (marmot)
+  - 192.168.2.111
+  - 192.168.2.112
+  - 192.168.2.113
+  # Worker nodes (pika)
+  - 192.168.2.101
+  - 192.168.2.102
+  - 192.168.2.103
+  - 192.168.2.104

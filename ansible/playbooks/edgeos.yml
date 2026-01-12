@@ -1,0 +1,6 @@
+---
+- name: Configure EdgeOS router
+  hosts: edgeos
+  gather_facts: false
+  roles:
+    - edgeos
