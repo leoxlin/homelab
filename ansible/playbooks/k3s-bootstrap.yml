@@ -1,6 +1,0 @@
----
-- name: Install k3s on first server
-  hosts: marmot-01
-  become: true
-  roles:
-    - role: k3s
