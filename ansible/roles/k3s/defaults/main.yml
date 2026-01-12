@@ -16,5 +16,5 @@ k3s_kubeconfig: ~/.kube/config.new
 k3s_user_kubectl: true
 
 k3s_extra_agent_args: ""
-k3s_extra_server_args: "--disable=servicelb"
+k3s_extra_server_args: "--disable=servicelb --disable=traefik"
 k3s_extra_install_envs: {}
