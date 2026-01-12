@@ -7,8 +7,8 @@ helmDefaults:
 repositories:
   - name: metallb
     url: https://metallb.github.io/metallb
-  - name: traefik
-    url: https://traefik.github.io/charts
+  - name: istio
+    url: https://istio-release.storage.googleapis.com/charts
 
 releases:
   - name: metallb
@@ -34,11 +34,44 @@ releases:
           - -f
           - resources/metallb.yml
 
-  - name: traefik
-    namespace: traefik
+  - name: istio-base
+    namespace: istio-system
     createNamespace: true
-    chart: traefik/traefik
-    values:
-      - values/traefik.yml
+    chart: istio/base
+    version: 1.28.2
+
+  - name: istiod
+    namespace: istio-system
+    chart: istio/istiod
+    version: 1.28.2
+    needs:
+      - istio-base
+    set:
+      - name: profile
+        value: ambient
+
+  - name: istio-cni
+    namespace: istio-system
+    chart: istio/cni
+    version: 1.28.2
+    needs:
+      - istio-base
+    set:
+      - name: profile
+        value: ambient
+
+  - name: ztunnel
+    namespace: istio-system
+    chart: istio/ztunnel
+    version: 1.28.2
+    needs:
+      - istio-base
+
+  - name: istio-ingress
+    namespace: istio-ingress
+    createNamespace: true
+    chart: istio/gateway
+    version: 1.28.2
     needs:
       - metallb-system/metallb
+      - istio-system/ztunnel
