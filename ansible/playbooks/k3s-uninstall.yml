@@ -1,0 +1,19 @@
+---
+- name: Uninstall k3s on all hosts
+  hosts:
+    - k3s_agents
+    - k3s_servers
+  serial: 1
+  tasks:
+    - name: Set uninstall script
+      set_fact:
+        uninstall_script: "{{ 'k3s-agent-uninstall.sh' if k3s_node_type == 'agent' else 'k3s-uninstall.sh' }}"
+
+    - name: Check if script exists
+      stat:
+        path: "/usr/local/bin/{{ uninstall_script }}"
+      register: script_stat
+
+    - name: Run uninstall script
+      shell: "/usr/local/bin/{{ uninstall_script }}"
+      when: script_stat.stat.exists

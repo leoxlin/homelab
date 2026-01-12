@@ -210,7 +210,7 @@
             - k3s_server_csa_result.rc == 0
 
         - name: Setup kubeconfig context on control node - {{ k3s_cluster_context }}
-          when: kubeconfig == "~/.kube/config.new"
+          when: k3s_kubeconfig == "~/.kube/config.new"
           ansible.builtin.replace:
             path: "{{ k3s_kubeconfig }}"
             regexp: "default"
