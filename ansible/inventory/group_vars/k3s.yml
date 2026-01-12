@@ -1,0 +1,19 @@
+---
+security_firewall_enabled: true
+security_firewall_rules:
+  - port: "80"
+    proto: tcp
+    comment: "HTTP"
+  - port: "443"
+    proto: tcp
+    comment: "HTTPS"
+  - port: "179"
+    proto: tcp
+    comment: "BGP"
+  - port: "7946"
+    proto: tcp
+    comment: "HTTP"
+
+security_fail2ban_enabled: true
+security_sysctl_hardening: true
+ip_forward_enabled: true

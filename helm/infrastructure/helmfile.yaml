@@ -7,6 +7,8 @@ helmDefaults:
 repositories:
   - name: metallb
     url: https://metallb.github.io/metallb
+  - name: traefik
+    url: https://traefik.github.io/charts
 
 releases:
   - name: metallb
@@ -31,3 +33,12 @@ releases:
           - delete
           - -f
           - resources/metallb.yml
+
+  - name: traefik
+    namespace: traefik
+    createNamespace: true
+    chart: traefik/traefik
+    values:
+      - values/traefik.yml
+    needs:
+      - metallb-system/metallb

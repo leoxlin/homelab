@@ -12,10 +12,10 @@
     command: "set protocols bgp {{ edgeos_bgp_asn }} neighbor {{ item }} remote-as {{ edgeos_bgp_peer_asn }}"
   loop: "{{ edgeos_bgp_neighbors }}"
 
-- name: Start configure
+- name: Commit config
   ansible.netcommon.cli_command:
     command: "commit"
 
-- name: Start configure
+- name: Save config
   ansible.netcommon.cli_command:
     command: "save"
