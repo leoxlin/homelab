@@ -1,0 +1,33 @@
+---
+helmDefaults:
+  wait: true
+  waitForJobs: true
+  timeout: 600
+
+repositories:
+  - name: metallb
+    url: https://metallb.github.io/metallb
+
+releases:
+  - name: metallb
+    namespace: metallb-system
+    createNamespace: true
+    chart: metallb/metallb
+    version: 0.15.3
+    values:
+      - values/metallb.yml
+    hooks:
+      - events: ["postsync"]
+        showlogs: true
+        command: kubectl
+        args:
+          - apply
+          - -f
+          - resources/metallb.yml
+      - events: ["preuninstall"]
+        showlogs: true
+        command: kubectl
+        args:
+          - delete
+          - -f
+          - resources/metallb.yml

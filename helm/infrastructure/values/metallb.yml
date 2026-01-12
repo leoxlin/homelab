@@ -1,0 +1,8 @@
+---
+controller:
+  logLevel: info
+
+speaker:
+  logLevel: info
+  frr:
+    enabled: true
