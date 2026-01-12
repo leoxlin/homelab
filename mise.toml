@@ -3,6 +3,8 @@
 "pipx:ansible-lint" = "latest"
 "pipx:yamllint" = "latest"
 "pipx:ansible" = "13.2.0"
+"helm" = "4.0.4"
+"helm-diff" = "3.14.1"
 "helmfile" = "1.2.3"
 
 [tasks.setup]
