@@ -1,7 +1,0 @@
----
-service:
-  type: LoadBalancer
-
-ingressRoute:
-  dashboard:
-    enabled: false
