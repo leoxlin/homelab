@@ -1,3 +1,7 @@
 ---
+system_packages:
+  - open-iscsi
+  - nfs-common
+
 k3s_version: v1.35.0+k3s1
 k3s_node_type: server
