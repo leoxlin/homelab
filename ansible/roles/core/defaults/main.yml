@@ -3,7 +3,9 @@ system_timezone: "UTC"
 system_set_hostname: false
 
 system_packages: []
+system_extra_packages: []
 system_services: []
+system_extra_services: []
 
 custom_groups:
   - name: runc

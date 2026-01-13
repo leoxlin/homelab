@@ -15,9 +15,21 @@
     name: "{{ system_packages }}"
     state: present
 
+- name: Install system extra packages
+  ansible.builtin.package:
+    name: "{{ system_extra_packages }}"
+    state: present
+
 - name: Ensure essential services are running
   ansible.builtin.service:
     name: "{{ item }}"
     state: started
     enabled: yes
   loop: "{{ system_services }}"
+
+- name: Ensure extra services are running
+  ansible.builtin.service:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop: "{{ system_extra_services }}"

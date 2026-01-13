@@ -1,6 +1,6 @@
 ---
 system_set_timezone: false
-system_packages:
+system_extra_packages:
   - open-iscsi
   - nfs-common
 
