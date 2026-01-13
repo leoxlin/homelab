@@ -59,6 +59,8 @@ releases:
     set:
       - name: profile
         value: ambient
+      - name: chained
+        value: false
 
   - name: ztunnel
     namespace: istio-system
