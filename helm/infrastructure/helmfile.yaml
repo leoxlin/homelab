@@ -9,6 +9,8 @@ repositories:
     url: https://metallb.github.io/metallb
   - name: istio
     url: https://istio-release.storage.googleapis.com/charts
+  - name: jetstack
+    url: https://charts.jetstack.io
 
 releases:
   - name: metallb
@@ -69,6 +71,30 @@ releases:
     needs:
       - istio-base
 
+  - name: cert-manager
+    namespace: cert-manager
+    createNamespace: true
+    chart: jetstack/cert-manager
+    version: 1.19.2
+    set:
+      - name: crds.enabled
+        value: true
+    hooks:
+      - events: ["postsync"]
+        showlogs: true
+        command: kubectl
+        args:
+          - apply
+          - -f
+          - resources/cert-manager.yml
+      - events: ["preuninstall"]
+        showlogs: true
+        command: kubectl
+        args:
+          - delete
+          - -f
+          - resources/cert-manager.yml
+
   - name: istio-ingress
     namespace: istio-ingress
     createNamespace: true
@@ -77,3 +103,4 @@ releases:
     needs:
       - metallb-system/metallb
       - istio-system/ztunnel
+      - cert-manager/cert-manager
