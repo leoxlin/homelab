@@ -22,7 +22,7 @@
     port: "{{ ssh_port | default('22') }}"
     proto: tcp
     from_ip: "192.168.0.0/16"
-    comment: "SSH access"
+    comment: "ANSIBLE: SSH"
 
 - name: Allow additional firewall rules
   community.general.ufw:
@@ -30,7 +30,7 @@
     port: "{{ item.port }}"
     proto: "{{ item.proto | default('tcp') }}"
     from_ip: "{{ item.from_ip | default('192.168.0.0/16') }}"
-    comment: "{{ item.comment | default('') }}"
+    comment: "ANSIBLE: {{ item.comment | default('') }}"
   loop: "{{ security_firewall_rules | default([]) }}"
   loop_control:
     label: "{{ item.port }}/{{ item.proto | default('tcp') }}"
