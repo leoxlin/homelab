@@ -1,0 +1,27 @@
+---
+apiVersion: networking.istio.io/v1
+kind: Gateway
+metadata:
+  name: hydrahmlb-gateway
+  namespace: istio-ingress
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 443
+        name: https
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: hydrahmlb-tls
+      hosts:
+        - "*.hydrahmlb.cc"
+        - "hydrahmlb.cc"
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "*.hydrahmlb.cc"
+        - "hydrahmlb.cc"
