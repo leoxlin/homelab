@@ -29,7 +29,7 @@
     rule: "{{ item.rule | default('allow') }}"
     port: "{{ item.port }}"
     proto: "{{ item.proto | default('tcp') }}"
-    from_ip: "{{ item.from_ip | default('any') }}"
+    from_ip: "{{ item.from_ip | default('192.168.0.0/16') }}"
     comment: "{{ item.comment | default('') }}"
   loop: "{{ security_firewall_rules | default([]) }}"
   loop_control:
