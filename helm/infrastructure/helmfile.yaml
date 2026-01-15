@@ -118,3 +118,18 @@ releases:
     createNamespace: true
     chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
     version: 0.38.1
+    hooks:
+      - events: ["postsync"]
+        showlogs: true
+        command: kubectl
+        args:
+          - apply
+          - -f
+          - resources/flux-instance.yml
+      - events: ["preuninstall"]
+        showlogs: true
+        command: kubectl
+        args:
+          - delete
+          - -f
+          - resources/flux-instance.yml
