@@ -39,12 +39,6 @@ spec:
               - key: "CriticalAddonsOnly"
                 operator: "Exists"
   sync:
-    kind: OCIRepository
-    url: "oci://ghcr.io/my-org/my-fleet-manifests"
-    ref: "latest"
-    path: "clusters/my-cluster"
-    pullSecret: "ghcr-auth"
-  sync:
     kind: GitRepository
     url: "https://codeberg.org/leoxlin/hydrahmlb.git"
     ref: "refs/heads/main"
