@@ -35,3 +35,12 @@ arg "<playbook>"
 run = "mise exec -- ansible-playbook playbooks/${usage_playbook}.yml"
 dir = "ansible"
 alias = "a"
+
+[tasks.helmfile]
+description = "Run a helmfile apply"
+usage = '''
+arg "<category>"
+'''
+run = "mise exec -- helmfile apply --file ${usage_category}/helmfile.yaml"
+dir = "helm"
+alias = "hf"
