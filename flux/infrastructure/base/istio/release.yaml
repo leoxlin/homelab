@@ -111,7 +111,7 @@ metadata:
 spec:
   interval: 30m
   dependsOn:
-    - name: metallb-system/metallb
+    - name: metallb
     - name: ztunnel
     - name: cert-manager
   chart:
