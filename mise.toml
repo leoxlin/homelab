@@ -1,11 +1,12 @@
 [tools]
-"pipx" = "latest"
-"pipx:ansible-lint" = "latest"
-"pipx:yamllint" = "latest"
-"pipx:ansible" = "13.2.0"
+"flux2" = "2.7.5"
 "helm" = "4.0.4"
 "helm-diff" = "3.14.1"
 "helmfile" = "1.2.3"
+"pipx" = "latest"
+"pipx:ansible" = "13.2.0"
+"pipx:ansible-lint" = "latest"
+"pipx:yamllint" = "latest"
 
 [tasks.setup]
 description = "Setup environment"
