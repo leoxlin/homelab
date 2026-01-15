@@ -56,7 +56,7 @@ metadata:
   namespace: longhorn-system
 spec:
   disks:
-    marmot-01-root:
+    marmot-02-root:
       allowScheduling: true
       diskType: filesystem
       path: /var/lib/longhorn/
@@ -70,7 +70,7 @@ metadata:
   namespace: longhorn-system
 spec:
   disks:
-    marmot-01-root:
+    marmot-03-root:
       allowScheduling: true
       diskType: filesystem
       path: /var/lib/longhorn/
