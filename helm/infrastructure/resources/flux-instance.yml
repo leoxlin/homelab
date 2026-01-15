@@ -42,7 +42,7 @@ spec:
     kind: GitRepository
     url: "https://codeberg.org/leoxlin/hydrahmlb.git"
     ref: "refs/heads/main"
-    path: "flux"
+    path: "flux/clusters/main"
     pullSecret: "codeberg-auth"
 ---
 apiVersion: v1
