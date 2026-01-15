@@ -1,8 +1,6 @@
 [tools]
 "flux2" = "2.7.5"
 "helm" = "4.0.4"
-"helm-diff" = "3.14.1"
-"helmfile" = "1.2.3"
 "pipx" = "latest"
 "pipx:ansible" = "13.2.0"
 "pipx:ansible-lint" = "latest"
@@ -36,11 +34,3 @@ run = "mise exec -- ansible-playbook playbooks/${usage_playbook}.yml"
 dir = "ansible"
 alias = "a"
 
-[tasks.helmfile]
-description = "Run a helmfile apply"
-usage = '''
-arg "<category>"
-'''
-run = "mise exec -- helmfile apply --file ${usage_category}/helmfile.yaml"
-dir = "helm"
-alias = "hf"
