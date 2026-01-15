@@ -44,13 +44,3 @@ spec:
     ref: "refs/heads/main"
     path: "flux/clusters/main"
     pullSecret: "codeberg-auth"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: codeberg-auth
-  namespace: flux-system
-type: Opaque
-stringData:
-  username: leoxlin
-  password: b65df3af913049c43b2e974df174129f2289bb45
