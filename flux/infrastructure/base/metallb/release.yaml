@@ -4,6 +4,7 @@ metadata:
   name: metallb
   namespace: flux-system
 spec:
+  releaseName: metallb
   interval: 30m
   chart:
     spec:

@@ -4,6 +4,7 @@ metadata:
   name: istio-base
   namespace: flux-system
 spec:
+  releaseName: istio-base
   interval: 30m
   chart:
     spec:
@@ -28,6 +29,7 @@ metadata:
   name: istiod
   namespace: flux-system
 spec:
+  releaseName: istiod
   interval: 30m
   dependsOn:
     - name: istio-base
@@ -55,6 +57,7 @@ metadata:
   name: istio-cni
   namespace: flux-system
 spec:
+  releaseName: istio-cni
   interval: 30m
   dependsOn:
     - name: istio-base
@@ -84,6 +87,7 @@ metadata:
   name: ztunnel
   namespace: flux-system
 spec:
+  releaseName: ztunnel
   interval: 30m
   dependsOn:
     - name: istio-base
@@ -109,6 +113,7 @@ metadata:
   name: istio-ingress
   namespace: flux-system
 spec:
+  releaseName: istio-ingress
   interval: 30m
   dependsOn:
     - name: metallb
