@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: n8n-config
+data:
+  # Basic config
+  NODE_ENV: "production"
+  GENERIC_TIMEZONE: "UTC"
+  TZ: "UTC"
+  # Queue mode config
+  EXECUTIONS_MODE: "queue"
+  QUEUE_BULL_REDIS_HOST: "n8n-redis.default.svc.cluster.local"
+  QUEUE_BULL_REDIS_PORT: "6379"
+  # Database config
+  DB_TYPE: "postgresdb"
+  DB_POSTGRESDB_HOST: "n8n-pg-rw.default.svc.cluster.local"
+  DB_POSTGRESDB_PORT: "5432"
+  DB_POSTGRESDB_DATABASE: "app"
+  DB_POSTGRESDB_USER: "app"
