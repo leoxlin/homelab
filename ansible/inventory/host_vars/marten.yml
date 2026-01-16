@@ -1,30 +1,24 @@
 ---
 security_firewall_enabled: true
+security_firewall_allow_docker_subnet: true
 security_firewall_rules:
-  - port: "80"
-    proto: tcp
-    comment: "HTTP"
-  - port: "443"
-    proto: tcp
-    comment: "HTTPS"
-  - port: "2049"
-    proto: tcp
-    comment: "NFS"
-  - port: "8400"
-    proto: tcp
-    comment: "OMV Manage"
-  - port: "32400"
-    proto: tcp
-    comment: "Plex Web"
-  - port: "32401"
-    proto: tcp
-    comment: "Plex Web"
-  - port: "32600"
-    proto: tcp
-    comment: "Plex Discovery"
-  - port: "41637"
-    proto: tcp
-    comment: "Plex Discovery"
+  - { "comment": "HTTP", "proto": "tcp", "port": "80" }
+  - { "comment": "HTTPS", "proto": "tcp", "port": "443" }
+  - { "comment": "NFS", "proto": "tcp", "port": "2049" }
+  - { "comment": "OMV MANAGE", "proto": "tcp", "port": "8400" }
+  - { "comment": "PLEX DLNA", "proto": "udp", "port": "1900" }
+  - { "comment": "PLEX DLNA SERVER", "proto": "tcp", "port": "32469" }
+  - { "comment": "PLEX BONJOUR", "proto": "udp", "port": "5353" }
+  - { "comment": "PLEX COMPANION", "proto": "tcp", "port": "8324" }
+  - { "comment": "PLEX WEB", "proto": "tcp", "port": "32400" }
+  - { "comment": "PLEX WEB", "proto": "tcp", "port": "32401" }
+  - { "comment": "PLEX GDM", "proto": "udp", "port": "32410:32414" }
+  - { "comment": "PLEX DISCOVERY", "proto": "tcp", "port": "41637" }
+  - { "comment": "SYNCTHING", "proto": "tcp", "port": "8384" }
+  - { "comment": "SYNCTHING", "proto": "tcp", "port": "22000" }
+  - { "comment": "SYNCTHING", "proto": "udp", "port": "22000" }
+  - { "comment": "SYNCTHING", "proto": "udp", "port": "21027" }
+  - { "comment": "HOME ASSISTANT", "proto": "udp", "port": "8123" }
 
 security_fail2ban_enabled: true
 security_sysctl_hardening: true

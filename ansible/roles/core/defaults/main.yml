@@ -34,6 +34,7 @@ ssh_port: 22
 
 # Firewall settings
 security_firewall_enabled: true
+security_firewall_allow_docker_subnet: false
 security_firewall_rules: []
 
 # Fail2ban settings
