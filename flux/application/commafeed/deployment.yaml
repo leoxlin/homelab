@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: commafeed
+  labels:
+    app: commafeed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: commafeed
+  template:
+    metadata:
+      labels:
+        app: commafeed
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: commafeed
+          image: athou/commafeed:latest-postgresql
+          ports:
+            - containerPort: 8082
+          env:
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: "jdbc:postgresql://commafeed-pg-rw.default.svc.cluster.local:5432/app"
+            - name: QUARKUS_DATASOURCE_USERNAME
+              value: "app"
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: commafeed-pg-app
+                  key: password
+            - name: COMMAFEED_HTTP_CLIENT_BLOCK_LOCAL_ADDRESSES
+              value: "false"
+          livenessProbe:
+            httpGet:
+              path: /rest/server/get
+              port: 8082
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /rest/server/get
+              port: 8082
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+          resources:
+            requests:
+              memory: 512Mi
