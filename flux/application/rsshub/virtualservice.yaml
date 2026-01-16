@@ -1,0 +1,21 @@
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: rsshub
+spec:
+  hosts:
+    - rsshub.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: rsshub.default.svc.cluster.local
+            port:
+              number: 1200
