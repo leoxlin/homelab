@@ -61,10 +61,10 @@ spec:
 apiVersion: longhorn.io/v1beta2
 kind: Node
 metadata:
-  name: pika-01
+  name: pika-02
   namespace: longhorn-system
 spec:
-  name: pika-01
+  name: pika-02
   allowScheduling: false
   disks: {}
   tags: []
@@ -72,10 +72,21 @@ spec:
 apiVersion: longhorn.io/v1beta2
 kind: Node
 metadata:
-  name: pika-01
+  name: pika-03
   namespace: longhorn-system
 spec:
-  name: pika-01
+  name: pika-03
+  allowScheduling: false
+  disks: {}
+  tags: []
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: pika-04
+  namespace: longhorn-system
+spec:
+  name: pika-04
   allowScheduling: false
   disks: {}
   tags: []
