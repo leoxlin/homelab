@@ -1,0 +1,81 @@
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: marmot-01
+  namespace: longhorn-system
+spec:
+  name: marmot-01
+  allowScheduling: true
+  disks:
+    root-disk:
+      path: /var/lib/longhorn/
+      allowScheduling: true
+      storageReserved: 68719476736
+      tags: []
+  tags: []
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: marmot-02
+  namespace: longhorn-system
+spec:
+  name: marmot-02
+  allowScheduling: true
+  disks:
+    root-disk:
+      path: /var/lib/longhorn/
+      allowScheduling: true
+      storageReserved: 68719476736
+      tags: []
+  tags: []
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: marmot-03
+  namespace: longhorn-system
+spec:
+  name: marmot-03
+  allowScheduling: true
+  disks:
+    root-disk:
+      path: /var/lib/longhorn/
+      allowScheduling: true
+      storageReserved: 68719476736
+      tags: []
+  tags: []
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: pika-01
+  namespace: longhorn-system
+spec:
+  name: pika-01
+  allowScheduling: false
+  disks: {}
+  tags: []
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: pika-01
+  namespace: longhorn-system
+spec:
+  name: pika-01
+  allowScheduling: false
+  disks: {}
+  tags: []
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: pika-01
+  namespace: longhorn-system
+spec:
+  name: pika-01
+  allowScheduling: false
+  disks: {}
+  tags: []
