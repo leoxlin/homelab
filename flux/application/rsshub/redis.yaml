@@ -4,6 +4,9 @@ kind: Redis
 metadata:
   name: rsshub-redis
 spec:
+  podSecurityContext:
+    fsGroup: 999
+    runAsUser: 999
   kubernetesConfig:
     image: redis:alpine3.22
     resources:
