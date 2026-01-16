@@ -14,8 +14,8 @@ spec:
           cloudflare:
             email: me@leoxlin.com
             apiTokenSecretRef:
-              name: cloudflare-api-token-secret
-              key: api-token
+              name: cert-manager-cloudflare-token
+              key: credential
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
