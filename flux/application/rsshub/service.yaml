@@ -1,4 +1,15 @@
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rsshub
+spec:
+  selector:
+    app: rsshub
+  ports:
+    - port: 1200
+      targetPort: 1200
+---
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:

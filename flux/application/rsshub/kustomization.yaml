@@ -3,3 +3,5 @@ kind: Kustomization
 namespace: default
 resources:
   - redis.yaml
+  - deployment.yaml
+  - service.yaml
