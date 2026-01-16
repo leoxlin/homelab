@@ -1,6 +1,6 @@
 #!/bin/bash
 
-eval $(echo 'export OP_TOKEN="op://Hydra/op-service-account-hydra-main/credential"' | op inject)
+eval $(echo 'export OP_TOKEN="op://Hydra/hydra:main:op-service-token/credential"' | op inject)
 helm repo add 1password https://1password.github.io/connect-helm-charts/
 helm \
   upgrade --install \
