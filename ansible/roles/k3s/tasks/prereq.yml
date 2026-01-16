@@ -43,7 +43,7 @@
         rule: allow
         port: "{{ k3s_api_port }}"
         proto: tcp
-        comment: "ANSIBLE: K8S API"
+        comment: "K3S: K8S API"
         from_ip: "192.168.0.0/16"
 
     - name: Configure ufw, open etcd ports
@@ -52,7 +52,7 @@
         rule: allow
         port: "2379:2381"
         proto: tcp
-        comment: "ANSIBLE: ETCD"
+        comment: "K3S: ETCD"
         from_ip: "192.168.0.0/16"
 
     - name: Configure ufw, open inter-node ports
@@ -60,7 +60,7 @@
         rule: allow
         port: "{{ item.port }}"
         proto: "{{ item.proto }}"
-        comment: "ANSIBLE: {{ item.comment }}"
+        comment: "K3S: {{ item.comment }}"
         from_ip: "192.168.0.0/16"
       loop:
         - port: 5001
@@ -79,9 +79,13 @@
     - name: Configure ufw, allow default CIDRs
       community.general.ufw:
         rule: allow
-        from_ip: "{{ item }}"
-        comment: "ANSIBLE: K3S CIDR"
-      loop: "{{ (k3s_cluster_cidr + ',' + k3s_service_cidr) | split(',') }}"
+        from_ip: "{{ item.from_ip }}"
+        comment: "K3S: {{ item.comment }}"
+      loop:
+        - from_ip: "{{ k3s_cluster_cidr }}"
+          comment: "CLUSTER CIDR"
+        - from_ip: "{{ k3s_service_cidr }}"
+          comment: "SERVICE CIDR"
 
 - name: Add br_netfilter to /etc/modules-load.d/
   ansible.builtin.copy:
