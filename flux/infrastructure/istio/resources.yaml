@@ -30,7 +30,7 @@ apiVersion: networking.istio.io/v1
 kind: Gateway
 metadata:
   name: hydrahmlb-public-gateway
-  namespace: istio-ingress
+  namespace: istio-public-ingress
 spec:
   selector:
     istio: public-ingress

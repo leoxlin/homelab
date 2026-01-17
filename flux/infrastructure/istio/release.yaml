@@ -156,7 +156,7 @@ spec:
         kind: HelmRepository
         name: istio
         namespace: flux-system
-  targetNamespace: istio-ingress
+  targetNamespace: istio-public-ingress
   install:
     createNamespace: true
     remediation:
