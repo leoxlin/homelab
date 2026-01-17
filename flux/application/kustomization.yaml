@@ -4,3 +4,4 @@ resources:
   - ./rsshub
   - ./commafeed
   - ./n8n
+  - ./karakeep
