@@ -47,8 +47,8 @@ spec:
             - name: N8N_ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
-                  name: n8n-encryption-key
-                  key: credential
+                  name: n8n-secrets
+                  key: N8N_ENCRYPTION_KEY
           livenessProbe:
             httpGet:
               path: /healthz
