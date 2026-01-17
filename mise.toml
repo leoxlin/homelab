@@ -1,6 +1,7 @@
 [tools]
 "flux2" = "2.7.5"
 "helm" = "4.0.4"
+"kubeconform" = "latest"
 "pipx" = "latest"
 "pipx:ansible" = "13.2.0"
 "pipx:ansible-lint" = "latest"
@@ -16,7 +17,10 @@ dir = "ansible"
 
 [tasks.lint]
 description = "Run all linters"
-depends = ["lint-ansible"]
+depends = [
+  "lint-ansible",
+  "lint-flux",
+]
 
 [tasks.lint-ansible]
 run = [
@@ -24,6 +28,15 @@ run = [
   "mise exec -- ansible-lint .",
 ]
 dir = "ansible"
+
+[tasks.lint-flux]
+description = "Lint FluxCD manifests"
+run = [
+  "mise exec -- yamllint .",
+  "mise exec -- kubeconform -strict -ignore-missing-schemas -schema-location default -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{\"{{\"}}.Group{{\"}}\"}}/{{\"{{\"}}.ResourceKind{{\"}}\"}}_{{\"{{\"}}.ResourceAPIVersion{{\"}}\"}}.json' -summary .",
+  "mise exec -- flux build kustomization flux-system --path . --dry-run",
+]
+dir = "flux"
 
 [tasks.ansible]
 description = "Run an ansible playbook"
@@ -33,4 +46,3 @@ arg "<playbook>"
 run = "mise exec -- ansible-playbook playbooks/${usage_playbook}.yml"
 dir = "ansible"
 alias = "a"
-
