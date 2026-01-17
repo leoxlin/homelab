@@ -25,3 +25,6 @@ security_sysctl_hardening: true
 ip_forward_enabled: true
 system_timezone: America/New_York
 system_auto_updates: false
+
+k3s_node_labels:
+  node-role.kubernetes.io/nas: "true"

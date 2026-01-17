@@ -10,3 +10,6 @@ system_extra_services:
 k3s_version: v1.35.0+k3s1
 k3s_node_type: agent
 k3s_rpi: true
+
+k3s_node_labels:
+  node-role.kubernetes.io/worker: "true"

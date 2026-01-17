@@ -13,3 +13,6 @@
 - name: Include agent tasks
   ansible.builtin.include_tasks: agent.yml
   when: k3s_node_type == "agent"
+
+- name: Include labels tasks
+  ansible.builtin.include_tasks: labels.yml
