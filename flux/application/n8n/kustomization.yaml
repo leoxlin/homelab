@@ -5,5 +5,5 @@ resources:
   - secret.yaml
   - database.yaml
   - configmap.yaml
-  - deployment.yaml
+  - deployment-leader.yaml
   - service.yaml
