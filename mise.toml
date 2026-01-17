@@ -33,8 +33,10 @@ dir = "ansible"
 description = "Lint FluxCD manifests"
 run = [
   "mise exec -- yamllint .",
-  "mise exec -- kubeconform -strict -ignore-missing-schemas -schema-location default -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{\"{{\"}}.Group{{\"}}\"}}/{{\"{{\"}}.ResourceKind{{\"}}\"}}_{{\"{{\"}}.ResourceAPIVersion{{\"}}\"}}.json' -summary .",
-  "mise exec -- flux build kustomization flux-system --path . --dry-run",
+  "mise exec -- flux build kustomization system --path . --kustomization-file system.yaml --dry-run",
+  "mise exec -- flux build kustomization infrastructure --path . --kustomization-file infrastructure.yaml --dry-run",
+  "mise exec -- flux build kustomization database --path . --kustomization-file database.yaml --dry-run",
+  "mise exec -- flux build kustomization application --path . --kustomization-file application.yaml --dry-run",
 ]
 dir = "flux"
 
