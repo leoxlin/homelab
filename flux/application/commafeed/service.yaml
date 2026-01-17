@@ -19,6 +19,7 @@ spec:
     - rss.hydrahmlb.cc
   gateways:
     - istio-ingress/hydrahmlb-gateway
+    - istio-public-ingress/hydrahmlb-public-gateway
   http:
     - match:
         - port: 80
