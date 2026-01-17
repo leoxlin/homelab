@@ -42,6 +42,7 @@ spec:
                 name: karakeep-config
             - secretRef:
                 name: karakeep-secrets
+          volumeMounts:
             - name: karakeep-search-data
               mountPath: /meili_data
           resources:
