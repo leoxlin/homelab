@@ -23,8 +23,11 @@ security_firewall_rules:
 security_fail2ban_enabled: true
 security_sysctl_hardening: true
 ip_forward_enabled: true
-system_timezone: America/New_York
+system_timezone: UTC
 system_auto_updates: false
+
+k3s_version: v1.35.0+k3s1
+k3s_node_type: agent
 
 k3s_node_labels:
   node-role.kubernetes.io/nas: "true"
