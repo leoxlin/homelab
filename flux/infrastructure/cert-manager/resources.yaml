@@ -30,3 +30,17 @@ spec:
   dnsNames:
     - "*.hydrahmlb.cc"
     - "hydrahmlb.cc"
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hydrahmlb-tls
+  namespace: istio-public-ingress
+spec:
+  secretName: hydrahmlb-tls
+  issuerRef:
+    name: letsencrypt-cloudflare
+    kind: ClusterIssuer
+  dnsNames:
+    - "*.hydrahmlb.cc"
+    - "hydrahmlb.cc"
