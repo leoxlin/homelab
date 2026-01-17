@@ -6,3 +6,4 @@ resources:
   - ./istio
   - ./longhorn
   - ./longhorn-nodes
+  - ./cloudflared
