@@ -135,3 +135,32 @@ spec:
   upgrade:
     remediation:
       retries: 3
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: istio-public-ingress
+  namespace: flux-system
+spec:
+  releaseName: istio-public-ingress
+  interval: 30m
+  dependsOn:
+    - name: metallb
+    - name: ztunnel
+    - name: cert-manager
+  chart:
+    spec:
+      chart: gateway
+      version: "1.28.2"
+      sourceRef:
+        kind: HelmRepository
+        name: istio
+        namespace: flux-system
+  targetNamespace: istio-ingress
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
