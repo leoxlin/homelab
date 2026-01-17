@@ -24,26 +24,3 @@ spec:
   resources:
     requests:
       storage: 128Mi
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: karakeep-migration-helper
-  namespace: default
-spec:
-  containers:
-    - name: helper
-      image: alpine
-      command: ["sleep", "infinity"]
-      volumeMounts:
-        - name: karakeep-data
-          mountPath: /data/karakeep
-        - name: karakeep-search-data
-          mountPath: /data/meilisearch
-  volumes:
-    - name: karakeep-data
-      persistentVolumeClaim:
-        claimName: karakeep-data
-    - name: karakeep-search-data
-      persistentVolumeClaim:
-        claimName: karakeep-search-data

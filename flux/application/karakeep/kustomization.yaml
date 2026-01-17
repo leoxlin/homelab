@@ -4,3 +4,6 @@ namespace: default
 resources:
   - secret.yaml
   - volume.yaml
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml

@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: karakeep
+spec:
+  selector:
+    app: karakeep
+  ports:
+    - port: 3000
+      targetPort: 3000
+      name: http
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: karakeep
+spec:
+  hosts:
+    - kara.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: karakeep.default.svc.cluster.local
+            port:
+              number: 3000

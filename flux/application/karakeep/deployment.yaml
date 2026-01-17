@@ -1,0 +1,71 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karakeep
+  labels:
+    app: karakeep
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: karakeep
+  template:
+    metadata:
+      labels:
+        app: karakeep
+    spec:
+      containers:
+        - name: karakeep
+          image: ghcr.io/karakeep-app/karakeep:release
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: karakeep-config
+            - secretRef:
+                name: karakeep-secrets
+          volumeMounts:
+            - name: karakeep-data
+              mountPath: /data
+          resources:
+            requests:
+              memory: 256Mi
+        - name: meilisearch
+          image: getmeili/meilisearch:v1.13.3
+          ports:
+            - containerPort: 7700
+          envFrom:
+            - configMapRef:
+                name: karakeep-config
+            - secretRef:
+                name: karakeep-secrets
+          volumeMounts:
+            - name: karakeep-search-data
+              mountPath: /meili_data
+          resources:
+            requests:
+              memory: 128Mi
+        - name: chrome
+          image: gcr.io/zenika-hub/alpine-chrome:124
+          ports:
+            - containerPort: 9222
+          args:
+            - --no-sandbox
+            - --disable-gpu
+            - --disable-dev-shm-usage
+            - --remote-debugging-address=0.0.0.0
+            - --remote-debugging-port=9222
+            - --hide-scrollbars
+          resources:
+            requests:
+              memory: 256Mi
+      volumes:
+        - name: karakeep-data
+          persistentVolumeClaim:
+            claimName: karakeep-data
+        - name: karakeep-search-data
+          persistentVolumeClaim:
+            claimName: karakeep-search-data
