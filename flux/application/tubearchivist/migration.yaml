@@ -18,11 +18,6 @@ spec:
         - sleep
         - infinity
       volumeMounts:
-        # Source (read-only NFS mount of docker data)
-        - name: source
-          mountPath: /source
-          readOnly: true
-        # Destinations (new Longhorn PVCs)
         - name: cache
           mountPath: /dest/cache
         - name: es-data
