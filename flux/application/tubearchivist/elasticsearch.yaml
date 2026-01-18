@@ -66,10 +66,10 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 30
             timeoutSeconds: 10
-          volumes:
-            - name: tubearchivist-es
-              persistentVolumeClaim:
-                claimName: tubearchivist-es
+      volumes:
+        - name: tubearchivist-es
+          persistentVolumeClaim:
+            claimName: tubearchivist-es
 
 ---
 apiVersion: v1
