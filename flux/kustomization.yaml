@@ -7,15 +7,15 @@ resources:
   - database.yaml
   - application.yaml
 patches:
-  - path: patches/prefer-worker.yaml
+  - path: ./patches/prefer-worker.yaml
     target:
       kind: Deployment
       labelSelector: k8s.hydrahmlb.cc/schedule=worker
-  - path: patches/prefer-server.yaml
+  - path: ./patches/prefer-server.yaml
     target:
       kind: Deployment
       labelSelector: k8s.hydrahmlb.cc/schedule=server
-  - path: patches/prefer-storage.yaml
+  - path: ./patches/prefer-storage.yaml
     target:
       kind: Deployment
       labelSelector: k8s.hydrahmlb.cc/schedule=storage
