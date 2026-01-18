@@ -1,6 +1,8 @@
 #!/bin/bash
 
-eval $(echo 'export OP_TOKEN="op://Hydra/hydra:main:1password/OP_SERVICE_ACCOUNT_TOKEN"' | op inject)
+OP_CONNECT_TOKEN="$(op item get --vault Hydra hydra:main:1password --fields OP_CONNECT_TOKEN --reveal)"
+op document get "hydra:main:1password:file" --vault Hydra --out 1password-credentials.json
+
 helm repo add 1password https://1password.github.io/connect-helm-charts/
 helm \
   upgrade --install \
@@ -8,6 +10,8 @@ helm \
   --namespace onepass-system \
   --create-namespace \
   --set operator.create=true \
-  --set connect.create=false \
-  --set operator.authMethod=service-account \
-  --set operator.serviceAccountToken.value="$OP_TOKEN"
+  --set connect.create=true \
+  --set operator.token.value=$OP_CONNECT_TOKEN \
+  --set-file connect.credentials=1password-credentials.json \
+
+rm 1password-credentials.json
