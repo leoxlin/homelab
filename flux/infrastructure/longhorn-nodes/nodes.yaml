@@ -50,6 +50,22 @@ spec:
 apiVersion: longhorn.io/v1beta2
 kind: Node
 metadata:
+  name: marten
+  namespace: longhorn-system
+spec:
+  name: marten
+  allowScheduling: true
+  disks:
+    root-disk:
+      path: /var/lib/longhorn/
+      allowScheduling: true
+      storageReserved: 137438953472
+      tags: []
+  tags: []
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
   name: pika-01
   namespace: longhorn-system
 spec:
