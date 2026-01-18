@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: authentik-shared-data
+  name: authentik-data
   namespace: default
 spec:
   accessModes:

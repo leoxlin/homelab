@@ -24,12 +24,12 @@ spec:
           image: alpine:3.21
           command: ["sleep", "infinity"]
           volumeMounts:
-            - name: authentik-shared-data
+            - name: authentik-data
               mountPath: /data
           resources:
             requests:
               memory: 64Mi
       volumes:
-        - name: authentik-shared-data
+        - name: authentik-data
           persistentVolumeClaim:
-            claimName: authentik-shared-data
+            claimName: authentik-data
