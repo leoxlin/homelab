@@ -50,22 +50,6 @@ spec:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
-          readinessProbe:
-            httpGet:
-              path: /_cluster/health
-              port: 9200
-              scheme: HTTP
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            timeoutSeconds: 5
-          livenessProbe:
-            httpGet:
-              path: /_cluster/health
-              port: 9200
-              scheme: HTTP
-            initialDelaySeconds: 60
-            periodSeconds: 30
-            timeoutSeconds: 10
       volumes:
         - name: tubearchivist-es
           persistentVolumeClaim:
