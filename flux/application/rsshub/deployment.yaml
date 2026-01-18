@@ -5,6 +5,7 @@ metadata:
   name: rsshub
   labels:
     app: rsshub
+    k8s.hydrahmlb.cc/schedule: worker
 spec:
   replicas: 1
   selector:

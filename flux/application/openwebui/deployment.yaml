@@ -5,6 +5,7 @@ metadata:
   name: openwebui
   labels:
     app: openwebui
+    k8s.hydrahmlb.cc/schedule: server
 spec:
   replicas: 1
   strategy:
