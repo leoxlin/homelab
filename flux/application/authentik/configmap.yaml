@@ -3,6 +3,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: authentik-config
+  namespace: default
 data:
   AUTHENTIK_POSTGRESQL__HOST: authentik-pg-rw.default.svc.cluster.local
   AUTHENTIK_POSTGRESQL__NAME: app
