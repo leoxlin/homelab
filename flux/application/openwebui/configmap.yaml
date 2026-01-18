@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openwebui-config
+data:
+  ENABLE_OAUTH_SIGNUP: "true"
+  OAUTH_MERGE_ACCOUNTS_BY_EMAIL: "true"
+  OAUTH_PROVIDER_NAME: "Authentik"
+  OPENID_PROVIDER_URL: "https://authentik.hydrahmlb.cc/application/o/openwebui/.well-known/openid-configuration"
+  OAUTH_SCOPES: "openid email profile"
+  OPENID_REDIRECT_URI: "https://ai.hydrahmlb.cc/oauth/oidc/callback"
+  ENABLE_VERSION_UPDATE_CHECK: "false"
+  ENABLE_PASSWORD_AUTH: "true"
+  ENABLE_LOGIN_FORM: "false"
+  CORS_ALLOW_ORIGIN: "https://ai.hydrahmlb.cc"
