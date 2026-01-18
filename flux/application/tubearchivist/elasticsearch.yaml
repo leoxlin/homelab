@@ -1,0 +1,85 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tubearchivist-es
+  labels:
+    app: tubearchivist-es
+    k8s.hydrahmlb.cc/schedule: server
+spec:
+  serviceName: tubearchivist-es
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tubearchivist-es
+  template:
+    metadata:
+      labels:
+        app: tubearchivist-es
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: elasticsearch
+          image: bbilly1/tubearchivist-es:latest
+          ports:
+            - containerPort: 9200
+              name: http
+            - containerPort: 9300
+              name: transport
+          env:
+            - name: ELASTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tubearchivist-secrets
+                  key: ELASTIC_PASSWORD
+            - name: ES_JAVA_OPTS
+              value: "-Xms1g -Xmx1g"
+            - name: xpack.security.enabled
+              value: "true"
+            - name: discovery.type
+              value: "single-node"
+            - name: path.repo
+              value: "/usr/share/elasticsearch/data/snapshot"
+          volumeMounts:
+            - name: tubearchivist-es
+              mountPath: /usr/share/elasticsearch/data
+          resources:
+            requests:
+              memory: 1536Mi
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          readinessProbe:
+            httpGet:
+              path: /_cluster/health
+              port: 9200
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /_cluster/health
+              port: 9200
+              scheme: HTTP
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+          volumes:
+            - name: tubearchivist-es
+              persistentVolumeClaim:
+                claimName: tubearchivist-es
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tubearchivist-es
+spec:
+  selector:
+    app: tubearchivist-es
+  ports:
+    - port: 9200
+      targetPort: 9200
+      name: http

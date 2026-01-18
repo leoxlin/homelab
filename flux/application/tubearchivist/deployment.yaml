@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tubearchivist
+  labels:
+    app: tubearchivist
+    k8s.hydrahmlb.cc/schedule: storage
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: tubearchivist
+  template:
+    metadata:
+      labels:
+        app: tubearchivist
+    spec:
+      securityContext:
+        fsGroup: 1121
+      containers:
+        - name: tubearchivist
+          image: bbilly1/tubearchivist:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: tubearchivist-config
+            - secretRef:
+                name: tubearchivist-secrets
+          volumeMounts:
+            - name: cache
+              mountPath: /cache
+            - name: youtube
+              mountPath: /youtube
+              subPath: YouTube
+          resources:
+            requests:
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /api/health/
+              port: 8000
+            initialDelaySeconds: 120
+            periodSeconds: 120
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/health/
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 10
+      volumes:
+        - name: cache
+          persistentVolumeClaim:
+            claimName: tubearchivist-cache
+        - name: youtube
+          persistentVolumeClaim:
+            claimName: marten-union-01-media

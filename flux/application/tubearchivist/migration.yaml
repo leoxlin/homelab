@@ -1,0 +1,78 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tubearchivist-migration-source
+  labels:
+    type: nfs
+    purpose: migration
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: ""
+  mountOptions:
+    - hard
+    - nfsvers=4.2
+    - ro
+  nfs:
+    server: 192.168.2.40
+    path: /share/docker/tubearchivist
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tubearchivist-migration-source
+  namespace: default
+spec:
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: ""
+  volumeName: tubearchivist-migration-source
+  resources:
+    requests:
+      storage: 100Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tubearchivist-migration
+  namespace: default
+  labels:
+    app: tubearchivist-migration
+    k8s.hydrahmlb.cc/schedule: storage
+spec:
+  restartPolicy: Never
+  securityContext:
+    fsGroup: 1121
+  containers:
+    - name: migration
+      image: alpine:3.21
+      command:
+        - sleep
+        - infinity
+      volumeMounts:
+        # Source (read-only NFS mount of docker data)
+        - name: source
+          mountPath: /source
+          readOnly: true
+        # Destinations (new Longhorn PVCs)
+        - name: cache
+          mountPath: /dest/cache
+        - name: es-data
+          mountPath: /dest/es-data
+      resources:
+        requests:
+          memory: 256Mi
+  volumes:
+    - name: source
+      persistentVolumeClaim:
+        claimName: tubearchivist-migration-source
+    - name: cache
+      persistentVolumeClaim:
+        claimName: tubearchivist-cache
+    - name: es-data
+      persistentVolumeClaim:
+        claimName: tubearchivist-es

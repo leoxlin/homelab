@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tubearchivist
+spec:
+  selector:
+    app: tubearchivist
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: tubearchivist
+spec:
+  hosts:
+    - tubearchivist.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: tubearchivist.default.svc.cluster.local
+            port:
+              number: 8000
