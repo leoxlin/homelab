@@ -6,4 +6,7 @@ resources:
   - secrets.yaml
   - volume.yaml
   - configmap.yaml
-  - migration.yaml
+  - redis.yaml
+  - elasticsearch.yaml
+  - deployment.yaml
+  - service.yaml
