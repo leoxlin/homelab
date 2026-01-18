@@ -1,20 +1,29 @@
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: storage-marten-explorer
   namespace: default
 spec:
-  containers:
-    - name: explorer
-      image: alpine:latest
-      command: ["sleep", "infinity"]
-      volumeMounts:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storage-marten-explorer
+  template:
+    metadata:
+      labels:
+        app: storage-marten-explorer
+    spec:
+      containers:
+        - name: explorer
+          image: alpine:latest
+          command: ["sleep", "infinity"]
+          volumeMounts:
+            - name: union-01-media
+              mountPath: /export/union-01-media
+      volumes:
         - name: union-01-media
-          mountPath: /export/union-01-media
-  volumes:
-    - name: union-01-media
-      persistentVolumeClaim:
-        claimName: marten-union-01-media
-  nodeSelector:
-    kubernetes.io/hostname: marten
+          persistentVolumeClaim:
+            claimName: marten-union-01-media
+      nodeSelector:
+        kubernetes.io/hostname: marten
