@@ -1,0 +1,38 @@
+---
+# NFS PersistentVolume for marten mergerfs storage at /export/union-01-media
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: marten-union-01-media
+  labels:
+    type: nfs
+    storage: media
+spec:
+  capacity:
+    storage: 10Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  mountOptions:
+    - hard
+    - nfsvers=4.2
+    - rsize=1048576
+    - wsize=1048576
+  nfs:
+    server: 192.168.2.40
+    path: /export/union-01-media
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: marten-union-01-media
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  volumeName: marten-union-01-media
+  resources:
+    requests:
+      storage: 10Ti

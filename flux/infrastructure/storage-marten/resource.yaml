@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name:
+  namespace: default
+spec:
+  containers:
+    - name: storage-marten-file-explorer
+      image: alpine:latest
+      command: ["sleep", "infinity"]
+      volumeMounts:
+        - name: union-01-media
+          mountPath: /export/union-01-media
+  volumes:
+    - name: union-01-media
+      persistentVolumeClaim:
+        claimName: marten-union-01-media
+  nodeSelector:
+    kubernetes.io/hostname: marten

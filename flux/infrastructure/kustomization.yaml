@@ -8,3 +8,4 @@ resources:
   - ./longhorn
   - ./longhorn-nodes
   - ./cloudflared
+  - ./storage-marten
