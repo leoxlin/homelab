@@ -43,6 +43,9 @@ spec:
             httpGet:
               path: /api/health/
               port: 8000
+              httpHeaders:
+                - name: Host
+                  value: localhost
             initialDelaySeconds: 120
             periodSeconds: 120
             timeoutSeconds: 10
@@ -50,6 +53,9 @@ spec:
             httpGet:
               path: /api/health/
               port: 8000
+              httpHeaders:
+                - name: Host
+                  value: localhost
             initialDelaySeconds: 30
             periodSeconds: 30
             timeoutSeconds: 10
