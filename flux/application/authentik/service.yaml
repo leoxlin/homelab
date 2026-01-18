@@ -1,0 +1,22 @@
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: authentik
+  namespace: default
+spec:
+  hosts:
+    - authentik.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: authentik-server.default.svc.cluster.local
+            port:
+              number: 80

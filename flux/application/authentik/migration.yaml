@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentik-migration
+  namespace: default
+  labels:
+    app: authentik
+    component: migration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authentik
+      component: migration
+  template:
+    metadata:
+      labels:
+        app: authentik
+        component: migration
+    spec:
+      containers:
+        - name: migration
+          image: alpine:3.21
+          command: ["sleep", "infinity"]
+          volumeMounts:
+            - name: authentik-data
+              mountPath: /data
+          resources:
+            requests:
+              memory: 64Mi
+      volumes:
+        - name: authentik-data
+          persistentVolumeClaim:
+            claimName: authentik-data

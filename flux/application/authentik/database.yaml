@@ -1,0 +1,40 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: authentik-pg
+  namespace: default
+spec:
+  instances: 1
+  imageCatalogRef:
+    apiGroup: postgresql.cnpg.io
+    kind: ClusterImageCatalog
+    name: postgresql-minimal-trixie
+    major: 16
+  storage:
+    storageClass: longhorn
+    size: 1Gi
+---
+apiVersion: redis.redis.opstreelabs.in/v1beta2
+kind: Redis
+metadata:
+  name: authentik-redis
+  namespace: default
+spec:
+  podSecurityContext:
+    fsGroup: 999
+    runAsUser: 999
+  kubernetesConfig:
+    image: redis:alpine3.22
+    resources:
+      requests:
+        memory: 64Mi
+  storage:
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: longhorn
+        resources:
+          requests:
+            storage: 256Mi
