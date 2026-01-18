@@ -6,4 +6,3 @@ resources:
   - secrets.yaml
   - volume.yaml
   - configmap.yaml
-  - migration.yaml
