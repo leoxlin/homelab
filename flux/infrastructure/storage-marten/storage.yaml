@@ -1,5 +1,4 @@
 ---
-# NFS PersistentVolume for marten mergerfs storage at /export/union-01-media
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -21,7 +20,7 @@ spec:
     - wsize=1048576
   nfs:
     server: 192.168.2.40
-    path: /export/union-01-media
+    path: /union-01-media
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
