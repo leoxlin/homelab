@@ -1,41 +1,5 @@
 ---
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: tubearchivist-migration-source
-  labels:
-    type: nfs
-    purpose: migration
-spec:
-  capacity:
-    storage: 100Gi
-  accessModes:
-    - ReadOnlyMany
-  persistentVolumeReclaimPolicy: Delete
-  storageClassName: ""
-  mountOptions:
-    - hard
-    - nfsvers=4.2
-    - ro
-  nfs:
-    server: 192.168.2.40
-    path: /share/docker/tubearchivist
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: tubearchivist-migration-source
-  namespace: default
-spec:
-  accessModes:
-    - ReadOnlyMany
-  storageClassName: ""
-  volumeName: tubearchivist-migration-source
-  resources:
-    requests:
-      storage: 100Gi
----
-apiVersion: v1
 kind: Pod
 metadata:
   name: tubearchivist-migration
@@ -67,9 +31,6 @@ spec:
         requests:
           memory: 256Mi
   volumes:
-    - name: source
-      persistentVolumeClaim:
-        claimName: tubearchivist-migration-source
     - name: cache
       persistentVolumeClaim:
         claimName: tubearchivist-cache
