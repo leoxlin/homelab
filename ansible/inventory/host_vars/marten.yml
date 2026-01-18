@@ -38,3 +38,4 @@ k3s_node_type: agent
 
 k3s_node_labels:
   node-role.kubernetes.io/server: "true"
+  node-role.kubernetes.io/storage: "true"
