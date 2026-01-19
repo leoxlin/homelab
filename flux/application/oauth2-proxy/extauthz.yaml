@@ -91,26 +91,79 @@ spec:
               code: 403
 
 ---
-# AuthorizationPolicy to bypass auth for OAuth2-Proxy's own endpoints
-# Without this, the auth callback would be blocked by ext_authz
-apiVersion: security.istio.io/v1
-kind: AuthorizationPolicy
+# Disable ext_authz for Authentik routes (needed for OIDC flow)
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
 metadata:
-  name: oauth2-proxy-bypass
+  name: oauth2-proxy-bypass-authentik
   namespace: istio-public-ingress
 spec:
-  selector:
-    matchLabels:
+  workloadSelector:
+    labels:
       istio: public-ingress
-  action: ALLOW
-  rules:
-    # Allow OAuth2-Proxy endpoints without auth
-    - to:
-        - operation:
-            hosts:
-              - "oauth.hydrahmlb.cc"
-    # Allow Authentik endpoints without auth (for OIDC flow)
-    - to:
-        - operation:
-            hosts:
-              - "authentik.hydrahmlb.cc"
+  configPatches:
+    - applyTo: HTTP_ROUTE
+      match:
+        context: GATEWAY
+        routeConfiguration:
+          vhost:
+            name: "authentik.hydrahmlb.cc:443"
+      patch:
+        operation: MERGE
+        value:
+          typed_per_filter_config:
+            envoy.filters.http.ext_authz:
+              "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
+              disabled: true
+    - applyTo: HTTP_ROUTE
+      match:
+        context: GATEWAY
+        routeConfiguration:
+          vhost:
+            name: "authentik.hydrahmlb.cc:80"
+      patch:
+        operation: MERGE
+        value:
+          typed_per_filter_config:
+            envoy.filters.http.ext_authz:
+              "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
+              disabled: true
+
+---
+# Disable ext_authz for OAuth2-Proxy routes (login page, callback)
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: oauth2-proxy-bypass-oauth
+  namespace: istio-public-ingress
+spec:
+  workloadSelector:
+    labels:
+      istio: public-ingress
+  configPatches:
+    - applyTo: HTTP_ROUTE
+      match:
+        context: GATEWAY
+        routeConfiguration:
+          vhost:
+            name: "oauth.hydrahmlb.cc:443"
+      patch:
+        operation: MERGE
+        value:
+          typed_per_filter_config:
+            envoy.filters.http.ext_authz:
+              "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
+              disabled: true
+    - applyTo: HTTP_ROUTE
+      match:
+        context: GATEWAY
+        routeConfiguration:
+          vhost:
+            name: "oauth.hydrahmlb.cc:80"
+      patch:
+        operation: MERGE
+        value:
+          typed_per_filter_config:
+            envoy.filters.http.ext_authz:
+              "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
+              disabled: true

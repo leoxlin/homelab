@@ -31,6 +31,11 @@ spec:
     extraArgs:
       provider: oidc
       oidc-issuer-url: "https://authentik.hydrahmlb.cc/application/o/oauth2-proxy/"
+      skip-oidc-discovery: "true"
+      login-url: "https://authentik.hydrahmlb.cc/application/o/authorize/"
+      redeem-url: "https://authentik.hydrahmlb.cc/application/o/token/"
+      oidc-jwks-url: "https://authentik.hydrahmlb.cc/application/o/oauth2-proxy/jwks/"
+      profile-url: "https://authentik.hydrahmlb.cc/application/o/userinfo/"
       email-domain: "*"
 
       whitelist-domain: ".hydrahmlb.cc"
