@@ -21,7 +21,7 @@ spec:
         fsGroup: 1120
       containers:
         - name: nextcloud
-          image: lscr.io/linuxserver/nextcloud:latest
+          image: lscr.io/linuxserver/nextcloud:31.0.12-previous
           ports:
             - containerPort: 443
               protocol: TCP
