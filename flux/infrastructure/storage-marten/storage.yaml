@@ -23,6 +23,52 @@ spec:
     path: /union-01-media
 ---
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: marten-union-01-nextcloud
+  labels:
+    type: nfs
+    storage: media
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  mountOptions:
+    - hard
+    - nfsvers=4.2
+    - rsize=1048576
+    - wsize=1048576
+  nfs:
+    server: 192.168.2.40
+    path: /union-01-nextcloud
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: marten-union-01-immich
+  labels:
+    type: nfs
+    storage: media
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  mountOptions:
+    - hard
+    - nfsvers=4.2
+    - rsize=1048576
+    - wsize=1048576
+  nfs:
+    server: 192.168.2.40
+    path: /union-01-immich
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: marten-union-01-media
@@ -35,3 +81,31 @@ spec:
   resources:
     requests:
       storage: 10Ti
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: marten-union-01-nextcloud
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  volumeName: marten-union-01-nextcloud
+  resources:
+    requests:
+      storage: 1Ti
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: marten-union-01-immich
+  namespace: default
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  volumeName: marten-union-01-immich
+  resources:
+    requests:
+      storage: 1Ti
