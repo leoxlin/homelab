@@ -11,3 +11,4 @@ resources:
   - ./openwebui
   - ./tubearchivist
   - ./plex
+  - ./nextcloud
