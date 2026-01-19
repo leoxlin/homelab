@@ -10,3 +10,4 @@ resources:
   - ./karakeep
   - ./openwebui
   - ./tubearchivist
+  - ./plex
