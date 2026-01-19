@@ -62,6 +62,7 @@ spec:
           memory: 512Mi
 
     worker:
+      enabled: false
       replicas: 1
       resources:
         requests:

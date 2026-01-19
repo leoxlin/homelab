@@ -6,3 +6,5 @@ resources:
   - secrets.yaml
   - database.yaml
   - volume.yaml
+  - release.yaml
+  - service.yaml
