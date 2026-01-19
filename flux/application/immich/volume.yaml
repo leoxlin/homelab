@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: immich-cache
+  name: immich-cache-data
 spec:
   accessModes:
     - ReadWriteOnce

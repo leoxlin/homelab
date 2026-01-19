@@ -23,17 +23,12 @@ spec:
           image: alpine:3.21
           command: ["sleep", "infinity"]
           volumeMounts:
-            - name: immich-library
-              mountPath: /library
-            - name: immich-cache
+            - name: immich-cache-data
               mountPath: /cache
           resources:
             requests:
               memory: 64Mi
       volumes:
-        - name: immich-library
+        - name: immich-cache-data
           persistentVolumeClaim:
-            claimName: marten-union-01-immich
-        - name: immich-cache
-          persistentVolumeClaim:
-            claimName: immich-cache
+            claimName: immich-cache-data
