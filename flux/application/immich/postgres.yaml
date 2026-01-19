@@ -4,7 +4,7 @@ metadata:
   name: immich-pg
 spec:
   instances: 1
-  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.10-0.5.3
   storage:
     storageClass: longhorn
     size: 5Gi
