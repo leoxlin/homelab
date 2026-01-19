@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: immich-server
+spec:
+  selector:
+    app: immich
+    component: server
+  ports:
+    - port: 2283
+      targetPort: 2283
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: immich-machine-learning
+spec:
+  selector:
+    app: immich
+    component: machine-learning
+  ports:
+    - port: 3003
+      targetPort: 3003
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: immich
+spec:
+  hosts:
+    - immich.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+    - istio-public-ingress/hydrahmlb-public-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: immich-server.default.svc.cluster.local
+            port:
+              number: 2283
