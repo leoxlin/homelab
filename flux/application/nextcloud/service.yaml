@@ -7,8 +7,8 @@ spec:
   selector:
     app: nextcloud
   ports:
-    - port: 443
-      targetPort: 443
+    - port: 80
+      targetPort: 80
 ---
 apiVersion: networking.istio.io/v1
 kind: VirtualService
@@ -30,4 +30,4 @@ spec:
         - destination:
             host: nextcloud.default.svc.cluster.local
             port:
-              number: 443
+              number: 80

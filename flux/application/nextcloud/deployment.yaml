@@ -23,7 +23,7 @@ spec:
         - name: nextcloud
           image: lscr.io/linuxserver/nextcloud:31.0.12-previous
           ports:
-            - containerPort: 443
+            - containerPort: 80
               protocol: TCP
           env:
             - name: PUID
