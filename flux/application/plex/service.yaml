@@ -3,6 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: plex
+  namespace: default
 spec:
   selector:
     app: plex
@@ -15,6 +16,7 @@ apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
   name: plex
+  namespace: default
 spec:
   hosts:
     - plex.hydrahmlb.cc
