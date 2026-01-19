@@ -20,10 +20,20 @@ spec:
           command: ["sleep", "infinity"]
           volumeMounts:
             - name: union-01-media
-              mountPath: /export/union-01-media
+              mountPath: /data/media
+            - name: union-01-nextcloud
+              mountPath: /data/nextcloud
+            - name: union-01-immich
+              mountPath: /data/immich
       volumes:
         - name: union-01-media
           persistentVolumeClaim:
             claimName: marten-union-01-media
+        - name: union-01-nextcloud
+          persistentVolumeClaim:
+            claimName: marten-union-01-nextcloud
+        - name: union-01-immich
+          persistentVolumeClaim:
+            claimName: marten-union-01-immich
       nodeSelector:
         kubernetes.io/hostname: marten
