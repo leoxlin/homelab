@@ -4,6 +4,7 @@ kind: Service
 metadata:
   name: home-assistant
 spec:
+  type: LoadBalancer
   selector:
     app: home-assistant
   ports:
