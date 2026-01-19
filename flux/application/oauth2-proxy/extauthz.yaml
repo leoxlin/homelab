@@ -11,27 +11,6 @@ spec:
     labels:
       istio: public-ingress
   configPatches:
-    # Define the ext_authz cluster
-    - applyTo: CLUSTER
-      match:
-        context: GATEWAY
-      patch:
-        operation: ADD
-        value:
-          name: oauth2-proxy-extauthz
-          type: STRICT_DNS
-          connect_timeout: 10s
-          lb_policy: ROUND_ROBIN
-          load_assignment:
-            cluster_name: oauth2-proxy-extauthz
-            endpoints:
-              - lb_endpoints:
-                  - endpoint:
-                      address:
-                        socket_address:
-                          address: oauth2-proxy.default.svc.cluster.local
-                          port_value: 4180
-
     # Add the ext_authz HTTP filter
     - applyTo: HTTP_FILTER
       match:
@@ -52,9 +31,9 @@ spec:
             http_service:
               server_uri:
                 uri: http://oauth2-proxy.default.svc.cluster.local:4180
-                cluster: oauth2-proxy-extauthz
-                timeout: 10s
-              # OAuth2-Proxy auth endpoint
+                # Use Istio's auto-generated cluster
+                cluster: outbound|4180||oauth2-proxy.default.svc.cluster.local
+                timeout: 5s
               path_prefix: /oauth2/auth
               authorization_request:
                 allowed_headers:
@@ -64,19 +43,13 @@ spec:
                     - prefix: x-forwarded-
                     - exact: x-real-ip
                 headers_to_add:
-                  # Pass the original host to OAuth2-Proxy
                   - key: X-Auth-Request-Redirect
                     value: "%REQ(:SCHEME)%://%REQ(:AUTHORITY)%%REQ(:PATH)%"
               authorization_response:
-                # Headers to pass to upstream services after successful auth
                 allowed_upstream_headers:
                   patterns:
                     - exact: authorization
-                    - exact: x-auth-request-user
-                    - exact: x-auth-request-email
-                    - exact: x-auth-request-access-token
                     - prefix: x-auth-request-
-                # Headers to pass back to client (for setting cookies)
                 allowed_client_headers:
                   patterns:
                     - exact: set-cookie
@@ -84,14 +57,13 @@ spec:
                 allowed_client_headers_on_success:
                   patterns:
                     - exact: set-cookie
-            # Don't allow requests if auth service is down
-            failure_mode_allow: false
-            # Status on denied (will redirect to login)
+            # Allow requests through if auth service is unavailable
+            failure_mode_allow: true
             status_on_error:
               code: 403
 
 ---
-# Disable ext_authz for Authentik routes (needed for OIDC flow)
+# Disable ext_authz for Authentik (OIDC provider)
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
@@ -108,19 +80,8 @@ spec:
         routeConfiguration:
           vhost:
             name: "authentik.hydrahmlb.cc:443"
-      patch:
-        operation: MERGE
-        value:
-          typed_per_filter_config:
-            envoy.filters.http.ext_authz:
-              "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
-              disabled: true
-    - applyTo: HTTP_ROUTE
-      match:
-        context: GATEWAY
-        routeConfiguration:
-          vhost:
-            name: "authentik.hydrahmlb.cc:80"
+            route:
+              action: ANY
       patch:
         operation: MERGE
         value:
@@ -130,7 +91,7 @@ spec:
               disabled: true
 
 ---
-# Disable ext_authz for OAuth2-Proxy routes (login page, callback)
+# Disable ext_authz for OAuth2-Proxy login/callback
 apiVersion: networking.istio.io/v1alpha3
 kind: EnvoyFilter
 metadata:
@@ -147,19 +108,8 @@ spec:
         routeConfiguration:
           vhost:
             name: "oauth.hydrahmlb.cc:443"
-      patch:
-        operation: MERGE
-        value:
-          typed_per_filter_config:
-            envoy.filters.http.ext_authz:
-              "@type": type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
-              disabled: true
-    - applyTo: HTTP_ROUTE
-      match:
-        context: GATEWAY
-        routeConfiguration:
-          vhost:
-            name: "oauth.hydrahmlb.cc:80"
+            route:
+              action: ANY
       patch:
         operation: MERGE
         value:
