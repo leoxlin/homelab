@@ -1,0 +1,80 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-assistant
+  labels:
+    app: home-assistant
+    k8s.hydrahmlb.cc/schedule: server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: home-assistant
+  template:
+    metadata:
+      labels:
+        app: home-assistant
+    spec:
+      # Host networking required for mDNS device discovery, Bluetooth, etc.
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: home-assistant
+          image: ghcr.io/home-assistant/home-assistant:stable
+          ports:
+            - containerPort: 8123
+              hostPort: 8123
+          env:
+            - name: TZ
+              value: "America/New_York"
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - NET_ADMIN
+                - NET_RAW
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            # Timezone - syncs container time with host
+            - name: localtime
+              mountPath: /etc/localtime
+              readOnly: true
+            # D-Bus socket - required for Bluetooth and system integrations
+            - name: dbus
+              mountPath: /run/dbus
+              readOnly: true
+          resources:
+            requests:
+              memory: 512Mi
+            limits:
+              memory: 2Gi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8123
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8123
+            initialDelaySeconds: 30
+            periodSeconds: 10
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: home-assistant-config
+        # hostPath for timezone file
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+            type: File
+        # hostPath for D-Bus socket directory
+        - name: dbus
+          hostPath:
+            path: /run/dbus
+            type: Directory

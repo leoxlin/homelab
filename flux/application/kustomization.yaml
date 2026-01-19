@@ -12,3 +12,4 @@ resources:
   - ./tubearchivist
   - ./plex
   - ./nextcloud
+  - ./home-assistant

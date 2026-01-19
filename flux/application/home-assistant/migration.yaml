@@ -1,0 +1,43 @@
+---
+# Migration Deployment: Shell into this pod to manually migrate data
+#
+# Usage:
+#   1. Apply: kubectl apply -f migration-deployment.yaml
+#   2. Shell in: kubectl exec -it deploy/home-assistant-migrate -- sh
+#   3. Migrate data manually (source: /source, dest: /dest)
+#   4. Delete when done: kubectl delete -f migration-deployment.yaml
+#
+# Note: Do NOT add this to kustomization.yaml - it's for one-time migration
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-assistant-migrate
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-assistant-migrate
+  template:
+    metadata:
+      labels:
+        app: home-assistant-migrate
+    spec:
+      containers:
+        - name: migrate
+          image: alpine:latest
+          command: ["sleep", "infinity"]
+          volumeMounts:
+            - name: source
+              mountPath: /source
+              readOnly: true
+            - name: dest
+              mountPath: /dest
+      volumes:
+        - name: source
+          hostPath:
+            path: /share/docker/home-assistant
+            type: Directory
+        - name: dest
+          persistentVolumeClaim:
+            claimName: home-assistant-data
