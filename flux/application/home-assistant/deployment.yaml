@@ -16,6 +16,7 @@ spec:
     metadata:
       labels:
         app: home-assistant
+        istio.io/dataplane-mode: none
     spec:
       containers:
         - name: home-assistant
