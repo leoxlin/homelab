@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud
+  labels:
+    app: nextcloud
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: nextcloud
+  template:
+    metadata:
+      labels:
+        app: nextcloud
+    spec:
+      securityContext:
+        fsGroup: 1120
+      containers:
+        - name: nextcloud
+          image: lscr.io/linuxserver/nextcloud:latest
+          ports:
+            - containerPort: 443
+              protocol: TCP
+          env:
+            - name: PUID
+              value: "1120"
+            - name: PGID
+              value: "1120"
+            - name: TZ
+              value: "America/New_York"
+            - name: POSTGRES_USER
+              value: "app"
+            - name: POSTGRES_DB
+              value: "app"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nextcloud-pg-app
+                  key: password
+          volumeMounts:
+            - name: config
+              mountPath: /config
+              subPath: config
+            - name: data
+              mountPath: /data
+              subPath: data
+          resources:
+            requests:
+              memory: 512Mi
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: nextcloud-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: marten-union-01-nextcloud
+      nodeSelector:
+        kubernetes.io/hostname: marten

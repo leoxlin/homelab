@@ -5,4 +5,5 @@ namespace: default
 resources:
   - database.yaml
   - volume.yaml
-  - migration.yaml
+  - deployment.yaml
+  - service.yaml
