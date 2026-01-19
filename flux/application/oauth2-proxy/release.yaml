@@ -54,6 +54,10 @@ spec:
       reverse-proxy: "true"
       skip-auth-route: "^/favicon.ico$"
 
+    service:
+      type: ClusterIP
+      portNumber: 80
+
     resources:
       requests:
         memory: 64Mi

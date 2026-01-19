@@ -30,9 +30,9 @@ spec:
             transport_api_version: V3
             http_service:
               server_uri:
-                uri: http://oauth2-proxy.default.svc.cluster.local:4180
-                # Use Istio's auto-generated cluster
-                cluster: outbound|4180||oauth2-proxy.default.svc.cluster.local
+                uri: http://oauth2-proxy.default.svc.cluster.local
+                # Use Istio's auto-generated cluster (port 80)
+                cluster: outbound|80||oauth2-proxy.default.svc.cluster.local
                 timeout: 5s
               path_prefix: /oauth2/auth
               authorization_request:
