@@ -32,6 +32,8 @@ spec:
               value: "1120"
             - name: TZ
               value: "America/New_York"
+            - name: POSTGRES_HOST
+              value: "nextcloud-pg-rw.default.svc.cluster.local"
             - name: POSTGRES_USER
               value: "app"
             - name: POSTGRES_DB
