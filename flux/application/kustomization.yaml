@@ -4,11 +4,12 @@ kind: Kustomization
 resources:
   - ./authentik
   # - ./oauth2-proxy
-  - ./rsshub
   - ./commafeed
-  - ./n8n
+  - ./immich
   - ./karakeep
-  - ./openwebui
-  - ./tubearchivist
-  - ./plex
+  - ./n8n
   - ./nextcloud
+  - ./openwebui
+  - ./plex
+  - ./rsshub
+  - ./tubearchivist

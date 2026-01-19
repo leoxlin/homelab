@@ -1,0 +1,22 @@
+apiVersion: redis.redis.opstreelabs.in/v1beta2
+kind: Redis
+metadata:
+  name: immich-redis
+spec:
+  podSecurityContext:
+    fsGroup: 999
+    runAsUser: 999
+  kubernetesConfig:
+    image: redis:alpine3.22
+    resources:
+      requests:
+        memory: 128Mi
+  storage:
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: longhorn
+        resources:
+          requests:
+            storage: 512Mi

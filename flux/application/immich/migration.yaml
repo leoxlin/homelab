@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: immich-migration
+  namespace: default
+  labels:
+    app: immich
+    component: migration
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: immich
+      component: migration
+  template:
+    metadata:
+      labels:
+        app: immich
+        component: migration
+    spec:
+      containers:
+        - name: migration
+          image: alpine:3.21
+          command: ["sleep", "infinity"]
+          volumeMounts:
+            - name: immich-library
+              mountPath: /library
+            - name: immich-cache
+              mountPath: /cache
+          resources:
+            requests:
+              memory: 64Mi
+      volumes:
+        - name: immich-library
+          persistentVolumeClaim:
+            claimName: marten-union-01-immich
+        - name: immich-cache
+          persistentVolumeClaim:
+            claimName: immich-cache
