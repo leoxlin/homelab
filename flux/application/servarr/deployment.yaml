@@ -275,6 +275,9 @@ spec:
             - name: media
               mountPath: /downloads
               subPath: Downloads
+            - name: media
+              mountPath: /trash
+              subPath: .trash/lidarr
           resources:
             requests:
               memory: 256Mi
