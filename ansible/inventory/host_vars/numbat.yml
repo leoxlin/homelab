@@ -1,0 +1,20 @@
+---
+security_fail2ban_enabled: true
+security_sysctl_hardening: true
+ip_forward_enabled: true
+system_timezone: UTC
+system_auto_updates: false
+
+system_extra_packages:
+  - open-iscsi
+  - nfs-common
+
+system_extra_services:
+  - iscsid
+
+k3s_version: v1.35.0+k3s1
+k3s_node_type: agent
+
+k3s_node_labels:
+  node-role.kubernetes.io/worker: "true"
+  node-role.kubernetes.io/ai: "true"
