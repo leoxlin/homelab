@@ -6,6 +6,7 @@ resources:
   - ./commafeed
   - ./fetcherr
   - ./immich
+  - ./k8up
   - ./karakeep
   - ./n8n
   - ./nextcloud
