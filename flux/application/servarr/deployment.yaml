@@ -1,0 +1,331 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+  labels:
+    app: servarr
+    component: sonarr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: servarr
+      component: sonarr
+  template:
+    metadata:
+      labels:
+        app: servarr
+        component: sonarr
+    spec:
+      securityContext:
+        fsGroup: 1121
+      containers:
+        - name: sonarr
+          image: lscr.io/linuxserver/sonarr:latest
+          ports:
+            - containerPort: 8989
+          env:
+            - name: PUID
+              value: "1121"
+            - name: PGID
+              value: "1121"
+            - name: TZ
+              value: "America/New_York"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /tv
+              subPath: Shows
+            - name: media
+              mountPath: /downloads
+              subPath: Downloads
+            - name: media
+              mountPath: /trash
+              subPath: .trash/sonarr
+          resources:
+            requests:
+              memory: 256Mi
+      volumes:
+        - name: config
+          hostPath:
+            path: /share/docker/sonarr
+            type: DirectoryOrCreate
+        - name: media
+          persistentVolumeClaim:
+            claimName: marten-union-01-media
+      nodeSelector:
+        kubernetes.io/hostname: marten
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  labels:
+    app: servarr
+    component: radarr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: servarr
+      component: radarr
+  template:
+    metadata:
+      labels:
+        app: servarr
+        component: radarr
+    spec:
+      securityContext:
+        fsGroup: 1121
+      containers:
+        - name: radarr
+          image: lscr.io/linuxserver/radarr:latest
+          ports:
+            - containerPort: 7878
+          env:
+            - name: PUID
+              value: "1121"
+            - name: PGID
+              value: "1121"
+            - name: TZ
+              value: "America/New_York"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /movies
+              subPath: Movies
+            - name: media
+              mountPath: /downloads
+              subPath: Downloads
+            - name: media
+              mountPath: /trash
+              subPath: .trash/radarr
+          resources:
+            requests:
+              memory: 256Mi
+      volumes:
+        - name: config
+          hostPath:
+            path: /share/docker/radarr
+            type: DirectoryOrCreate
+        - name: media
+          persistentVolumeClaim:
+            claimName: marten-union-01-media
+      nodeSelector:
+        kubernetes.io/hostname: marten
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bazarr
+  labels:
+    app: servarr
+    component: bazarr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: servarr
+      component: bazarr
+  template:
+    metadata:
+      labels:
+        app: servarr
+        component: bazarr
+    spec:
+      securityContext:
+        fsGroup: 1121
+      containers:
+        - name: bazarr
+          image: lscr.io/linuxserver/bazarr:latest
+          ports:
+            - containerPort: 6767
+          env:
+            - name: PUID
+              value: "1121"
+            - name: PGID
+              value: "1121"
+            - name: TZ
+              value: "America/New_York"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /movies
+              subPath: Movies
+            - name: media
+              mountPath: /tv
+              subPath: Shows
+            - name: media
+              mountPath: /trash
+              subPath: .trash/bazarr
+          resources:
+            requests:
+              memory: 256Mi
+      volumes:
+        - name: config
+          hostPath:
+            path: /share/docker/bazarr
+            type: DirectoryOrCreate
+        - name: media
+          persistentVolumeClaim:
+            claimName: marten-union-01-media
+      nodeSelector:
+        kubernetes.io/hostname: marten
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prowlarr
+  labels:
+    app: servarr
+    component: prowlarr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: servarr
+      component: prowlarr
+  template:
+    metadata:
+      labels:
+        app: servarr
+        component: prowlarr
+    spec:
+      securityContext:
+        fsGroup: 1121
+      containers:
+        - name: prowlarr
+          image: lscr.io/linuxserver/prowlarr:latest
+          ports:
+            - containerPort: 9696
+          env:
+            - name: PUID
+              value: "1121"
+            - name: PGID
+              value: "1121"
+            - name: TZ
+              value: "America/New_York"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+          resources:
+            requests:
+              memory: 256Mi
+      volumes:
+        - name: config
+          hostPath:
+            path: /share/docker/prowlarr
+            type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/hostname: marten
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lidarr
+  labels:
+    app: servarr
+    component: lidarr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: servarr
+      component: lidarr
+  template:
+    metadata:
+      labels:
+        app: servarr
+        component: lidarr
+    spec:
+      securityContext:
+        fsGroup: 1121
+      containers:
+        - name: lidarr
+          image: lscr.io/linuxserver/lidarr:latest
+          ports:
+            - containerPort: 8686
+          env:
+            - name: PUID
+              value: "1121"
+            - name: PGID
+              value: "1121"
+            - name: TZ
+              value: "America/New_York"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: media
+              mountPath: /music
+              subPath: Music
+            - name: media
+              mountPath: /downloads
+              subPath: Downloads
+          resources:
+            requests:
+              memory: 256Mi
+      volumes:
+        - name: config
+          hostPath:
+            path: /share/docker/lidarr
+            type: DirectoryOrCreate
+        - name: media
+          persistentVolumeClaim:
+            claimName: marten-union-01-media
+      nodeSelector:
+        kubernetes.io/hostname: marten
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaresolverr
+  labels:
+    app: servarr
+    component: flaresolverr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: servarr
+      component: flaresolverr
+  template:
+    metadata:
+      labels:
+        app: servarr
+        component: flaresolverr
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: flaresolverr
+          image: ghcr.io/flaresolverr/flaresolverr:latest
+          ports:
+            - containerPort: 8191
+          env:
+            - name: LOG_LEVEL
+              value: "info"
+            - name: TZ
+              value: "America/New_York"
+          resources:
+            requests:
+              memory: 256Mi
+      nodeSelector:
+        kubernetes.io/hostname: marten
