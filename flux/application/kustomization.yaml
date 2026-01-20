@@ -11,6 +11,7 @@ resources:
   - ./n8n
   - ./nextcloud
   - ./openwebui
+  - ./overseerr
   - ./plex
   - ./rsshub
   - ./servarr

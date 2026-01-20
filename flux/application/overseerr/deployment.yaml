@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: overseerr
+  labels:
+    app: overseerr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: overseerr
+  template:
+    metadata:
+      labels:
+        app: overseerr
+    spec:
+      securityContext:
+        fsGroup: 1121
+      containers:
+        - name: overseerr
+          image: lscr.io/linuxserver/overseerr:latest
+          ports:
+            - containerPort: 5055
+          env:
+            - name: PUID
+              value: "1121"
+            - name: PGID
+              value: "1121"
+            - name: TZ
+              value: "America/New_York"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+          resources:
+            requests:
+              memory: 256Mi
+      volumes:
+        - name: config
+          hostPath:
+            path: /share/docker/overseerr
+            type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/hostname: marten
