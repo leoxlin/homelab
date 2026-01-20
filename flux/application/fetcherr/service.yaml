@@ -1,0 +1,57 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fetcherr
+spec:
+  selector:
+    app: fetcherr
+  ports:
+    - port: 6789
+      targetPort: 6789
+      name: usenet
+    - port: 8080
+      targetPort: 8080
+      name: torrent
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: nzbget
+spec:
+  hosts:
+    - usenet.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: fetcherr.default.svc.cluster.local
+            port:
+              number: 6789
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: qbittorrent
+spec:
+  hosts:
+    - torrent.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: fetcherr.default.svc.cluster.local
+            port:
+              number: 8080
