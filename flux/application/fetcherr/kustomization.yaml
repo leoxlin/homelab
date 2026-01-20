@@ -6,4 +6,3 @@ resources:
   - secrets.yaml
   - deployment.yaml
   - service.yaml
-  - migration.yaml
