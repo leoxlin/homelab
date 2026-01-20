@@ -106,3 +106,14 @@ spec:
   allowScheduling: false
   disks: {}
   tags: []
+---
+apiVersion: longhorn.io/v1beta2
+kind: Node
+metadata:
+  name: numbat
+  namespace: longhorn-system
+spec:
+  name: numbat
+  allowScheduling: false
+  disks: {}
+  tags: []
