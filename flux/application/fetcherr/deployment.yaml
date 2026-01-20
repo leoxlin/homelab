@@ -17,8 +17,6 @@ spec:
       labels:
         app: fetcherr
     spec:
-      securityContext:
-        fsGroup: 1121
       containers:
         - name: gluetun
           image: qmcgaw/gluetun
@@ -35,8 +33,6 @@ spec:
             - secretRef:
                 name: gluetun-secrets
           volumeMounts:
-            - name: gluetun-config
-              mountPath: /gluetun
             - name: dev-net-tun
               mountPath: /dev/net/tun
           resources:
@@ -101,10 +97,6 @@ spec:
             requests:
               memory: 256Mi
       volumes:
-        - name: gluetun-config
-          hostPath:
-            path: /share/docker/gluetun
-            type: DirectoryOrCreate
         - name: nzbget-config
           hostPath:
             path: /share/docker/nzbget
