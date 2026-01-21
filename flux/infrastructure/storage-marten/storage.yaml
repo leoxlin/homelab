@@ -52,8 +52,6 @@ metadata:
   labels:
     type: nfs
     storage: media
-  annotations:
-    k8up.io/backup: "true"
 spec:
   capacity:
     storage: 1Ti
@@ -89,6 +87,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: marten-union-01-nextcloud
   namespace: default
+  labels:
+    k8up.io/backup-target: nextcloud
 spec:
   accessModes:
     - ReadWriteMany
@@ -103,6 +103,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: marten-union-01-immich
   namespace: default
+  labels:
+    k8up.io/backup-target: immich
 spec:
   accessModes:
     - ReadWriteMany
