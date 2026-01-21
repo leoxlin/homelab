@@ -19,9 +19,6 @@ spec:
       labels:
         app: immich
         component: server
-      annotations:
-        k8up.io/backup: "true"
-        k8up.io/backupcommand-container: "server"
     spec:
       containers:
         - name: server
