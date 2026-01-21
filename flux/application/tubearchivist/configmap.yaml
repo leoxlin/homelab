@@ -11,5 +11,5 @@ data:
   TA_HOST: "https://tubearchivist.hydrahmlb.cc"
   TA_USERNAME: "admin"
   TZ: "UTC"
-  TA_LOGIN_AUTH_MODE: "forwardauth"
+  TA_LOGIN_AUTH_MODE: "single"
   TA_AUTH_PROXY_USERNAME_HEADER: "REMOTE_USER"
