@@ -89,6 +89,8 @@ metadata:
   namespace: default
   labels:
     k8up.io/backup-target: nextcloud
+  annotations:
+    k8up.io/backup: "true"
 spec:
   accessModes:
     - ReadWriteMany
@@ -105,6 +107,8 @@ metadata:
   namespace: default
   labels:
     k8up.io/backup-target: immich
+  annotations:
+    k8up.io/backup: "true"
 spec:
   accessModes:
     - ReadWriteMany
