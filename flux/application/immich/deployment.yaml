@@ -19,6 +19,9 @@ spec:
       labels:
         app: immich
         component: server
+      annotations:
+        k8up.io/backup: "true"
+        k8uo.io/tag: "immich,media"
     spec:
       containers:
         - name: server
