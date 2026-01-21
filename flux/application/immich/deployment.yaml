@@ -21,7 +21,7 @@ spec:
         component: server
       annotations:
         k8up.io/backup: "true"
-        k8uo.io/tag: "immich,media"
+        k8up.io/backupcommand-container: "server"
     spec:
       containers:
         - name: server
