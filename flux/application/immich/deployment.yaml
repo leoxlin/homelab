@@ -44,16 +44,19 @@ spec:
             - name: REDIS_PORT
               value: "6379"
           volumeMounts:
-            - name: library
+            - name: data
               mountPath: /data
               subPath: data
           resources:
             requests:
               memory: 512Mi
       volumes:
-        - name: library
-          persistentVolumeClaim:
-            claimName: marten-union-01-immich
+        - name: data
+          hostPath:
+            path: /srv/mergerfs/union_01/immich
+            type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/hostname: marten
 ---
 apiVersion: apps/v1
 kind: Deployment

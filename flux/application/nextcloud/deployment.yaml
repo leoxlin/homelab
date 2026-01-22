@@ -58,7 +58,8 @@ spec:
           persistentVolumeClaim:
             claimName: nextcloud-config
         - name: data
-          persistentVolumeClaim:
-            claimName: marten-union-01-nextcloud
+          hostPath:
+            path: /srv/mergerfs/union_01/nextcloud
+            type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/hostname: marten
