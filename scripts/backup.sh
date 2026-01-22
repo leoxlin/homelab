@@ -23,7 +23,7 @@ kubectl create -f - <<EOF
 apiVersion: k8up.io/v1
 kind: Backup
 metadata:
-  name: backup-${APP}-$(date +%Y%m%d-%H%M%S)
+  name: k8up-manual-${APP}-$(date +%Y%m%d-%H%M%S)
 spec:
   failedJobsHistoryLimit: 10
   successfulJobsHistoryLimit: 10
