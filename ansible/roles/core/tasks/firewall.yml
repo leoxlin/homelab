@@ -45,3 +45,7 @@
 - name: Enable UFW
   community.general.ufw:
     state: enabled
+
+- name: Reload UFW
+  community.general.ufw:
+    state: reloaded

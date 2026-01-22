@@ -69,6 +69,20 @@
         interface: cni0
         comment: "K3S: CNI"
 
+    - name: Allow incoming traffic on flannel
+      community.general.ufw:
+        rule: allow
+        direction: in
+        interface: flannel.1
+        comment: "K3S: CNI FLANNEL"
+
+    - name: Allow outgoing traffic on flannel
+      community.general.ufw:
+        rule: allow
+        direction: out
+        interface: flannel.1
+        comment: "K3S: CNI FLANNEL"
+
     - name: Configure ufw, open inter-node ports
       community.general.ufw:
         rule: allow
@@ -109,6 +123,16 @@
           comment: "CLUSTER CIDR"
         - from_ip: "{{ k3s_service_cidr }}"
           comment: "SERVICE CIDR"
+        - from_ip: "192.168.2.0/24"
+          comment: "CLUSTER NODES"
+
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled
+
+- name: Reload UFW
+  community.general.ufw:
+    state: reloaded
 
 - name: Add br_netfilter to /etc/modules-load.d/
   ansible.builtin.copy:
