@@ -2,7 +2,7 @@
 apiVersion: k8up.io/v1
 kind: Schedule
 metadata:
-  name: backup-immich
+  name: k8up-immich
   namespace: default
 spec:
   backend:
