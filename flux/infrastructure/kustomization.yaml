@@ -2,10 +2,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  # Networking
   - ./metallb
-  - ./cert-manager
   - ./istio
+  - ./cert-manager
+  - ./cloudflared
+  # Storage
   - ./longhorn
   - ./longhorn-nodes
-  - ./cloudflared
   - ./storage-marten
+  # Monitoring
+  - ./node-exporter
