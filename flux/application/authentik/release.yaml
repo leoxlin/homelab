@@ -56,13 +56,13 @@ spec:
         secretName: authentik-secrets
 
     server:
-      replicas: 1
+      replicas: 3
       resources:
         requests:
           memory: 512Mi
 
     worker:
-      replicas: 1
+      replicas: 3
       resources:
         requests:
           memory: 512Mi

@@ -5,7 +5,7 @@ metadata:
   name: authentik-pg
   namespace: default
 spec:
-  instances: 1
+  instances: 3
   imageCatalogRef:
     apiGroup: postgresql.cnpg.io
     kind: ClusterImageCatalog
