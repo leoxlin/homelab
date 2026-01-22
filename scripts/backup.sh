@@ -5,16 +5,16 @@ APP="${1:-}"
 
 if [[ -z "$APP" ]]; then
   echo "Usage: $0 <app>"
-  echo "Available apps: immich, nextcloud"
+  echo "Available apps: immich, nextcloud, karakeep"
   exit 1
 fi
 
 case "$APP" in
-  immich|nextcloud)
+  immich|nextcloud|karakeep)
     ;;
   *)
     echo "Unknown app: $APP"
-    echo "Available apps: immich, nextcloud"
+    echo "Available apps: immich, nextcloud, karakeep"
     exit 1
     ;;
 esac
