@@ -26,4 +26,3 @@ spec:
   values:
     k8up:
       timezone: "America/New_York"
-      skipWithoutAnnotation: true
