@@ -1,0 +1,30 @@
+---
+apiVersion: k8up.io/v1
+kind: Schedule
+metadata:
+  name: backup-immich
+  namespace: default
+spec:
+  backup:
+    schedule: "0 */3 * * *"
+    failedJobsHistoryLimit: 10
+    successfulJobsHistoryLimit: 10
+    podSecurityContext:
+      runAsUser: 0
+      runAsGroup: 0
+    labelSelectors:
+      - matchLabels:
+          k8up.io/backup-target: immich
+    backend:
+      repoPasswordSecretRef:
+        name: k8up-secrets
+        key: RESTIC_REPO_PASSWORD
+      s3:
+        endpoint: https://s3.eu-central-003.backblazeb2.com
+        bucket: hydra-ecd4ffd5fcf8/backups/immich
+        accessKeyIDSecretRef:
+          name: k8up-secrets
+          key: AWS_ACCESS_KEY_ID
+        secretAccessKeySecretRef:
+          name: k8up-secrets
+          key: AWS_SECRET_ACCESS_KEY

@@ -7,3 +7,4 @@ resources:
   - volume.yaml
   - deployment.yaml
   - service.yaml
+  - backup.yaml
