@@ -106,8 +106,9 @@ spec:
             path: /share/docker/qbittorrent
             type: DirectoryOrCreate
         - name: media
-          persistentVolumeClaim:
-            claimName: marten-union-01-media
+          hostPath:
+            path: /srv/mergerfs/union_01/media
+            type: DirectoryOrCreate
         - name: dev-net-tun
           hostPath:
             path: /dev/net/tun
