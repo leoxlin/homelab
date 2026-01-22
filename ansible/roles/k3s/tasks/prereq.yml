@@ -75,6 +75,15 @@
         - port: 51820
           proto: udp
           comment: FLANNEL WIREGUARD
+        - port: 7472
+          proto: tcp
+          comment: METALLB
+        - port: 7946
+          proto: tcp
+          comment: METALLB
+        - port: 7946
+          proto: udp
+          comment: METALLB
 
     - name: Configure ufw, allow default CIDRs
       community.general.ufw:
