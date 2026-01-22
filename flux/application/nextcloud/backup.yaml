@@ -7,11 +7,11 @@ metadata:
 spec:
   backup:
     schedule: "0 */3 * * *"
-    failedJobsHistoryLimit: "10"
-    successfulJobsHistoryLimit: "10"
+    failedJobsHistoryLimit: 10
+    successfulJobsHistoryLimit: 10
     podSecurityContext:
-      runAsUser: "0"
-      runAsGroup: "0"
+      runAsUser: 0
+      runAsGroup: 0
     labelSelectors:
       - matchLabels:
           k8up.io/backup-target: nextcloud
