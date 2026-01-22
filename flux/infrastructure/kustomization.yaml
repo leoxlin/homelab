@@ -12,4 +12,5 @@ resources:
   - ./longhorn-nodes
   - ./storage-marten
   # Monitoring
+  - ./prometheus
   - ./node-exporter
