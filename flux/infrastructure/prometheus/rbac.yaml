@@ -1,0 +1,22 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: monitoring-read-only
+rules:
+  - apiGroups: [""]
+    resources: ["endpoints", "pods", "services"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: monitoring-read-only-binding
+subjects:
+  - kind: ServiceAccount
+    name: default
+    namespace: monitoring
+roleRef:
+  kind: ClusterRole
+  name: monitoring-read-only
+  apiGroup: rbac.authorization.k8s.io
