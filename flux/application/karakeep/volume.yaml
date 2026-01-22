@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: karakeep-data
   namespace: default
+  labels:
+    k8up.io/backup-target: karakeep
 spec:
   accessModes:
     - ReadWriteOnce
