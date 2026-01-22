@@ -33,7 +33,7 @@ spec:
           volumeMounts:
             - name: cache
               mountPath: /cache
-            - name: youtube
+            - name: media
               mountPath: /youtube
               subPath: YouTube
           resources:
@@ -63,6 +63,9 @@ spec:
         - name: cache
           persistentVolumeClaim:
             claimName: tubearchivist-cache
-        - name: youtube
-          persistentVolumeClaim:
-            claimName: marten-union-01-media
+        - name: media
+          hostPath:
+            path: /srv/mergerfs/union_01/media
+            type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/hostname: marten
