@@ -30,6 +30,9 @@ spec:
   labelSelectors:
     - matchLabels:
         k8up.io/backup-target: ${APP}
+  podSecurityContext:
+    runAsUser: 0
+    runAsGroup: 0
   backend:
     repoPasswordSecretRef:
       name: k8up-secrets
