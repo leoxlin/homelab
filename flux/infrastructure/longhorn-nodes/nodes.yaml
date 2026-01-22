@@ -54,11 +54,12 @@ metadata:
   namespace: longhorn-system
 spec:
   name: marten
-  allowScheduling: true
+  allowScheduling: false
+  evictionRequested: true
   disks:
     root-disk:
       path: /var/lib/longhorn/
-      allowScheduling: true
+      allowScheduling: false
       storageReserved: 137438953472
       tags: []
   tags: []
