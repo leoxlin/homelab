@@ -13,6 +13,8 @@
       policy: deny
     - direction: outgoing
       policy: allow
+    - direction: routed
+      policy: allow
   loop_control:
     label: "{{ item.direction }}: {{ item.policy }}"
 
