@@ -55,8 +55,9 @@ spec:
             path: /share/docker/sonarr
             type: DirectoryOrCreate
         - name: media
-          persistentVolumeClaim:
-            claimName: marten-union-01-media
+          hostPath:
+            path: /srv/mergerfs/union_01/media
+            type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/hostname: marten
 ---
@@ -116,8 +117,9 @@ spec:
             path: /share/docker/radarr
             type: DirectoryOrCreate
         - name: media
-          persistentVolumeClaim:
-            claimName: marten-union-01-media
+          hostPath:
+            path: /srv/mergerfs/union_01/media
+            type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/hostname: marten
 ---
@@ -177,8 +179,9 @@ spec:
             path: /share/docker/bazarr
             type: DirectoryOrCreate
         - name: media
-          persistentVolumeClaim:
-            claimName: marten-union-01-media
+          hostPath:
+            path: /srv/mergerfs/union_01/media
+            type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/hostname: marten
 ---
@@ -287,8 +290,9 @@ spec:
             path: /share/docker/lidarr
             type: DirectoryOrCreate
         - name: media
-          persistentVolumeClaim:
-            claimName: marten-union-01-media
+          hostPath:
+            path: /srv/mergerfs/union_01/media
+            type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/hostname: marten
 ---
