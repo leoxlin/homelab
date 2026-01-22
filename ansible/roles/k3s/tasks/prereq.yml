@@ -55,6 +55,20 @@
         comment: "K3S: ETCD"
         from_ip: "192.168.0.0/16"
 
+    - name: Allow incoming traffic on cni0
+      community.general.ufw:
+        rule: allow
+        direction: in
+        interface: cni0
+        comment: "K3S: CNI"
+
+    - name: Allow outgoing traffic on cni0
+      community.general.ufw:
+        rule: allow
+        direction: out
+        interface: cni0
+        comment: "K3S: CNI"
+
     - name: Configure ufw, open inter-node ports
       community.general.ufw:
         rule: allow
