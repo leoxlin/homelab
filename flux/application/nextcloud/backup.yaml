@@ -5,6 +5,19 @@ metadata:
   name: backup-nextcloud
   namespace: default
 spec:
+  backend:
+    repoPasswordSecretRef:
+      name: k8up-secrets
+      key: RESTIC_REPO_PASSWORD
+    s3:
+      endpoint: https://s3.eu-central-003.backblazeb2.com
+      bucket: hydra-ecd4ffd5fcf8/backups/nextcloud
+      accessKeyIDSecretRef:
+        name: k8up-secrets
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKeySecretRef:
+        name: k8up-secrets
+        key: AWS_SECRET_ACCESS_KEY
   backup:
     schedule: "0 */3 * * *"
     failedJobsHistoryLimit: 10
@@ -15,16 +28,3 @@ spec:
     labelSelectors:
       - matchLabels:
           k8up.io/backup-target: nextcloud
-    backend:
-      repoPasswordSecretRef:
-        name: k8up-secrets
-        key: RESTIC_REPO_PASSWORD
-      s3:
-        endpoint: https://s3.eu-central-003.backblazeb2.com
-        bucket: hydra-ecd4ffd5fcf8/backups/nextcloud
-        accessKeyIDSecretRef:
-          name: k8up-secrets
-          key: AWS_ACCESS_KEY_ID
-        secretAccessKeySecretRef:
-          name: k8up-secrets
-          key: AWS_SECRET_ACCESS_KEY
