@@ -8,16 +8,17 @@ metadata:
     storage: media
 spec:
   capacity:
-    storage: 10Ti
+    storage: 8Ti
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
   mountOptions:
-    - hard
+    - soft
     - nfsvers=4.2
-    - rsize=1048576
-    - wsize=1048576
+    - timeo=300
+    - retrans=5
+    - retry=5
   nfs:
     server: 192.168.2.40
     path: /union-01-media
@@ -37,10 +38,11 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
   mountOptions:
-    - hard
+    - soft
     - nfsvers=4.2
-    - rsize=1048576
-    - wsize=1048576
+    - timeo=300
+    - retrans=5
+    - retry=5
   nfs:
     server: 192.168.2.40
     path: /union-01-nextcloud
@@ -60,10 +62,11 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
   mountOptions:
-    - hard
+    - soft
     - nfsvers=4.2
-    - rsize=1048576
-    - wsize=1048576
+    - timeo=300
+    - retrans=5
+    - retry=5
   nfs:
     server: 192.168.2.40
     path: /union-01-immich
@@ -80,7 +83,7 @@ spec:
   volumeName: marten-union-01-media
   resources:
     requests:
-      storage: 10Ti
+      storage: 8Ti
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
