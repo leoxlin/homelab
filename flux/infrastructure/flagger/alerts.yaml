@@ -4,13 +4,12 @@ metadata:
   name: flux-alerts
   namespace: flux-system
 spec:
-  summary: "cluster addons"
   eventMetadata:
     env: "main"
     cluster: "hydra"
   providerRef:
     name: discord-flux-bot
-  eventSeverity: info
+  eventSeverity: error
   eventSources:
     - kind: GitRepository
       name: "*"
