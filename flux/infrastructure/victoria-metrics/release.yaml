@@ -2,10 +2,10 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: victoria-metrics
+  name: vmoperator
   namespace: flux-system
 spec:
-  releaseName: victoria-metrics
+  releaseName: vmoperator
   interval: 30m
   chart:
     spec:
