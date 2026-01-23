@@ -19,7 +19,7 @@ spec:
         - uri:
             prefix: /
       rewrite:
-        uri: /select/0/
+        uri: /select/0/vmui/
       route:
         - destination:
             host: vmselect-vmcluster.monitoring.svc.cluster.local
