@@ -11,8 +11,15 @@ spec:
     - istio-ingress/hydrahmlb-gateway
   http:
     - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - match:
         - uri:
             prefix: /
+      rewrite:
+        uri: /select/0/vmui
       route:
         - destination:
             host: vmselect-vmcluster.monitoring.svc.cluster.local
