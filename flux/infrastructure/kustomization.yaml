@@ -12,6 +12,7 @@ resources:
   - ./longhorn-nodes
   - ./storage-marten
   # Monitoring
+  - ./flagger
   - ./victoria-metrics
   - ./node-exporter
   - ./grafana
