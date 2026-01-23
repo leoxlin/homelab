@@ -13,5 +13,6 @@ resources:
   - ./storage-marten
   # Monitoring
   - ./victoria-metrics
+  - ./victoria-metrics-cluster
   - ./node-exporter
   - ./grafana
