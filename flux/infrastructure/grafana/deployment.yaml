@@ -29,6 +29,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: grafana-config
+            - secretRef:
+                name: grafana-secrets
           env:
             - name: GF_DATABASE_PASSWORD
               valueFrom:
