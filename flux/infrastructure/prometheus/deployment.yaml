@@ -24,7 +24,7 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/prometheus
-            - name: grafana-cloud-credentials
+            - name: prometheus-secrets
               mountPath: /etc/prometheus/secrets
               readOnly: true
       volumes:
