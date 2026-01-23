@@ -1,0 +1,87 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMCluster
+metadata:
+  name: vmcluster
+  namespace: monitoring
+spec:
+  retentionPeriod: "30d"
+  replicationFactor: 2
+
+  vmstorage:
+    replicaCount: 2
+    storageDataPath: /vm-data
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          resources:
+            requests:
+              storage: 10Gi
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
+      limits:
+        memory: 2Gi
+    extraArgs:
+      dedup.minScrapeInterval: 30s
+
+  vmselect:
+    replicaCount: 2
+    cacheMountPath: /cache
+    storage:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn
+          resources:
+            requests:
+              storage: 2Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+  vminsert:
+    replicaCount: 2
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 512Mi
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMAgent
+metadata:
+  name: vmagent
+  namespace: monitoring
+spec:
+  replicaCount: 1
+  scrapeInterval: 15s
+
+  # Select all VMServiceScrape, VMPodScrape in all namespaces
+  serviceScrapeSelector: {}
+  serviceScrapeNamespaceSelector: {}
+  podScrapeSelector: {}
+  podScrapeNamespaceSelector: {}
+  nodeScrapeSelector: {}
+  nodeScrapeNamespaceSelector: {}
+
+  # Write to VMCluster
+  remoteWrite:
+    - url: http://vminsert-vmcluster.monitoring.svc:8480/insert/0/prometheus/api/v1/write
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  extraArgs:
+    promscrape.streamParse: "true"

@@ -55,3 +55,11 @@ spec:
               port: 3000
             initialDelaySeconds: 30
             periodSeconds: 10
+          volumeMounts:
+            - name: datasources
+              mountPath: /etc/grafana/provisioning/datasources
+              readOnly: true
+      volumes:
+        - name: datasources
+          configMap:
+            name: grafana-datasources

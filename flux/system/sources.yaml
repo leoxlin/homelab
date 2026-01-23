@@ -79,3 +79,12 @@ metadata:
 spec:
   interval: 1h
   url: https://k8up-io.github.io/k8up
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: victoriametrics
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: https://victoriametrics.github.io/helm-charts/

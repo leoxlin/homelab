@@ -12,6 +12,6 @@ resources:
   - ./longhorn-nodes
   - ./storage-marten
   # Monitoring
-  - ./prometheus
+  - ./victoria-metrics
   - ./node-exporter
   - ./grafana
