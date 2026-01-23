@@ -18,14 +18,25 @@ spec:
     spec:
       containers:
         - name: prometheus
-          image: prom/prometheus
+          image: prom/prometheus:v3.9.1
           ports:
             - containerPort: 9090
           volumeMounts:
             - name: config-volume
               mountPath: /etc/prometheus
+            - name: grafana-cloud-credentials
+              mountPath: /etc/prometheus/secrets
+              readOnly: true
       volumes:
         - name: config-volume
           configMap:
             name: prometheus-server-conf
             defaultMode: 420
+        - name: prometheus-secrets
+          secret:
+            secretName: prometheus-secrets
+            items:
+              - key: GRAFANA_CLOUD_INSTANCE
+                path: username
+              - key: GRAFANA_CLOUD_API_TOKEN
+                path: password
