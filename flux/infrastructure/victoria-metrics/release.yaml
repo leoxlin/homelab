@@ -24,6 +24,7 @@ spec:
     remediation:
       retries: 3
   values:
+    nameOverride: vmo
     operator:
       disable_prometheus_converter: false
       enable_converter_ownership: true
