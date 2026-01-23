@@ -14,3 +14,4 @@ resources:
   # Monitoring
   - ./prometheus
   - ./node-exporter
+  - ./grafana
