@@ -1,0 +1,14 @@
+---
+apiVersion: operator.victoriametrics.com/v1beta1
+kind: VMServiceScrape
+metadata:
+  name: k8up
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: k8up
+  endpoints:
+    - port: metrics
+      interval: 30s
+      path: /metrics

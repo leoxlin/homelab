@@ -26,3 +26,11 @@ spec:
   values:
     k8up:
       timezone: "America/New_York"
+      enableLeaderElection: true
+    metrics:
+      service:
+        port: 8080
+        type: ClusterIP
+        annotations:
+          prometheus.io/scrape: "true"
+          prometheus.io/port: "8080"
