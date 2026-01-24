@@ -81,6 +81,8 @@ spec:
     profile: ambient
     cni:
       chained: false
+    ambient:
+      ipv6: false
 ---
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
