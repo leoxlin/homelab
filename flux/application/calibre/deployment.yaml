@@ -49,6 +49,6 @@ spec:
             claimName: calibre-config
         - name: data
           persistentVolumeClaim:
-            claimName: calibre-data
+            claimName: marten-union-01-calibre
         - name: ingest
           emptyDir: {}

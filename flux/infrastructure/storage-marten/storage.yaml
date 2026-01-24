@@ -50,6 +50,30 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: marten-union-01-calibre
+  labels:
+    type: nfs
+    storage: media
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  mountOptions:
+    - soft
+    - nfsvers=4.2
+    - timeo=300
+    - retrans=5
+    - retry=5
+  nfs:
+    server: 192.168.2.40
+    path: /union-01-calibre
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: marten-union-01-immich
   labels:
     type: nfs
@@ -117,6 +141,24 @@ spec:
     - ReadWriteMany
   storageClassName: ""
   volumeName: marten-union-01-immich
+  resources:
+    requests:
+      storage: 1Ti
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: marten-union-01-calibre
+  namespace: default
+  labels:
+    k8up.io/backup-target: calibre
+  annotations:
+    k8up.io/backup: "true"
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ""
+  volumeName: marten-union-01-calibre
   resources:
     requests:
       storage: 1Ti
