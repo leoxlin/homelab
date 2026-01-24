@@ -38,6 +38,8 @@ spec:
               mountPath: /config
             - name: data
               mountPath: /calibre-library
+            - name: ingest
+              mountPath: /cwa-book-ingest
           resources:
             requests:
               memory: 512Mi
@@ -48,3 +50,5 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: calibre-data
+        - name: ingest
+          emptyDir: {}
