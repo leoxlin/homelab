@@ -1,0 +1,32 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bentopdf
+spec:
+  selector:
+    app: bentopdf
+  ports:
+    - port: 8080
+      targetPort: 8080
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: bentopdf
+spec:
+  hosts:
+    - pdf.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: bentopdf.default.svc.cluster.local
+            port:
+              number: 8080

@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bentopdf
+  labels:
+    app: bentopdf
+    k8s.hydrahmlb.cc/schedule: worker
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bentopdf
+  template:
+    metadata:
+      labels:
+        app: bentopdf
+    spec:
+      containers:
+        - name: bentopdf
+          image: ghcr.io/alam00000/bentopdf:latest
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: 128Mi
