@@ -3,3 +3,5 @@ docker_compose_base_dir: /opt/docker/compose
 docker_compose_stacks:
   - name: cloudflare-tunnel
     state: present
+  - name: forgejo
+    state: present
