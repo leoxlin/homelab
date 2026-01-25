@@ -3,5 +3,4 @@
   hosts: falcon
   become: true
   roles:
-    - role: core
     - role: dev
