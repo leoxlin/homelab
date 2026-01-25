@@ -8,5 +8,6 @@ system_packages:
   - htop
   - git
   - rsync
+  - fail2ban
 
 system_services: []

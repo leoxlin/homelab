@@ -9,6 +9,9 @@
 - name: Include linux users tasks
   ansible.builtin.include_tasks: users.yaml
 
+- name: Include system packages tasks
+  ansible.builtin.include_tasks: packages.yaml
+
 - name: Include SSH hardening tasks
   ansible.builtin.include_tasks: ssh.yaml
 
@@ -23,9 +26,6 @@
 - name: Include sysctl hardening tasks
   ansible.builtin.include_tasks: sysctl.yaml
   when: security_sysctl_hardening | default(true)
-
-- name: Include system packages tasks
-  ansible.builtin.include_tasks: packages.yaml
 
 - name: Include system hostname config tasks
   ansible.builtin.include_tasks: hostname.yaml

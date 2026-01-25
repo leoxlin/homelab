@@ -8,6 +8,7 @@ system_packages:
   - htop
   - git
   - rsync
+  - fail2ban
   - apt-transport-https
   - ca-certificates
   - gnupg
