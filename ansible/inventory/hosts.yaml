@@ -12,6 +12,8 @@ all:
       ansible_host: 192.168.2.40
     numbat:
       ansible_host: 192.168.2.50
+    falcon:
+      ansible_host: 46.224.223.92
     ### Control Nodes ###
     marmot-01:
       ansible_host: 192.168.2.111
@@ -37,6 +39,7 @@ servers:
   hosts:
     marten:
     numbat:
+    falcon:
 
 pika:
   hosts:
