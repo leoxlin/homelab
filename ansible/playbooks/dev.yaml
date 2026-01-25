@@ -1,0 +1,7 @@
+---
+- name: Deploy developer server
+  hosts: falcon
+  become: true
+  roles:
+    - role: core
+    - role: dev

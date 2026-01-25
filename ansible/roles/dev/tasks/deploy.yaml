@@ -1,0 +1,53 @@
+---
+- name: "Create directory for {{ stack.name }}"
+  ansible.builtin.file:
+    path: "{{ docker_compose_base_dir }}/{{ stack.name }}"
+    state: directory
+    mode: "0755"
+    owner: root
+    group: root
+
+- name: "Check if .env template exists for {{ stack.name }}"
+  ansible.builtin.stat:
+    path: "{{ role_path }}/templates/{{ stack.name }}/.env.tpl"
+  register: env_template
+  become: false
+  delegate_to: localhost
+
+- name: "Inject secrets into .env template for {{ stack.name }}"
+  ansible.builtin.command:
+    cmd: op inject -i "{{ role_path }}/templates/{{ stack.name }}/.env.tpl"
+  register: env_content
+  delegate_to: localhost
+  become: false
+  when: env_template.stat.exists
+  changed_when: false
+
+- name: "Create .env file for {{ stack.name }}"
+  ansible.builtin.copy:
+    content: "{{ env_content.stdout }}"
+    dest: "{{ docker_compose_base_dir }}/{{ stack.name }}/.env"
+    mode: "0600"
+    owner: root
+    group: root
+  when: env_template.stat.exists
+
+- name: "Copy compose.yaml for {{ stack.name }}"
+  ansible.builtin.copy:
+    src: "{{ role_path }}/templates/{{ stack.name }}/compose.yaml"
+    dest: "{{ docker_compose_base_dir }}/{{ stack.name }}/compose.yaml"
+    mode: "0644"
+    owner: root
+    group: root
+
+- name: "Start {{ stack.name }} stack"
+  community.docker.docker_compose_v2:
+    project_src: "{{ docker_compose_base_dir }}/{{ stack.name }}"
+    state: present
+    pull: always
+  register: stack_result
+
+- name: "Display {{ stack.name }} deployment status"
+  ansible.builtin.debug:
+    msg: "Stack {{ stack.name }} deployed successfully"
+  when: stack_result.changed
