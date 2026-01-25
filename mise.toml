@@ -13,7 +13,7 @@ description = "Setup environment"
 depends = ["setup-ansible"]
 
 [tasks.setup-ansible]
-run = "mise exec -- ansible-galaxy install -r requirements.yml"
+run = "mise exec -- ansible-galaxy install -r requirements.yaml"
 dir = "ansible"
 
 [tasks.lint]
@@ -46,6 +46,6 @@ description = "Run an ansible playbook"
 usage = '''
 arg "<playbook>"
 '''
-run = "mise exec -- ansible-playbook playbooks/${usage_playbook}.yml"
+run = "mise exec -- ansible-playbook playbooks/${usage_playbook}.yaml"
 dir = "ansible"
 alias = "a"

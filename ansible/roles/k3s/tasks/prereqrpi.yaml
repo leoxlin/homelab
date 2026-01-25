@@ -42,7 +42,7 @@
     - name: Execute OS related tasks on the Raspberry Pi
       ansible.builtin.include_tasks: "{{ item }}"
       with_first_found:
-        - "prereqrpi/{{ detected_distribution }}.yml"
-        - "prereqrpi/{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_major_version'] }}.yml"
-        - "prereqrpi/{{ ansible_facts['distribution'] }}.yml"
-        - "prereqrpi/default.yml"
+        - "prereqrpi/{{ detected_distribution }}.yaml"
+        - "prereqrpi/{{ ansible_facts['distribution'] }}-{{ ansible_facts['distribution_major_version'] }}.yaml"
+        - "prereqrpi/{{ ansible_facts['distribution'] }}.yaml"
+        - "prereqrpi/default.yaml"
