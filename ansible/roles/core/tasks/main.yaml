@@ -12,6 +12,10 @@
 - name: Include system packages tasks
   ansible.builtin.include_tasks: packages.yaml
 
+- name: Include Docker installation tasks
+  ansible.builtin.include_tasks: docker.yaml
+  when: docker_enabled | default(false)
+
 - name: Include SSH hardening tasks
   ansible.builtin.include_tasks: ssh.yaml
 

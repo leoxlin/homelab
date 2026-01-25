@@ -1,0 +1,78 @@
+---
+- name: Install Docker prerequisites (Debian)
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - gnupg
+      - lsb-release
+    state: present
+  when: ansible_facts["os_family"] == "Debian"
+
+- name: Determine docker repo configuration
+  ansible.builtin.set_fact:
+    docker_repo_url: "https://download.docker.com/linux/debian"
+    docker_repo_key: "/etc/apt/keyrings/docker.asc"
+    docker_os_arch: "{{ 'amd64' if ansible_facts['architecture'] == 'x86_64' else ansible_architecture }}"
+    docker_os_release: "{{ ansible_facts['distribution_release'] }}"
+  when: ansible_facts["os_family"] == "Debian"
+
+- name: Create keyrings directory (Debian)
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+  when: ansible_facts["os_family"] == "Debian"
+
+- name: Download Docker GPG key (Debian)
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/debian/gpg
+    dest: "{{ docker_repo_key }}"
+    mode: "0644"
+  when: ansible_facts["os_family"] == "Debian"
+
+- name: Add Docker repository (Debian)
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ docker_os_arch }} signed-by={{ docker_repo_key }}] {{ docker_repo_url }} {{ docker_os_release }} stable"
+    state: present
+    filename: docker
+  when: ansible_facts["os_family"] == "Debian"
+
+- name: Update package cache after adding Docker repo (Debian)
+  ansible.builtin.apt:
+    update_cache: yes
+  when: ansible_facts["os_family"] == "Debian"
+
+- name: Install Docker packages (Debian)
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+  when: ansible_facts["os_family"] == "Debian"
+
+- name: Install Docker packages (Arch)
+  community.general.pacman:
+    name:
+      - docker
+      - docker-compose
+      - docker-buildx
+    state: present
+  when: ansible_facts["os_family"] == "Archlinux"
+
+- name: Ensure Docker service is started and enabled
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Add users to docker group
+  ansible.builtin.user:
+    name: "{{ item }}"
+    groups: docker
+    append: yes
+  loop: "{{ docker_users | default([]) }}"
+  when: docker_users is defined and docker_users | length > 0

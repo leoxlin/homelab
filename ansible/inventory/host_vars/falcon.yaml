@@ -5,3 +5,5 @@ security_sysctl_hardening: true
 ip_forward_enabled: true
 system_timezone: UTC
 system_auto_updates: false
+
+docker_enabled: true

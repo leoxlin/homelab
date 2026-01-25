@@ -7,6 +7,10 @@ system_extra_packages: []
 system_services: []
 system_extra_services: []
 
+# Docker settings
+docker_enabled: false
+docker_users: []
+
 custom_groups:
   - name: runc
     gid: 1120
