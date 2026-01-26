@@ -40,6 +40,34 @@
     owner: root
     group: root
 
+- name: "Copy config files for {{ stack.name }}"
+  ansible.builtin.copy:
+    src: "{{ role_path }}/templates/{{ stack.name }}/{{ item }}"
+    dest: "{{ docker_compose_base_dir }}/{{ stack.name }}/{{ item }}"
+    mode: "0644"
+    owner: root
+    group: root
+  loop: "{{ stack.configs | default([]) | reject('match', '.*\\.tpl$') | list }}"
+
+- name: "Inject secrets into config templates for {{ stack.name }}"
+  ansible.builtin.command:
+    cmd: op inject -i "{{ role_path }}/templates/{{ stack.name }}/{{ item }}"
+  register: config_tpl_contents
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  loop: "{{ stack.configs | default([]) | select('match', '.*\\.tpl$') | list }}"
+
+- name: "Create config files from templates for {{ stack.name }}"
+  ansible.builtin.copy:
+    content: "{{ item.stdout }}"
+    dest: "{{ docker_compose_base_dir }}/{{ stack.name }}/{{ item.item | regex_replace('\\.tpl$', '') }}"
+    mode: "0600"
+    owner: root
+    group: root
+  loop: "{{ config_tpl_contents.results | default([]) }}"
+  when: config_tpl_contents.results | default([]) | length > 0
+
 - name: "Start {{ stack.name }} stack"
   community.docker.docker_compose_v2:
     project_src: "{{ docker_compose_base_dir }}/{{ stack.name }}"
