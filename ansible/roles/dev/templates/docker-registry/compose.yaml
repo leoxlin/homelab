@@ -1,10 +1,14 @@
 ---
+name: docker-registry
+
 networks:
   registry:
     name: registry
+
 services:
   registry-docker:
     image: registry:3
+    container_name: registry-docker
     restart: always
     ports:
       - "5001:5000"
@@ -19,10 +23,11 @@ services:
       - REGISTRY_STORAGE_S3_REGIONENDPOINT=https://s3.eu-central-003.backblazeb2.com
       - REGISTRY_STORAGE_S3_SECURE=true
       - REGISTRY_STORAGE_S3_V4AUTH=true
-      - REGISTRY_STORAGE_S3_ROOTDIRECTORY=/docker-registry
+      - REGISTRY_STORAGE_S3_ROOTDIRECTORY=/registry-docker
       - REGISTRY_PROXY_REMOTEURL=https://registry-1.docker.io
   registry-ghcr:
     image: registry:3
+    container_name: registry-ghcr
     restart: always
     ports:
       - "5002:5000"
@@ -37,10 +42,11 @@ services:
       - REGISTRY_STORAGE_S3_REGIONENDPOINT=https://s3.eu-central-003.backblazeb2.com
       - REGISTRY_STORAGE_S3_SECURE=true
       - REGISTRY_STORAGE_S3_V4AUTH=true
-      - REGISTRY_STORAGE_S3_ROOTDIRECTORY=/docker-ghcr
+      - REGISTRY_STORAGE_S3_ROOTDIRECTORY=/registry-ghcr
       - REGISTRY_PROXY_REMOTEURL=https://ghcr.io
   registry-quay:
     image: registry:3
+    container_name: registry-quay
     restart: always
     ports:
       - "5003:5000"
@@ -55,5 +61,5 @@ services:
       - REGISTRY_STORAGE_S3_REGIONENDPOINT=https://s3.eu-central-003.backblazeb2.com
       - REGISTRY_STORAGE_S3_SECURE=true
       - REGISTRY_STORAGE_S3_V4AUTH=true
-      - REGISTRY_STORAGE_S3_ROOTDIRECTORY=/docker-quay
+      - REGISTRY_STORAGE_S3_ROOTDIRECTORY=/registry-quay
       - REGISTRY_PROXY_REMOTEURL=https://quay.io

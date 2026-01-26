@@ -1,4 +1,6 @@
 ---
+name: forgejo
+
 networks:
   forgejo:
     name: forgejo
