@@ -26,4 +26,4 @@ spec:
               memory: 128Mi
           env:
             - name: SIMPLE_MODE
-              value: true
+              value: "true"
