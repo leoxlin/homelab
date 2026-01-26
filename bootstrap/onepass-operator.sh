@@ -1,7 +1,7 @@
 #!/bin/bash
 
-OP_CONNECT_TOKEN="$(op item get --vault Hydra hydra:main:1password --fields OP_CONNECT_TOKEN --reveal)"
-op document get "hydra:main:1password:file" --vault Hydra --out 1password-credentials.json
+OP_CONNECT_TOKEN="$(op item get --vault Hydra main.1password --fields OP_CONNECT_TOKEN --reveal)"
+op document get "main.1password.file" --vault Hydra --out-file 1password-credentials.json
 
 helm repo add 1password https://1password.github.io/connect-helm-charts/
 helm \
