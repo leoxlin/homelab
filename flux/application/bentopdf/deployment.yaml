@@ -24,3 +24,6 @@ spec:
           resources:
             requests:
               memory: 128Mi
+          env:
+            - name: SIMPLE_MODE
+              value: true
