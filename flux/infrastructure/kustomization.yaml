@@ -4,6 +4,8 @@ kind: Kustomization
 resources:
   # Secret
   - ./external-secrets
+  # Registry
+  - ./registry-mirrors
   # Networking
   - ./metallb
   - ./istio

@@ -1,0 +1,34 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: registry-mirrors-config
+  namespace: kube-system
+data:
+  registries.yaml.tmpl: |
+    mirrors:
+      docker.io:
+        endpoint:
+          - "https://docker.hydrahmlb.dev"
+          - "https://registry-1.docker.io"
+      ghcr.io:
+        endpoint:
+          - "https://ghcr.hydrahmlb.dev"
+          - "https://ghcr.io"
+      quay.io:
+        endpoint:
+          - "https://quay.hydrahmlb.dev"
+          - "https://quay.io"
+    configs:
+      "docker.hydrahmlb.dev":
+        auth:
+          username: "${REGISTRY_USERNAME}"
+          password: "${REGISTRY_PASSWORD}"
+      "ghcr.hydrahmlb.dev":
+        auth:
+          username: "${REGISTRY_USERNAME}"
+          password: "${REGISTRY_PASSWORD}"
+      "quay.hydrahmlb.dev":
+        auth:
+          username: "${REGISTRY_USERNAME}"
+          password: "${REGISTRY_PASSWORD}"
