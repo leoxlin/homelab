@@ -15,6 +15,7 @@ resources:
   - ./openwebui
   - ./overseerr
   - ./plex
+  - ./roundcube
   - ./rsshub
   - ./servarr
   - ./tubearchivist
