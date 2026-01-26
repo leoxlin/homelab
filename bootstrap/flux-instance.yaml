@@ -40,7 +40,7 @@ spec:
                 operator: "Exists"
   sync:
     kind: GitRepository
-    url: "https://codeberg.org/leoxlin/hydrahmlb.git"
+    url: "https://git.hydrahmlb.dev/hydrahmlb/hydrahmlb.git"
     ref: "refs/heads/main"
     path: "flux"
-    pullSecret: "codeberg-auth"
+    pullSecret: "flux-secrets"

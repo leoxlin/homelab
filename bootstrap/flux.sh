@@ -8,4 +8,5 @@ helm upgrade --install flux-operator oci://ghcr.io/controlplaneio-fluxcd/charts/
   --version 0.38.1 \
   --wait
 
+kubectl apply -f $SCRIPT_DIR/flux-secrets.yaml
 kubectl apply -f $SCRIPT_DIR/flux-instance.yaml
