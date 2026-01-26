@@ -14,7 +14,12 @@ services:
       - "5001:5000"
     networks:
       - registry
+    volumes:
+      - ./htpasswd:/auth/htpasswd:ro
     environment:
+      - REGISTRY_AUTH=htpasswd
+      - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
+      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
       - REGISTRY_STORAGE=s3
       - REGISTRY_STORAGE_S3_BUCKET=${BUCKET_NAME}
       - REGISTRY_STORAGE_S3_ACCESSKEY=${ACCESS_KEY}
@@ -33,7 +38,12 @@ services:
       - "5002:5000"
     networks:
       - registry
+    volumes:
+      - ./htpasswd:/auth/htpasswd:ro
     environment:
+      - REGISTRY_AUTH=htpasswd
+      - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
+      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
       - REGISTRY_STORAGE=s3
       - REGISTRY_STORAGE_S3_BUCKET=${BUCKET_NAME}
       - REGISTRY_STORAGE_S3_ACCESSKEY=${ACCESS_KEY}
@@ -52,7 +62,12 @@ services:
       - "5003:5000"
     networks:
       - registry
+    volumes:
+      - ./htpasswd:/auth/htpasswd:ro
     environment:
+      - REGISTRY_AUTH=htpasswd
+      - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
+      - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
       - REGISTRY_STORAGE=s3
       - REGISTRY_STORAGE_S3_BUCKET=${BUCKET_NAME}
       - REGISTRY_STORAGE_S3_ACCESSKEY=${ACCESS_KEY}

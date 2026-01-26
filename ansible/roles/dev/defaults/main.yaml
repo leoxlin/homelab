@@ -7,3 +7,5 @@ docker_compose_stacks:
     state: present
   - name: docker-registry
     state: present
+    configs:
+      - htpasswd.tpl
