@@ -18,12 +18,9 @@ spec:
     spec:
       containers:
         - name: bentopdf
-          image: ghcr.io/alam00000/bentopdf:latest
+          image: ghcr.io/alam00000/bentopdf-simple:latest
           ports:
             - containerPort: 8080
           resources:
             requests:
               memory: 128Mi
-          env:
-            - name: SIMPLE_MODE
-              value: "true"
