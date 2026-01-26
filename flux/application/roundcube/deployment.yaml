@@ -33,10 +33,10 @@ spec:
                   name: roundcube-pg-app
                   key: password
           volumeMounts:
-            - name: config
+            - name: data
               mountPath: /var/www/html/config
               subPath: config
-            - name: config
+            - name: data
               mountPath: /tmp/roundcube-temp
               subPath: temp
           resources:
