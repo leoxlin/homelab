@@ -1,0 +1,59 @@
+---
+networks:
+  registry:
+    name: registry
+services:
+  registry-docker:
+    image: registry:3
+    restart: always
+    ports:
+      - "5001:5000"
+    networks:
+      - registry
+    environment:
+      - REGISTRY_STORAGE=s3
+      - REGISTRY_STORAGE_S3_BUCKET=${BUCKET_NAME}
+      - REGISTRY_STORAGE_S3_ACCESSKEY=${ACCESS_KEY}
+      - REGISTRY_STORAGE_S3_SECRETKEY=${SECRET_KEY}
+      - REGISTRY_STORAGE_S3_REGION=eu-central-003
+      - REGISTRY_STORAGE_S3_REGIONENDPOINT=https://s3.eu-central-003.backblazeb2.com
+      - REGISTRY_STORAGE_S3_SECURE=true
+      - REGISTRY_STORAGE_S3_V4AUTH=true
+      - REGISTRY_STORAGE_S3_ROOTDIRECTORY=/docker-registry
+      - REGISTRY_PROXY_REMOTEURL=https://registry-1.docker.io
+  registry-ghcr:
+    image: registry:3
+    restart: always
+    ports:
+      - "5002:5000"
+    networks:
+      - registry
+    environment:
+      - REGISTRY_STORAGE=s3
+      - REGISTRY_STORAGE_S3_BUCKET=${BUCKET_NAME}
+      - REGISTRY_STORAGE_S3_ACCESSKEY=${ACCESS_KEY}
+      - REGISTRY_STORAGE_S3_SECRETKEY=${SECRET_KEY}
+      - REGISTRY_STORAGE_S3_REGION=eu-central-003
+      - REGISTRY_STORAGE_S3_REGIONENDPOINT=https://s3.eu-central-003.backblazeb2.com
+      - REGISTRY_STORAGE_S3_SECURE=true
+      - REGISTRY_STORAGE_S3_V4AUTH=true
+      - REGISTRY_STORAGE_S3_ROOTDIRECTORY=/docker-ghcr
+      - REGISTRY_PROXY_REMOTEURL=https://ghcr.io
+  registry-quay:
+    image: registry:3
+    restart: always
+    ports:
+      - "5003:5000"
+    networks:
+      - registry
+    environment:
+      - REGISTRY_STORAGE=s3
+      - REGISTRY_STORAGE_S3_BUCKET=${BUCKET_NAME}
+      - REGISTRY_STORAGE_S3_ACCESSKEY=${ACCESS_KEY}
+      - REGISTRY_STORAGE_S3_SECRETKEY=${SECRET_KEY}
+      - REGISTRY_STORAGE_S3_REGION=eu-central-003
+      - REGISTRY_STORAGE_S3_REGIONENDPOINT=https://s3.eu-central-003.backblazeb2.com
+      - REGISTRY_STORAGE_S3_SECURE=true
+      - REGISTRY_STORAGE_S3_V4AUTH=true
+      - REGISTRY_STORAGE_S3_ROOTDIRECTORY=/docker-quay
+      - REGISTRY_PROXY_REMOTEURL=https://quay.io
