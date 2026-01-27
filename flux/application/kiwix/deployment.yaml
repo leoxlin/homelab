@@ -18,7 +18,9 @@ spec:
         app: kiwix
     spec:
       securityContext:
-        fsGroup: 1000
+        fsGroup: 1120
+        runAsUser: 1120
+        runAsGroup: 1120
       containers:
         - name: kiwix
           image: ghcr.io/kiwix/kiwix-serve:latest
