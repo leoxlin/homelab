@@ -27,6 +27,7 @@ spec:
           args:
             - "--port=8080"
             - "--verbose"
+            - "--skipInvalid"
             - "/data/*.zim"
           ports:
             - containerPort: 8080
