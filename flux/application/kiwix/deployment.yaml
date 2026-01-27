@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kiwix
+  labels:
+    app: kiwix
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: kiwix
+  template:
+    metadata:
+      labels:
+        app: kiwix
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: kiwix
+          image: ghcr.io/kiwix/kiwix-serve:latest
+          args:
+            - "--port=8080"
+            - "--verbose"
+            - "/data/*.zim"
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /data
+          resources:
+            requests:
+              memory: 512Mi
+      volumes:
+        - name: data
+          hostPath:
+            path: /srv/mergerfs/union_01/kiwix
+            type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/hostname: marten
