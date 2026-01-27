@@ -27,10 +27,15 @@ spec:
           image: docker.n8n.io/n8nio/n8n:latest
           command: ["n8n"]
           args: ["worker"]
+          ports:
+            - containerPort: 5679
+              name: health
           envFrom:
             - configMapRef:
                 name: n8n-config
           env:
+            - name: QUEUE_HEALTH_CHECK_PORT
+              value: "5679"
             - name: DB_POSTGRESDB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -41,6 +46,20 @@ spec:
                 secretKeyRef:
                   name: n8n-secrets
                   key: N8N_ENCRYPTION_KEY
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 5679
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 5679
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
           resources:
             requests:
               memory: 512Mi

@@ -12,6 +12,11 @@ data:
   EXECUTIONS_MODE: "queue"
   QUEUE_BULL_REDIS_HOST: "n8n-redis.default.svc.cluster.local"
   QUEUE_BULL_REDIS_PORT: "6379"
+  QUEUE_BULL_PREFIX: "n8n"
+  # Worker settings
+  N8N_CONCURRENCY_PRODUCTION_LIMIT: "10"
+  QUEUE_HEALTH_CHECK_ACTIVE: "true"
+  N8N_GRACEFUL_SHUTDOWN_TIMEOUT: "30"
   # Database config
   DB_TYPE: "postgresdb"
   DB_POSTGRESDB_HOST: "n8n-pg-rw.default.svc.cluster.local"
