@@ -7,9 +7,8 @@ Infrastructure-as-code repository for my self-hosted Kubernetes homelab.
 | Hostname    | Harware          | OS             | Role                    |
 |-------------|------------------|----------------|-------------------------|
 | marten      | Mac Mini 2018    | debian/omv     | nas / media server      |
-| pika[1:2]   | RPi 5 8GB        | dietpi         | k8s control             |
-| pika[3:4]   | RPi 5 8GB        | dietpi         | k8s worker              |
-| marmot[1:3] | Elitedesk 300 G3 | debain         | k8s worker              |
+| marmot[1:3] | Elitedesk 300 G3 | debain         | k3s server              |
+| pika[1:4]   | RPi 5 8GB        | dietpi         | k3s agent               |
 | numbat      | Jetson AGX Orin  | ubuntu l4t     | ai / ml workloads       |
 
 ## Infrastructure
