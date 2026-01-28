@@ -44,6 +44,8 @@ spec:
             - name: data
               mountPath: /usr/src/paperless/consume
               subPath: consume
+            - name: log-dir
+              mountPath: /usr/src/paperless/data/log
           livenessProbe:
             httpGet:
               path: /
@@ -66,4 +68,6 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: paperless-data
+        - name: log-dir
+          emptyDir: {}
 
