@@ -10,10 +10,6 @@ spec:
     kind: ClusterImageCatalog
     name: postgresql-minimal-trixie
     major: 18
-  bootstrap:
-    initdb:
-      database: paperless
-      owner: paperless
   storage:
     storageClass: longhorn
     size: 128Mi
