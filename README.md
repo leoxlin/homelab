@@ -25,13 +25,19 @@ Infrastructure-as-code repository for my self-hosted Kubernetes homelab.
 | Secrets        | External Secrets, 1Password Connect                    |
 | Monitoring     | Victoria Metrics, Grafana                              |
 
-## Development Setup
+## Development
 
-Install development tools with mise:
+Install development tools and setup requirements with mise:
 
 ```
 mise install
-mise exec -- ansible-galaxy install -r requirements.yaml
+mise setup
+```
+
+Running linters
+
+```
+mise lint
 ```
 
 ## Bootstrap New Nodes
