@@ -12,4 +12,4 @@ spec:
     major: 18
   storage:
     storageClass: longhorn
-    size: 128Mi
+    size: 1Gi
