@@ -11,5 +11,5 @@ data:
   PAPERLESS_DBENGINE: "postgresql"
   PAPERLESS_DBHOST: "paperless-pg-rw.default.svc.cluster.local"
   PAPERLESS_DBPORT: "5432"
-  PAPERLESS_DBNAME: "app"
-  PAPERLESS_DBUSER: "app"
+  PAPERLESS_DBNAME: "paperless"
+  PAPERLESS_DBUSER: "paperless"
