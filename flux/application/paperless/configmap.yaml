@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paperless-config
+data:
+  PAPERLESS_URL: "https://paper.hydrahmlb.cc"
+  PAPERLESS_TIME_ZONE: "UTC"
+  PAPERLESS_OCR_LANGUAGE: "eng"
+  PAPERLESS_REDIS: "redis://paperless-redis.default.svc.cluster.local:6379"
+  PAPERLESS_DBENGINE: "postgresql"
+  PAPERLESS_DBHOST: "paperless-pg-rw.default.svc.cluster.local"
+  PAPERLESS_DBPORT: "5432"
+  PAPERLESS_DBNAME: "app"
+  PAPERLESS_DBUSER: "app"
