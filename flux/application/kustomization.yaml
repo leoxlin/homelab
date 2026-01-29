@@ -10,6 +10,7 @@ resources:
   - ./immich
   - ./k8up
   - ./karakeep
+  - ./lifecamp
   - ./kiwix
   - ./nextcloud
   - ./openwebui
