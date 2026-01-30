@@ -16,7 +16,7 @@ metadata:
   name: paperless
 spec:
   hosts:
-    - paper.hydrahmlb.cc
+    - paperless.hydrahmlb.cc
   gateways:
     - istio-ingress/hydrahmlb-gateway
   http:
