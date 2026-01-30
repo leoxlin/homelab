@@ -64,6 +64,6 @@ ansible-playbook playbooks/k3s.yaml    # Kubernetes cluster
 Initialize FluxCD on a fresh cluster:
 
 ```
-./bootstrap/onepass-operator.sh
-./bootstrap/flux-operator.sh
+./bootstrap/onepass.sh
+./bootstrap/flux.sh
 ```
