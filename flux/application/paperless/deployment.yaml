@@ -31,6 +31,11 @@ spec:
                 secretKeyRef:
                   name: paperless-pg-app
                   key: password
+            - name: PAPERLESS_SOCIALACCOUNT_PROVIDERS
+              valueFrom:
+                secretKeyRef:
+                  name: paperless-secrets
+                  key: PAPERLESS_SOCIALACCOUNT_PROVIDERS
           volumeMounts:
             - name: data
               mountPath: /usr/src/paperless/data
@@ -70,4 +75,3 @@ spec:
             claimName: paperless-data
         - name: log-dir
           emptyDir: {}
-

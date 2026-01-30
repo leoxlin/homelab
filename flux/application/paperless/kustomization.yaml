@@ -7,5 +7,6 @@ resources:
   - redis.yaml
   - volume.yaml
   - configmap.yaml
+  - secrets.yaml
   - deployment.yaml
   - service.yaml
