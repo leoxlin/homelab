@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: collabora
+spec:
+  selector:
+    app: collabora
+  ports:
+    - port: 9980
+      targetPort: 9980
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: collabora
+spec:
+  hosts:
+    - office.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: collabora.default.svc.cluster.local
+            port:
+              number: 9980
+      headers:
+        response:
+          set:
+            Strict-Transport-Security: "max-age=15552000; includeSubDomains"

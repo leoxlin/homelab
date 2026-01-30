@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: collabora
+  labels:
+    app: collabora
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: collabora
+  template:
+    metadata:
+      labels:
+        app: collabora
+    spec:
+      containers:
+        - name: collabora
+          image: collabora/code:25.04.8.2.1
+          ports:
+            - containerPort: 9980
+              protocol: TCP
+          env:
+            - name: aliasgroup1
+              value: "https://nextcloud.hydrahmlb.cc"
+            - name: server_name
+              value: "office.hydrahmlb.cc"
+            - name: extra_params
+              value: "--o:ssl.enable=false --o:ssl.termination=true"
+          resources:
+            requests:
+              memory: 256Mi
