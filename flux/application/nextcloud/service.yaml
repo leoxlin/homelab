@@ -31,3 +31,7 @@ spec:
             host: nextcloud.default.svc.cluster.local
             port:
               number: 80
+      headers:
+        response:
+          set:
+            Strict-Transport-Security: "max-age=15552000; includeSubDomains"
