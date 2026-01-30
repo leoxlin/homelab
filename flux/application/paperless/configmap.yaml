@@ -20,7 +20,7 @@ data:
   # https://integrations.goauthentik.io/documentation/paperless-ngx/
   PAPERLESS_APPS: "allauth.socialaccount.providers.openid_connect"
   PAPERLESS_LOGOUT_REDIRECT_URL: "https://authentik.hydrahmlb.cc/application/o/paperless/end-session/"
-  PAPERLESS_SOCIAL_AUTO_SIGNUP: "true"
+  PAPERLESS_SOCIAL_AUTO_SIGNUP: "false"
   PAPERLESS_SOCIALACCOUNT_ALLOW_SIGNUPS: "true"
 
 
