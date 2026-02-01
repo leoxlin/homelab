@@ -54,6 +54,7 @@ k3s:
     marmot-[01:03]:
     pika-[01:04]:
     marten:
+    numbat:
 
 k3s_servers:
   hosts:
@@ -63,6 +64,7 @@ k3s_agents:
   hosts:
     pika-[01:04]:
     marten:
+    numbat:
 
 edgeos:
   hosts:
