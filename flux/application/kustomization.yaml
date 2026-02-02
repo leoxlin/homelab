@@ -8,6 +8,7 @@ resources:
   - ./collabora
   - ./commafeed
   - ./fetcherr
+  - ./flowise
   - ./immich
   - ./k8up
   - ./karakeep
