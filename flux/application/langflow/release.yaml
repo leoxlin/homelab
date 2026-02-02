@@ -57,6 +57,8 @@ spec:
           enabled: false
         postgresql:
           enabled: false
+        probe:
+          initialDelaySeconds: 600
       frontend:
         enabled: true
         replicaCount: 1
