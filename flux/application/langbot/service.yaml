@@ -22,6 +22,50 @@ spec:
     - port: 5300
       targetPort: 5300
       name: http
+    - port: 2280
+      targetPort: 2280
+      protocol: TCP
+      name: webhook-2280
+    - port: 2281
+      targetPort: 2281
+      protocol: TCP
+      name: webhook-2281
+    - port: 2282
+      targetPort: 2282
+      protocol: TCP
+      name: webhook-2282
+    - port: 2283
+      targetPort: 2283
+      protocol: TCP
+      name: webhook-2283
+    - port: 2284
+      targetPort: 2284
+      protocol: TCP
+      name: webhook-2284
+    - port: 2285
+      targetPort: 2285
+      protocol: TCP
+      name: webhook-2285
+    - port: 2286
+      targetPort: 2286
+      protocol: TCP
+      name: webhook-2286
+    - port: 2287
+      targetPort: 2287
+      protocol: TCP
+      name: webhook-2287
+    - port: 2288
+      targetPort: 2288
+      protocol: TCP
+      name: webhook-2288
+    - port: 2289
+      targetPort: 2289
+      protocol: TCP
+      name: webhook-2289
+    - port: 2290
+      targetPort: 2290
+      protocol: TCP
+      name: webhook-2290
 ---
 apiVersion: networking.istio.io/v1
 kind: VirtualService

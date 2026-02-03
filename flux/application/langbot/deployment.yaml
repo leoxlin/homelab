@@ -78,6 +78,7 @@ spec:
           image: rockchin/langbot:latest
           ports:
             - containerPort: 5300
+            - containerPort: 2280
           env:
             - name: TZ
               value: "America/New_York"
