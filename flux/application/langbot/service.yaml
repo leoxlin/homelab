@@ -1,0 +1,45 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: langbot-plugin-runtime
+spec:
+  selector:
+    app: langbot-plugin-runtime
+  ports:
+    - port: 5400
+      targetPort: 5400
+      name: runtime
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: langbot
+spec:
+  selector:
+    app: langbot
+  ports:
+    - port: 5300
+      targetPort: 5300
+      name: http
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: langbot
+spec:
+  hosts:
+    - langbot.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: langbot.default.svc.cluster.local
+            port:
+              number: 5300

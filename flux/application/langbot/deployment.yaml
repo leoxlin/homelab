@@ -1,0 +1,122 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: langbot-plugin-runtime
+  labels:
+    app: langbot-plugin-runtime
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: langbot-plugin-runtime
+  template:
+    metadata:
+      labels:
+        app: langbot-plugin-runtime
+    spec:
+      containers:
+        - name: langbot-plugin-runtime
+          image: rockchin/langbot:latest
+          command: ["uv", "run", "-m", "langbot_plugin.cli.__init__", "rt"]
+          ports:
+            - containerPort: 5400
+          env:
+            - name: TZ
+              value: "America/New_York"
+          volumeMounts:
+            - name: langbot-plugin-data
+              mountPath: /app/data/plugins
+          resources:
+            requests:
+              memory: 512Mi
+              cpu: 250m
+            limits:
+              memory: 2Gi
+              cpu: "1"
+          livenessProbe:
+            tcpSocket:
+              port: 5400
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 5400
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+      volumes:
+        - name: langbot-plugin-data
+          persistentVolumeClaim:
+            claimName: langbot-plugin-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: langbot
+  labels:
+    app: langbot
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: langbot
+  template:
+    metadata:
+      labels:
+        app: langbot
+    spec:
+      containers:
+        - name: langbot
+          image: rockchin/langbot:latest
+          ports:
+            - containerPort: 5300
+          env:
+            - name: TZ
+              value: "America/New_York"
+            - name: PLUGIN__RUNTIME_WS_URL
+              value: "ws://langbot-plugin-runtime.default.svc.cluster.local:5400/control/ws"
+          envFrom:
+            - secretRef:
+                name: langbot-secrets
+          volumeMounts:
+            - name: langbot-data
+              mountPath: /app/data
+              subPath: data
+            - name: langbot-data
+              mountPath: /app/plugins
+              subPath: plugins
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 500m
+            limits:
+              memory: 4Gi
+              cpu: "2"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5300
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 5300
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+      volumes:
+        - name: langbot-data
+          persistentVolumeClaim:
+            claimName: langbot-data
