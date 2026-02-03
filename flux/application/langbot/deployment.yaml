@@ -18,6 +18,8 @@ spec:
         app: langbot-plugin-runtime
         k8s.hydrahmlb.cc/schedule: server
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: marten
       containers:
         - name: langbot-plugin-runtime
           image: rockchin/langbot:latest
@@ -75,6 +77,8 @@ spec:
         app: langbot
         k8s.hydrahmlb.cc/schedule: server
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: marten
       containers:
         - name: langbot
           image: rockchin/langbot:latest
