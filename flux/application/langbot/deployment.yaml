@@ -16,6 +16,7 @@ spec:
     metadata:
       labels:
         app: langbot-plugin-runtime
+        k8s.hydrahmlb.cc/schedule: server
     spec:
       containers:
         - name: langbot-plugin-runtime
@@ -72,6 +73,7 @@ spec:
     metadata:
       labels:
         app: langbot
+        k8s.hydrahmlb.cc/schedule: server
     spec:
       containers:
         - name: langbot
