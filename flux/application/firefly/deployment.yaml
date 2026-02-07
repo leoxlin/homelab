@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: firefly
+  labels:
+    app: firefly
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: firefly
+  template:
+    metadata:
+      labels:
+        app: firefly
+    spec:
+      containers:
+        - name: firefly
+          image: fireflyiii/core:version-6.4.9
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: firefly-config
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: firefly-pg-app
+                  key: password
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: firefly-secrets
+                  key: APP_KEY
+            - name: STATIC_CRON_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: firefly-secrets
+                  key: STATIC_CRON_TOKEN
+          volumeMounts:
+            - name: data
+              mountPath: /var/www/html/storage/upload
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+          resources:
+            requests:
+              memory: 256Mi
+              cpu: 250m
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: firefly-data
