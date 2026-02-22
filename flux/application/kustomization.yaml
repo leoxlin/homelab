@@ -15,8 +15,6 @@ resources:
   - ./karakeep
   - ./lifecamp
   - ./kiwix
-  - ./langbot
-  - ./langflow
   - ./nextcloud
   - ./openwebui
   - ./overseerr
