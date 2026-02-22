@@ -7,8 +7,8 @@ spec:
   selector:
     app: brave
   ports:
-    - port: 3001
-      targetPort: 3001
+    - port: 3000
+      targetPort: 3000
 ---
 apiVersion: networking.istio.io/v1
 kind: VirtualService
@@ -29,4 +29,4 @@ spec:
         - destination:
             host: brave.default.svc.cluster.local
             port:
-              number: 3001
+              number: 3000
