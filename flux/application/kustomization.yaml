@@ -9,7 +9,6 @@ resources:
   - ./collabora
   - ./commafeed
   - ./fetcherr
-  - ./firefly
   - ./immich
   - ./k8up
   - ./karakeep
