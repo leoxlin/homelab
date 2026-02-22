@@ -1,0 +1,12 @@
+---
+- name: Apply node taints
+  when:
+    - k3s_node_taints | length > 0
+    - not ansible_check_mode
+  ansible.builtin.command:
+    cmd: >-
+      k3s kubectl taint node {{ inventory_hostname }}
+      {% for key, value in k3s_node_taints.items() %}{{ key }}={{ value }} {% endfor %}
+      --overwrite
+  delegate_to: "{{ groups[k3s_server_group][0] }}"
+  changed_when: true

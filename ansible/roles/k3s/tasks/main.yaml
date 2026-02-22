@@ -16,3 +16,6 @@
 
 - name: Include labels tasks
   ansible.builtin.include_tasks: labels.yaml
+
+- name: Include taints tasks
+  ansible.builtin.include_tasks: taints.yaml

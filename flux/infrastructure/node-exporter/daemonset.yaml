@@ -47,6 +47,10 @@ spec:
               mountPropagation: HostToContainer
               name: root
               readOnly: true
+      tolerations:
+        - key: node-role.kubernetes.io/ai
+          operator: Exists
+          effect: NoSchedule
       volumes:
         - hostPath:
             path: /sys

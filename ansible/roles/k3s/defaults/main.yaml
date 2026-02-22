@@ -20,3 +20,4 @@ k3s_extra_server_args: "--disable=servicelb --disable=traefik"
 k3s_extra_install_envs: {}
 
 k3s_node_labels: {}
+k3s_node_taints: {}
