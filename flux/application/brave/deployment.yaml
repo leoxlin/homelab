@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: brave
+  labels:
+    app: brave
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: brave
+  template:
+    metadata:
+      labels:
+        app: brave
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: brave
+          image: lscr.io/linuxserver/brave:latest
+          ports:
+            - containerPort: 3000
+              name: http
+            - containerPort: 3001
+              name: https
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/New_York"
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: shm
+              mountPath: /dev/shm
+          resources:
+            requests:
+              memory: 1Gi
+              cpu: 500m
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: brave-config
+        - name: shm
+          emptyDir:
+            medium: Memory
+            sizeLimit: 1Gi
