@@ -13,4 +13,4 @@ spec:
     major: 16
   storage:
     storageClass: longhorn
-    size: 1Gi
+    size: 5Gi
