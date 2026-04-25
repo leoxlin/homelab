@@ -28,7 +28,7 @@ spec:
             - name: VPN_SERVICE_PROVIDER
               value: "private internet access"
             - name: SERVER_REGIONS
-              value: "CA Toronto"
+              value: "US Massachusetts"
           envFrom:
             - secretRef:
                 name: gluetun-secrets
