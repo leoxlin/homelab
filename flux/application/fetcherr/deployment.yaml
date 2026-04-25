@@ -26,9 +26,9 @@ spec:
                 - NET_ADMIN
           env:
             - name: VPN_SERVICE_PROVIDER
-              value: "private internet access"
-            - name: SERVER_HOSTNAMES
-              value: "us-denver.privacy.network"
+              value: "mullvad"
+            - name: VPN_TYPE
+              value: "wireguard"
             - name: UPDATER_PERIOD
               value: "24h"
           envFrom:
