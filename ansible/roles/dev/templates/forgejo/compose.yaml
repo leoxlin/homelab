@@ -5,9 +5,13 @@ networks:
   forgejo:
     name: forgejo
 
+volumes:
+  runner-data:
+  daemon-certs:
+
 services:
   server:
-    image: codeberg.org/forgejo/forgejo:13
+    image: codeberg.org/forgejo/forgejo:15
     container_name: forgejo
     environment:
       - USER_UID=1000
@@ -21,3 +25,29 @@ services:
     ports:
       - "10101:3000"
       - "10102:22"
+
+  dind:
+    image: docker:dind
+    container_name: "docker_dind"
+    privileged: "true"
+    command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--tls=false"]
+    restart: "unless-stopped"
+
+  runner:
+    image: code.forgejo.org/forgejo/runner:12
+    container_name: forgejo-runner
+    links:
+      - dind
+    depends_on:
+      - server
+      - dind
+    networks:
+      - forgejo
+    user: "0:0"
+    environment:
+      - DOCKER_HOST=tcp://dind:2375
+    volumes:
+      - runner-data:/data
+      - ./config.yaml:/data/config.yaml:ro
+    restart: "unless-stopped"
+    command: "forgejo-runner daemon --config /data/config.yaml"

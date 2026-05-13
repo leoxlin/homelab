@@ -5,6 +5,8 @@ docker_compose_stacks:
     state: present
   - name: forgejo
     state: present
+    configs:
+      - config.yaml.tpl
   - name: docker-registry
     state: present
     configs:
