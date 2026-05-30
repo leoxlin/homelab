@@ -50,6 +50,6 @@ spec:
         redirectCode: 301
     - route:
         - destination:
-            host: adguard.default.svc.cluster.local
+            host: adguard.adguard.svc.cluster.local
             port:
               number: 3000
