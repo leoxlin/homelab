@@ -19,6 +19,10 @@ spec:
       port: 53
       targetPort: dns-tcp
       protocol: TCP
+    - name: http
+      port: 3000
+      targetPort: http
+      protocol: TCP
 ---
 apiVersion: v1
 kind: Service
