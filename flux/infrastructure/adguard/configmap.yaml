@@ -62,11 +62,12 @@ data:
         id: 2
     whitelist_filters: []
     user_rules: []
-    rewrites:
-      - domain: hydrahmlb.cc
-        answer: 192.168.3.10
-      - domain: "*.hydrahmlb.cc"
-        answer: 192.168.3.10
+    filtering:
+      rewrites:
+        - domain: hydrahmlb.cc
+          answer: 192.168.3.10
+        - domain: "*.hydrahmlb.cc"
+          answer: 192.168.3.10
     dhcp:
       enabled: false
     clients:
