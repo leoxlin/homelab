@@ -12,6 +12,20 @@
     command: "set protocols bgp {{ edgeos_bgp_asn }} neighbor {{ item }} remote-as {{ edgeos_bgp_peer_asn }}"
   loop: "{{ edgeos_bgp_neighbors }}"
 
+- name: Reset DNS forwarding name-servers
+  ansible.netcommon.cli_command:
+    command: "delete service dns forwarding name-server"
+  ignore_errors: true
+
+- name: Configure DNS forwarding name-servers
+  ansible.netcommon.cli_command:
+    command: "set service dns forwarding name-server {{ item }}"
+  loop: "{{ edgeos_dns_name_servers }}"
+
+- name: Enforce strict upstream order
+  ansible.netcommon.cli_command:
+    command: "set service dns forwarding options strict-order"
+
 - name: Commit config
   ansible.netcommon.cli_command:
     command: "commit"
