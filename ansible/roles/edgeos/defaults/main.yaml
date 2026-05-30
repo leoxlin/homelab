@@ -11,3 +11,13 @@ edgeos_bgp_neighbors: []
 edgeos_dns_name_servers:
   - 192.168.3.53  # AdGuard
   - 1.1.1.1       # Cloudflare fallback
+
+# DHCP subnets to advertise a DNS server on. The router forwards through
+# its own dns-forwarding service, which fronts AdGuard.
+edgeos_dhcp_subnets:
+  - shared_network_name: LAN1
+    subnet: 192.168.1.0/24
+    dns_server: 192.168.1.1
+  - shared_network_name: LAN2
+    subnet: 192.168.2.0/24
+    dns_server: 192.168.2.1

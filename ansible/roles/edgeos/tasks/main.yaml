@@ -26,6 +26,13 @@
   ansible.netcommon.cli_command:
     command: "set service dns forwarding options strict-order"
 
+- name: Advertise router as DHCP DNS server
+  ansible.netcommon.cli_command:
+    command: >-
+      set service dhcp-server shared-network-name {{ item.shared_network_name }}
+      subnet {{ item.subnet }} dns-server {{ item.dns_server }}
+  loop: "{{ edgeos_dhcp_subnets }}"
+
 - name: Commit config
   ansible.netcommon.cli_command:
     command: "commit"
