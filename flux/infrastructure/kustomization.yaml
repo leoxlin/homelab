@@ -11,6 +11,7 @@ resources:
   - ./istio
   - ./cert-manager
   - ./cloudflared
+  - ./adguard
   - ./external-dns
   # Storage
   - ./longhorn
