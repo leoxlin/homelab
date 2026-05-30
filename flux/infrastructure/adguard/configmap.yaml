@@ -4,15 +4,13 @@ kind: ConfigMap
 metadata:
   name: adguard-config
 data:
-  AdGuardHome.yaml: |
+  AdGuardHome.yaml.tmpl: |
     http:
       address: 0.0.0.0:3000
       session_ttl: 720h
     users:
       - name: admin
-        # Generate with: htpasswd -B -C 10 -n -b admin <password>
-        # Then replace the value below (keep the leading $).
-        password: $2a$10$REPLACE_ME_WITH_A_REAL_BCRYPT_HASH_FROM_HTPASSWD0
+        password: "${ADMIN_BCRYPT_HASH}"
     auth_attempts: 5
     block_auth_min: 15
     dns:
