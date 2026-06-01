@@ -3,13 +3,9 @@
   "extends": ["config:recommended", ":dependencyDashboard"],
   "enabledManagers": ["flux"],
   "flux": {
-    "managerFilePatterns": ["/flux/infrastructure/cert-manager/.+\\.ya?ml$/"]
+    "managerFilePatterns": ["/^flux/.+\\.ya?ml$/"]
   },
   "packageRules": [
-    {
-      "matchPackageNames": ["!cert-manager"],
-      "enabled": false
-    },
     {
       "matchPackageNames": ["cert-manager"],
       "matchDatasources": ["helm"],
