@@ -5,13 +5,7 @@
   "flux": {
     "managerFilePatterns": ["/^flux/.+\\.ya?ml$/"]
   },
-  "packageRules": [
-    {
-      "matchPackageNames": ["cert-manager"],
-      "matchDatasources": ["helm"],
-      "groupName": "cert-manager",
-      "labels": ["dependency", "cert-manager"],
-      "commitMessageTopic": "cert-manager"
-    }
-  ]
+  "packageRules": [],
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 0
 }
