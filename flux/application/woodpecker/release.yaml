@@ -63,6 +63,7 @@ spec:
                         - "true"
       extraSecretNamesForEnvFrom:
         - woodpecker-secrets
+      mapAgentSecret: false
       nodeSelector:
         node-role.kubernetes.io/worker: "true"
       persistence:
