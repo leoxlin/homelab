@@ -14,6 +14,7 @@ resources:
   - ./karakeep
   - ./lifecamp
   - ./kiwix
+  - ./matrix
   - ./nextcloud
   - ./openwebui
   - ./overseerr
