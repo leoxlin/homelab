@@ -17,6 +17,7 @@ data:
   PAPERLESS_LOGROTATE_MAX_BACKUPS: "1"
   PAPERLESS_LOGROTATE_MAX_SIZE: "10485760"
   PAPERLESS_ENABLE_HTTP_REMOTE_USER: "false"
+  PAPERLESS_CSRF_TRUSTED_ORIGINS: "https://paperless.hydrahmlb.cc"
   # https://integrations.goauthentik.io/documentation/paperless-ngx/
   PAPERLESS_APPS: "allauth.socialaccount.providers.openid_connect"
   PAPERLESS_LOGOUT_REDIRECT_URL: "https://authentik.hydrahmlb.cc/application/o/paperless/end-session/"
