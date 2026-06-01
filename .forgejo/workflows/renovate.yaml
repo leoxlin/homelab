@@ -1,0 +1,36 @@
+name: Renovate
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      log_level:
+        description: "Renovate log level"
+        default: "info"
+        required: false
+      dry_run:
+        description: "Dry run mode (full|lookup|extract|empty for off)"
+        default: ""
+        required: false
+
+jobs:
+  renovate:
+    runs-on: docker
+    container:
+      image: ghcr.io/renovatebot/renovate:41
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run Renovate
+        run: renovate
+        env:
+          RENOVATE_PLATFORM: forgejo
+          RENOVATE_ENDPOINT: https://git.hydrahmlb.dev/
+          RENOVATE_AUTODISCOVER: "false"
+          RENOVATE_REPOSITORIES: leoxlin/homelab
+          RENOVATE_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
+          RENOVATE_GIT_AUTHOR: "Renovate Bot <renovate@hydrahmlb.cc>"
+          RENOVATE_CONFIG_FILE: ${{ github.workspace }}/renovate.json
+          LOG_LEVEL: ${{ inputs.log_level || 'info' }}
+          RENOVATE_DRY_RUN: ${{ inputs.dry_run }}

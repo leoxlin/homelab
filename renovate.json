@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":dependencyDashboard"],
+  "enabledManagers": ["flux"],
+  "flux": {
+    "managerFilePatterns": ["/flux/infrastructure/cert-manager/.+\\.ya?ml$/"]
+  },
+  "packageRules": [
+    {
+      "matchPackageNames": ["!cert-manager"],
+      "enabled": false
+    },
+    {
+      "matchPackageNames": ["cert-manager"],
+      "matchDatasources": ["helm"],
+      "groupName": "cert-manager",
+      "labels": ["dependency", "cert-manager"],
+      "commitMessageTopic": "cert-manager"
+    }
+  ]
+}
