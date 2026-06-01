@@ -12,7 +12,6 @@ resources:
   - ./immich
   - ./k8up
   - ./karakeep
-  - ./lifecamp
   - ./kiwix
   - ./matrix
   - ./nextcloud
