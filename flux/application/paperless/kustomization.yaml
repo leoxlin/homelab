@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: default
 resources:
   - postgres.yaml
+  - redis.yaml
   - volume.yaml
   - configmap.yaml
   - secrets.yaml
