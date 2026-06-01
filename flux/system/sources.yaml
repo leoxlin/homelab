@@ -115,3 +115,13 @@ metadata:
 spec:
   interval: 1h
   url: https://langflow-ai.github.io/langflow-helm-charts
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: woodpecker
+  namespace: flux-system
+spec:
+  type: oci
+  interval: 1h
+  url: oci://ghcr.io/woodpecker-ci/helm
