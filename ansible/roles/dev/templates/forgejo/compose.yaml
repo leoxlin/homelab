@@ -28,9 +28,11 @@ services:
 
   dind:
     image: docker:dind
-    container_name: "docker_dind"
+    container_name: forgejo-dind
     privileged: "true"
     command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--tls=false"]
+    networks:
+      - forgejo
     restart: "unless-stopped"
 
   runner:
@@ -45,7 +47,7 @@ services:
       - forgejo
     user: "0:0"
     environment:
-      - DOCKER_HOST=tcp://dind:2375
+      - DOCKER_HOST=tcp://forgejo-dind:2375
     volumes:
       - runner-data:/data
       - ./config.yaml:/data/config.yaml:ro

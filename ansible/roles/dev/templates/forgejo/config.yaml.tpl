@@ -1,21 +1,5 @@
-# Example configuration file, it's safe to copy this as the default config file without any modification.
-
-# You don't have to copy this file to your instance,
-# just run `forgejo-runner generate-config > config.yaml` to generate a config file.
-
-#
-# The value of level or job_level can be trace, debug, info, warn, error or fatal
-#
 log:
-  #
-  # What is displayed in the output of the runner process but not sent
-  # to the Forgejo instance.
-  #
   level: info
-  #
-  # What is sent to the Forgejo instance and therefore
-  # visible in the web UI for a given job.
-  #
   job_level: info
 
 runner:
@@ -60,7 +44,8 @@ runner:
   # Like: ["macos-arm64:host", "ubuntu-latest:docker://node:20-bookworm", "ubuntu-22.04:docker://node:20-bookworm"]
   # If it's empty when registering, it will ask for inputting labels.
   # If it's empty when executing the `daemon`, it will use labels in the `.runner` file.
-  labels: []
+  labels:
+    -  docker:docker://node:20-bookworm
 
 cache:
   #
