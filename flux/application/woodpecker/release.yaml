@@ -35,23 +35,18 @@ spec:
         WOODPECKER_FORGEJO_URL: "https://git.hydrahmlb.dev"
       extraSecretNamesForEnvFrom:
         - woodpecker-secrets
-      createAgentSecret: false
       persistentVolume:
         enabled: true
-        size: 10Gi
+        size: 2Gi
         storageClass: longhorn
 
     agent:
       enabled: true
       replicaCount: 2
       env:
-        WOODPECKER_SERVER: "woodpecker-server.woodpecker.svc.cluster.local:9000"
-        WOODPECKER_BACKEND: kubernetes
-        WOODPECKER_BACKEND_K8S_NAMESPACE: woodpecker
         WOODPECKER_BACKEND_K8S_STORAGE_CLASS: longhorn
         WOODPECKER_BACKEND_K8S_VOLUME_SIZE: 1G
         WOODPECKER_BACKEND_K8S_STORAGE_RWX: "true"
-        WOODPECKER_CONNECT_RETRY_COUNT: "1"
         WOODPECKER_BACKEND_K8S_POD_AFFINITY: |
           nodeAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
@@ -63,7 +58,6 @@ spec:
                         - "true"
       extraSecretNamesForEnvFrom:
         - woodpecker-secrets
-      mapAgentSecret: false
       nodeSelector:
         node-role.kubernetes.io/worker: "true"
       persistence:
