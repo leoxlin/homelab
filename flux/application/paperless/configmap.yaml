@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: paperless-config
 data:
-  PAPERLESS_URL: "https://paper.hydrahmlb.cc"
+  PAPERLESS_URL: "https://paperless.hydrahmlb.cc"
   PAPERLESS_TIME_ZONE: "UTC"
   PAPERLESS_OCR_LANGUAGE: "eng"
   PAPERLESS_REDIS: "redis://paperless-redis.default.svc.cluster.local:6379"
