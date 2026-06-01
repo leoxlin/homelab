@@ -7,12 +7,12 @@ on:
     inputs:
       log_level:
         description: "Renovate log level"
-        default: "info"
-        required: false
+        type: string
+        default: info
       dry_run:
         description: "Dry run mode (full|lookup|extract|empty for off)"
+        type: string
         default: ""
-        required: false
 
 jobs:
   renovate:
