@@ -22,4 +22,3 @@ resources:
   - ./rsshub
   - ./servarr
   - ./tubearchivist
-  - ./woodpecker
