@@ -17,6 +17,12 @@ resources:
   - application/openwebui.yaml
   - application/overseerr.yaml
   - application/rsshub.yaml
+  - application/fetcherr.yaml
+  - application/k8up.yaml
+  - application/nextcloud.yaml
+  - application/plex.yaml
+  - application/servarr.yaml
+  - application/tubearchivist.yaml
 patches:
   - path: ./patches/prefer-worker.yaml
     target:
