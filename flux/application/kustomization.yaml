@@ -6,7 +6,6 @@ resources:
   - ./bentopdf
   - ./calibre
   - ./collabora
-  - ./commafeed
   - ./fetcherr
   - ./immich
   - ./k8up

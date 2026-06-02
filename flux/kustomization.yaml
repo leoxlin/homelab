@@ -9,6 +9,7 @@ resources:
   - application.yaml
   - application/paperless.yaml
   - application/matrix.yaml
+  - application/commafeed.yaml
 patches:
   - path: ./patches/prefer-worker.yaml
     target:
