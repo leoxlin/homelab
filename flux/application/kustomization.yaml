@@ -12,7 +12,6 @@ resources:
   - ./k8up
   - ./karakeep
   - ./kiwix
-  - ./matrix
   - ./nextcloud
   - ./openwebui
   - ./overseerr
