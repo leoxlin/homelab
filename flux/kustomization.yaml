@@ -7,6 +7,7 @@ resources:
   - infrastructure.yaml
   - database.yaml
   - application.yaml
+  - application/paperless.yaml
 patches:
   - path: ./patches/prefer-worker.yaml
     target:

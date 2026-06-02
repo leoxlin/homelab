@@ -16,7 +16,6 @@ resources:
   - ./nextcloud
   - ./openwebui
   - ./overseerr
-  - ./paperless
   - ./plex
   - ./rsshub
   - ./servarr
