@@ -10,6 +10,13 @@ resources:
   - application/paperless.yaml
   - application/matrix.yaml
   - application/commafeed.yaml
+  - application/bentopdf.yaml
+  - application/calibre.yaml
+  - application/collabora.yaml
+  - application/kiwix.yaml
+  - application/openwebui.yaml
+  - application/overseerr.yaml
+  - application/rsshub.yaml
 patches:
   - path: ./patches/prefer-worker.yaml
     target:
