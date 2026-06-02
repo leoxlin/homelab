@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hermes
+  labels:
+    app: hermes
+    k8s.hydrahmlb.cc/schedule: server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: hermes
+  template:
+    metadata:
+      labels:
+        app: hermes
+    spec:
+      containers:
+        - name: hermes
+          image: nousresearch/hermes-agent:latest
+          args:
+            - gateway
+            - run
+          ports:
+            - containerPort: 8642
+              name: api
+            - containerPort: 9119
+              name: dashboard
+          envFrom:
+            - configMapRef:
+                name: hermes-config
+            - secretRef:
+                name: hermes-secrets
+          volumeMounts:
+            - name: hermes-data
+              mountPath: /opt/data
+          resources:
+            requests:
+              memory: 1Gi
+            limits:
+              memory: 4Gi
+      volumes:
+        - name: hermes-data
+          persistentVolumeClaim:
+            claimName: hermes-data
