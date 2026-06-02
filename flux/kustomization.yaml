@@ -24,6 +24,7 @@ resources:
   - application/servarr.yaml
   - application/tubearchivist.yaml
   - application/karakeep.yaml
+  - application/authentik.yaml
 patches:
   - path: ./patches/prefer-worker.yaml
     target:
