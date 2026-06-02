@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - ./authentik
   - ./immich
-  - ./karakeep
+

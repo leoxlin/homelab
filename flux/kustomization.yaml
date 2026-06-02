@@ -23,6 +23,7 @@ resources:
   - application/plex.yaml
   - application/servarr.yaml
   - application/tubearchivist.yaml
+  - application/karakeep.yaml
 patches:
   - path: ./patches/prefer-worker.yaml
     target:
