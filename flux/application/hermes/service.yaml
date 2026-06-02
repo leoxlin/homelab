@@ -31,6 +31,6 @@ spec:
         redirectCode: 301
     - route:
         - destination:
-            host: hermes.default.svc.cluster.local
+            host: hermes.hermes.svc.cluster.local
             port:
               number: 9119
