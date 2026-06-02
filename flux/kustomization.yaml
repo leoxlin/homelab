@@ -6,25 +6,25 @@ resources:
   - crds.yaml
   - infrastructure.yaml
   - database.yaml
-  - application/authentik.yaml
-  - application/bentopdf.yaml
-  - application/calibre.yaml
-  - application/collabora.yaml
-  - application/commafeed.yaml
-  - application/fetcherr.yaml
-  - application/immich.yaml
-  - application/k8up.yaml
-  - application/karakeep.yaml
-  - application/kiwix.yaml
-  - application/matrix.yaml
-  - application/nextcloud.yaml
-  - application/openwebui.yaml
-  - application/overseerr.yaml
-  - application/paperless.yaml
-  - application/plex.yaml
-  - application/rsshub.yaml
-  - application/servarr.yaml
-  - application/tubearchivist.yaml
+  - application/authentik/authentik.yaml
+  - application/bentopdf/bentopdf.yaml
+  - application/calibre/calibre.yaml
+  - application/collabora/collabora.yaml
+  - application/commafeed/commafeed.yaml
+  - application/fetcherr/fetcherr.yaml
+  - application/immich/immich.yaml
+  - application/k8up/k8up.yaml
+  - application/karakeep/karakeep.yaml
+  - application/kiwix/kiwix.yaml
+  - application/matrix/matrix.yaml
+  - application/nextcloud/nextcloud.yaml
+  - application/openwebui/openwebui.yaml
+  - application/overseerr/overseerr.yaml
+  - application/paperless/paperless.yaml
+  - application/plex/plex.yaml
+  - application/rsshub/rsshub.yaml
+  - application/servarr/servarr.yaml
+  - application/tubearchivist/tubearchivist.yaml
 patches:
   - path: ./patches/prefer-worker.yaml
     target:
