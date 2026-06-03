@@ -37,6 +37,18 @@ spec:
           volumeMounts:
             - name: hermes-data
               mountPath: /opt/data
+          livenessProbe:
+            tcpSocket:
+              port: dashboard
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: dashboard
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
           resources:
             requests:
               memory: 1Gi
