@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: hermes
   labels:
@@ -8,8 +8,7 @@ metadata:
     k8s.hydrahmlb.cc/schedule: server
 spec:
   replicas: 1
-  strategy:
-    type: Recreate
+  serviceName: hermes
   selector:
     matchLabels:
       app: hermes
