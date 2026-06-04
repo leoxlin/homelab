@@ -4,6 +4,7 @@ kind: ConfigMap
 metadata:
   name: hermes-config
 data:
+  HERMES_HOME: "/opt/data"
   HERMES_DASHBOARD: "1"
   HERMES_DASHBOARD_HOST: "0.0.0.0"
   HERMES_DASHBOARD_PORT: "9119"
