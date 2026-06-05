@@ -1,10 +1,36 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", ":dependencyDashboard"],
-  "enabledManagers": ["flux"],
+  "enabledManagers": [
+    "flux",
+    "kustomize",
+    "ansible",
+    "ansible-galaxy",
+    "docker-compose",
+    "github-actions",
+    "custom.regex"
+  ],
   "flux": {
     "managerFilePatterns": ["/^flux/.+\\.ya?ml$/"]
   },
+  "docker-compose": {
+    "managerFilePatterns": ["/^ansible/.+/templates/.+/compose\\.ya?ml$/"]
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update K3s versions declared in Ansible inventory variables.",
+      "managerFilePatterns": [
+        "/^ansible/inventory/(group_vars|host_vars)/.+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "k3s_version:\\s*(?<currentValue>v?\\d+\\.\\d+\\.\\d+\\+k3s\\d+)"
+      ],
+      "depNameTemplate": "k3s-io/k3s",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver"
+    }
+  ],
   "packageRules": [],
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0
