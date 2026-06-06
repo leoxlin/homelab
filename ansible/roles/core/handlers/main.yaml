@@ -8,3 +8,8 @@
   ansible.builtin.service:
     name: fail2ban
     state: restarted
+
+- name: Restart chrony
+  ansible.builtin.service:
+    name: "{{ timesync_service_name }}"
+    state: restarted

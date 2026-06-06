@@ -2,6 +2,18 @@
 system_timezone: "UTC"
 system_set_hostname: false
 
+timesync_enabled: true
+timesync_package_name: chrony
+timesync_service_name: chrony
+timesync_config_path: /etc/chrony/chrony.conf
+timesync_driftfile_path: /var/lib/chrony/chrony.drift
+timesync_drift_threshold_seconds: 1
+timesync_ntp_servers:
+  - 0.pool.ntp.org
+  - 1.pool.ntp.org
+  - 2.pool.ntp.org
+  - 3.pool.ntp.org
+
 system_packages: []
 system_extra_packages: []
 system_services: []

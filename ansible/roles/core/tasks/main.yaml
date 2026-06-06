@@ -37,6 +37,10 @@
 - name: Include system timezone tasks
   ansible.builtin.include_tasks: timezone.yaml
 
+- name: Include time sync tasks
+  ansible.builtin.include_tasks: timesync.yaml
+  when: timesync_enabled | default(true)
+
 - name: Include automatic updates tasks
   ansible.builtin.include_tasks: auto_updates.yaml
   when:

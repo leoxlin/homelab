@@ -1,5 +1,8 @@
 ---
 ssh_service_name: ssh
+timesync_service_name: chrony
+timesync_config_path: /etc/chrony/chrony.conf
+timesync_driftfile_path: /var/lib/chrony/chrony.drift
 
 system_packages:
   - curl

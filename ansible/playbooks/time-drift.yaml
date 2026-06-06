@@ -1,0 +1,13 @@
+---
+- name: Detect and repair time drift
+  hosts:
+    - drivers
+    - servers
+    - marmot
+    - pika
+  become: true
+  tasks:
+    - name: Detect and repair time drift
+      ansible.builtin.include_role:
+        name: core
+        tasks_from: timesync_drift

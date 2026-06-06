@@ -1,0 +1,9 @@
+{% for server in timesync_ntp_servers %}
+pool {{ server }} iburst
+{% endfor %}
+
+driftfile {{ timesync_driftfile_path }}
+makestep 1.0 3
+rtcsync
+
+logdir /var/log/chrony

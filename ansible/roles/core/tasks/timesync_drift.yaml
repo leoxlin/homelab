@@ -1,0 +1,69 @@
+---
+- name: Include OS-specific variables
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - '{{ ansible_facts["distribution"] | lower }}.yaml'
+    - '{{ ansible_facts["os_family"] | lower }}.yaml'
+    - "default.yaml"
+
+- name: Check chrony tracking
+  ansible.builtin.command: chronyc tracking
+  changed_when: false
+  failed_when: false
+  register: timesync_chrony_tracking
+
+- name: Parse current time drift
+  ansible.builtin.set_fact:
+    timesync_current_drift_seconds: >-
+      {{
+        (
+          timesync_chrony_tracking.stdout
+          | regex_findall('(?m)^System time\\s*:\\s*([0-9.]+) seconds')
+          | first
+          | default((timesync_drift_threshold_seconds | float) + 1, true)
+        ) | float
+      }}
+  when: timesync_chrony_tracking.rc == 0
+
+- name: Parse current chrony sync status
+  ansible.builtin.set_fact:
+    timesync_leap_status: >-
+      {{
+        (
+          timesync_chrony_tracking.stdout
+          | regex_findall('(?m)^Leap status\\s*:\\s*(.+)$')
+          | first
+          | default('unknown')
+        ) | trim
+      }}
+  when: timesync_chrony_tracking.rc == 0
+
+- name: Determine whether time sync should be reapplied
+  ansible.builtin.set_fact:
+    timesync_reapply_needed: >-
+      {{
+        timesync_chrony_tracking.rc != 0
+        or (timesync_current_drift_seconds | default(0) | float) > (timesync_drift_threshold_seconds | float)
+        or (timesync_leap_status | default('unknown')) != 'Normal'
+      }}
+
+- name: Reapply time sync when needed
+  ansible.builtin.include_tasks: timesync.yaml
+  when: timesync_reapply_needed | bool
+
+- name: Apply time sync handler changes
+  ansible.builtin.meta: flush_handlers
+  when: timesync_reapply_needed | bool
+
+- name: Force chrony to step clock when needed
+  ansible.builtin.command: chronyc makestep
+  changed_when: timesync_reapply_needed | bool
+  when: timesync_reapply_needed | bool
+
+- name: Report time drift
+  ansible.builtin.debug:
+    msg: >-
+      {{ inventory_hostname }} drift={{ timesync_current_drift_seconds | default('unknown') }}s
+      sync={{ timesync_leap_status | default('unknown') }}
+      threshold={{ timesync_drift_threshold_seconds }}s
+      reapplied={{ timesync_reapply_needed }}

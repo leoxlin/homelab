@@ -1,0 +1,20 @@
+---
+- name: Install time sync package
+  ansible.builtin.package:
+    name: "{{ timesync_package_name }}"
+    state: present
+
+- name: Configure time sync
+  ansible.builtin.template:
+    src: chrony.conf.j2
+    dest: "{{ timesync_config_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart chrony
+
+- name: Ensure time sync service is running
+  ansible.builtin.service:
+    name: "{{ timesync_service_name }}"
+    state: started
+    enabled: yes
