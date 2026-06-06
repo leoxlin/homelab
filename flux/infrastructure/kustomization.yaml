@@ -11,6 +11,7 @@ resources:
   - ./istio
   - ./cert-manager
   - ./cloudflared
+  - ./newt
   - ./adguard
   - ./external-dns
   # Storage
