@@ -1,0 +1,52 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: newt
+  namespace: flux-system
+spec:
+  releaseName: newt
+  interval: 30m
+  chart:
+    spec:
+      chart: newt
+      version: "1.5.0"
+      sourceRef:
+        kind: HelmRepository
+        name: fossorial
+        namespace: flux-system
+  targetNamespace: newt
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    global:
+      logLevel: INFO
+    newtInstances:
+      - name: main-tunnel
+        auth:
+          existingSecretName: newt-secrets
+        service:
+          enabled: false
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+            ephemeral-storage: 256Mi
+        affinity:
+          nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                preference:
+                  matchExpressions:
+                    - key: node-role.kubernetes.io/worker
+                      operator: In
+                      values:
+                        - "true"

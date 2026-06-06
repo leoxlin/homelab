@@ -125,3 +125,12 @@ spec:
   type: oci
   interval: 1h
   url: oci://ghcr.io/woodpecker-ci/helm
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: fossorial
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: https://charts.fossorial.io
