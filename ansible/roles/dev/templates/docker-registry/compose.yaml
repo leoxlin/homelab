@@ -7,7 +7,7 @@ networks:
 
 services:
   registry-docker:
-    image: registry:3
+    image: registry:3@sha256:85347ed2ecde64161c7a4788a4d7d3dcc9d6f86f7be95834022e3c6a423a945a
     container_name: registry-docker
     restart: always
     ports:
@@ -31,7 +31,7 @@ services:
       - REGISTRY_STORAGE_S3_ROOTDIRECTORY=/registry-docker
       - REGISTRY_PROXY_REMOTEURL=https://registry-1.docker.io
   registry-ghcr:
-    image: registry:3
+    image: registry:3@sha256:85347ed2ecde64161c7a4788a4d7d3dcc9d6f86f7be95834022e3c6a423a945a
     container_name: registry-ghcr
     restart: always
     ports:
@@ -55,7 +55,7 @@ services:
       - REGISTRY_STORAGE_S3_ROOTDIRECTORY=/registry-ghcr
       - REGISTRY_PROXY_REMOTEURL=https://ghcr.io
   registry-quay:
-    image: registry:3
+    image: registry:3@sha256:85347ed2ecde64161c7a4788a4d7d3dcc9d6f86f7be95834022e3c6a423a945a
     container_name: registry-quay
     restart: always
     ports:

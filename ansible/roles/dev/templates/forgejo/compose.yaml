@@ -11,7 +11,7 @@ volumes:
 
 services:
   server:
-    image: codeberg.org/forgejo/forgejo:15
+    image: codeberg.org/forgejo/forgejo:15@sha256:db04c7114b656f896e206ba3873fe8d3a7adf2daa44907037f0274f4ba653fb9
     container_name: forgejo
     environment:
       - USER_UID=1000
@@ -27,7 +27,7 @@ services:
       - "10102:22"
 
   dind:
-    image: docker:dind
+    image: docker:dind@sha256:7d85d0eda291f1a7ab6df4a9d1802b5ad4cf9145a088bd11188c78dcb5c7392b
     container_name: forgejo-dind
     privileged: "true"
     command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--tls=false"]
@@ -36,7 +36,7 @@ services:
     restart: "unless-stopped"
 
   runner:
-    image: code.forgejo.org/forgejo/runner:12
+    image: code.forgejo.org/forgejo/runner:12@sha256:379b324d6942824b7487706c0a06be4d63e546c17b62bece4ae18c74364a8fae
     container_name: forgejo-runner
     links:
       - dind
