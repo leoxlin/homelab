@@ -12,6 +12,20 @@
     state: present
     reload: true
 
+- name: Increase inotify limits for k3s workloads
+  ansible.posix.sysctl:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    reload: true
+  loop:
+    - name: fs.inotify.max_user_watches
+      value: "524288"
+    - name: fs.inotify.max_user_instances
+      value: "512"
+  loop_control:
+    label: "{{ item.name }}"
+
 - name: Enable IPv6 forwarding
   ansible.posix.sysctl:
     name: net.ipv6.conf.all.forwarding
