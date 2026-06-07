@@ -12,6 +12,7 @@ resources:
   - ./cert-manager
   - ./cloudflared
   - ./newt
+  - ./pangolin-client
   - ./adguard
   - ./external-dns
   # Storage
