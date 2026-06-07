@@ -11,7 +11,7 @@
 
 - name: Determine docker repo configuration
   ansible.builtin.set_fact:
-    docker_repo_url: "https://download.docker.com/linux/debian"
+    docker_repo_url: "https://download.docker.com/linux/{{ ansible_facts['distribution'] | lower }}"
     docker_repo_key: "/etc/apt/keyrings/docker.asc"
     docker_os_arch: "{{ 'amd64' if ansible_facts['architecture'] == 'x86_64' else ansible_architecture }}"
     docker_os_release: "{{ ansible_facts['distribution_release'] }}"
@@ -26,7 +26,7 @@
 
 - name: Download Docker GPG key (Debian)
   ansible.builtin.get_url:
-    url: https://download.docker.com/linux/debian/gpg
+    url: "{{ docker_repo_url }}/gpg"
     dest: "{{ docker_repo_key }}"
     mode: "0644"
   when: ansible_facts["os_family"] == "Debian"
