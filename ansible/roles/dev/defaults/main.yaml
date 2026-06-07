@@ -13,3 +13,5 @@ docker_compose_stacks:
       - htpasswd.tpl
   - name: newt
     state: present
+  - name: pangolin-client
+    state: present

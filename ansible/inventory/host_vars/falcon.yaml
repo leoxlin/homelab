@@ -6,3 +6,9 @@ ip_forward_enabled: true
 system_timezone: UTC
 system_auto_updates: false
 docker_enabled: true
+deploy_stacks:
+  - cloudflare-tunnel
+  - docker-registry
+  - forgejo
+  - newt
+  - pangolin-client

@@ -1,6 +1,8 @@
 ---
 - name: Deploy developer server
-  hosts: falcon
+  hosts:
+    - falcon
+    - junco
   become: true
   roles:
     - role: dev

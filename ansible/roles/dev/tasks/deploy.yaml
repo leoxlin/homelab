@@ -7,20 +7,28 @@
     owner: root
     group: root
 
-- name: "Check if .env template exists for {{ stack.name }}"
+- name: "Find .env template for {{ stack.name }}"
   ansible.builtin.stat:
-    path: "{{ role_path }}/templates/{{ stack.name }}/.env.tpl"
-  register: env_template
+    path: "{{ item }}"
+  register: env_template_stat
   become: false
   delegate_to: localhost
+  loop:
+    - "{{ role_path }}/templates/{{ stack.name }}/{{ inventory_hostname }}/.env.tpl"
+    - "{{ role_path }}/templates/{{ stack.name }}/.env.tpl"
+
+- name: "Resolve .env template path for {{ stack.name }}"
+  ansible.builtin.set_fact:
+    env_tpl_path: "{{ (env_template_stat.results | selectattr('stat.exists') | first).item }}"
+  when: env_template_stat.results | selectattr('stat.exists') | list | length > 0
 
 - name: "Inject secrets into .env template for {{ stack.name }}"
   ansible.builtin.command:
-    cmd: op inject -i "{{ role_path }}/templates/{{ stack.name }}/.env.tpl"
+    cmd: "op inject -i {{ env_tpl_path }}"
   register: env_content
   delegate_to: localhost
   become: false
-  when: env_template.stat.exists
+  when: env_tpl_path is defined
   changed_when: false
 
 - name: "Create .env file for {{ stack.name }}"
@@ -30,7 +38,7 @@
     mode: "0600"
     owner: root
     group: root
-  when: env_template.stat.exists
+  when: env_tpl_path is defined
 
 - name: "Copy compose.yaml for {{ stack.name }}"
   ansible.builtin.copy:
