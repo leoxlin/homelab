@@ -5,6 +5,7 @@ resources:
   - system.yaml
   - crds.yaml
   - infrastructure.yaml
+  - infrastructure/pangolin-newt/pangolin-newt.yaml
   - database.yaml
   - application/authentik/authentik.yaml
   - application/bentopdf/bentopdf.yaml

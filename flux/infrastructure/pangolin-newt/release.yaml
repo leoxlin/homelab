@@ -1,0 +1,124 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: newt
+  namespace: flux-system
+spec:
+  releaseName: newt
+  interval: 30m
+  chart:
+    spec:
+      chart: newt
+      version: "1.5.0"
+      sourceRef:
+        kind: HelmRepository
+        name: fossorial
+        namespace: flux-system
+  targetNamespace: pangolin-newt
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    global:
+      logLevel: INFO
+    newtInstances:
+      - name: marten-tunnel
+        enabled: true
+        auth:
+          existingSecretName: newt-secrets-marten
+        service:
+          enabled: false
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+            ephemeral-storage: 256Mi
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: kubernetes.io/hostname
+                      operator: In
+                      values:
+                        - marten
+      - name: marmot-01-tunnel
+        enabled: true
+        auth:
+          existingSecretName: newt-secrets-marmot-01
+        service:
+          enabled: false
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+            ephemeral-storage: 256Mi
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: kubernetes.io/hostname
+                      operator: In
+                      values:
+                        - marmot-01
+      - name: marmot-02-tunnel
+        enabled: true
+        auth:
+          existingSecretName: newt-secrets-marmot-02
+        service:
+          enabled: false
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+            ephemeral-storage: 256Mi
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: kubernetes.io/hostname
+                      operator: In
+                      values:
+                        - marmot-02
+      - name: marmot-03-tunnel
+        enabled: true
+        auth:
+          existingSecretName: newt-secrets-marmot-03
+        service:
+          enabled: false
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+            ephemeral-storage: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+            ephemeral-storage: 256Mi
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: kubernetes.io/hostname
+                      operator: In
+                      values:
+                        - marmot-03
