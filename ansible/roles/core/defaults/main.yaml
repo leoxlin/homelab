@@ -64,6 +64,8 @@ security_sysctl_hardening: true
 ipv6_enabled: false
 ip_forward_enabled: false
 
+masquerade_interfaces: []
+
 # Automatic updates (Debian only)
 system_auto_updates: true
 auto_updates_mail_to: ""

@@ -41,6 +41,10 @@
   ansible.builtin.include_tasks: timesync.yaml
   when: timesync_enabled | default(true)
 
+- name: Include iptables masquerade tasks
+  ansible.builtin.include_tasks: iptables.yaml
+  when: masquerade_interfaces | default([]) | length > 0
+
 - name: Include automatic updates tasks
   ansible.builtin.include_tasks: auto_updates.yaml
   when:

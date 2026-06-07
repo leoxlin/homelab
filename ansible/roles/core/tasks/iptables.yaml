@@ -1,0 +1,14 @@
+---
+- name: Install iptables-persistent
+  ansible.builtin.package:
+    name: iptables-persistent
+    state: present
+
+- name: Add masquerade rules
+  ansible.builtin.iptables:
+    table: nat
+    chain: POSTROUTING
+    out_interface: "{{ item }}"
+    jump: MASQUERADE
+  loop: "{{ masquerade_interfaces }}"
+  notify: Save iptables rules

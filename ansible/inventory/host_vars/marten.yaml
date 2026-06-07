@@ -23,6 +23,8 @@ security_firewall_rules:
 security_fail2ban_enabled: true
 security_sysctl_hardening: true
 ip_forward_enabled: true
+masquerade_interfaces:
+  - pangolin
 system_timezone: UTC
 system_auto_updates: false
 
