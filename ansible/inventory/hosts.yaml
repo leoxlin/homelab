@@ -5,14 +5,16 @@ all:
     edgerouter:
       ansible_host: 192.168.2.1
     ### Named Nodes ###
-    ocelot:
-      ansible_host: 192.168.2.60
     marten:
       ansible_host: 192.168.2.40
     numbat:
       ansible_host: 192.168.2.50
+    ocelot:
+      ansible_host: 192.168.2.60
     falcon:
-      ansible_host: 46.224.223.92
+      ansible_host: 192.168.4.10
+    junco:
+      ansible_host: 192.168.4.11
     ### Control Nodes ###
     marmot-01:
       ansible_host: 192.168.2.111

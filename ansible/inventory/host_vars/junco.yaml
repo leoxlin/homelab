@@ -1,0 +1,8 @@
+---
+security_firewall_enabled: false
+security_fail2ban_enabled: true
+security_sysctl_hardening: true
+ip_forward_enabled: true
+system_timezone: UTC
+system_auto_updates: false
+docker_enabled: true
