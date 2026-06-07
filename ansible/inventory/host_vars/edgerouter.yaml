@@ -3,6 +3,10 @@
 ansible_network_os: edgeos
 ansible_connection: ansible.netcommon.network_cli
 
+edgeos_static_routes:
+  - destination: 192.168.4.0/24
+    next_hop: 192.168.2.40  # marten (pangolin-client gateway)
+
 edgeos_bgp_neighbors:
   # Control plane nodes (marmot)
   - 192.168.2.111

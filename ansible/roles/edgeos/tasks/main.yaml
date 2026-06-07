@@ -33,6 +33,11 @@
       subnet {{ item.subnet }} dns-server {{ item.dns_server }}
   loop: "{{ edgeos_dhcp_subnets }}"
 
+- name: Configure static routes
+  ansible.netcommon.cli_command:
+    command: "set protocols static route {{ item.destination }} next-hop {{ item.next_hop }}"
+  loop: "{{ edgeos_static_routes }}"
+
 - name: Commit config
   ansible.netcommon.cli_command:
     command: "commit"

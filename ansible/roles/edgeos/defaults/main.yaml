@@ -7,6 +7,8 @@ edgeos_bgp_router_id: "192.168.2.1"
 edgeos_bgp_peer_asn: 64513
 edgeos_bgp_neighbors: []
 
+edgeos_static_routes: []
+
 # DNS forwarding upstreams, queried in listed order (see strict-order option).
 edgeos_dns_name_servers:
   - 192.168.3.53  # AdGuard
