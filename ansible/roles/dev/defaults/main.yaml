@@ -11,3 +11,5 @@ docker_compose_stacks:
     state: present
     configs:
       - htpasswd.tpl
+  - name: newt
+    state: present

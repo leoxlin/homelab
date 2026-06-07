@@ -12,4 +12,6 @@
   loop: "{{ docker_compose_stacks }}"
   loop_control:
     loop_var: stack
-  when: stack.state | default('present') == 'present'
+  when:
+    - stack.state | default('present') == 'present'
+    - deploy_stacks is not defined or stack.name in deploy_stacks
