@@ -35,14 +35,6 @@ spec:
         redirectCode: 301
     - match:
         - uri:
-            prefix: /api
-      route:
-        - destination:
-            host: hermes.junco.local
-            port:
-              number: 8642
-    - match:
-        - uri:
             prefix: /v1
       route:
         - destination:
