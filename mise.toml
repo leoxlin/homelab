@@ -51,7 +51,8 @@ dir = "flux"
 description = "Run an ansible playbook"
 usage = '''
 arg "<playbook>"
+flag "--host <host>" help="Limit execution to a specific host or group"
 '''
-run = "mise exec -- ansible-playbook playbooks/${usage_playbook}.yaml"
+run = "mise exec -- ansible-playbook playbooks/${usage_playbook}.yaml ${usage_host:+--limit $usage_host}"
 dir = "ansible"
 alias = "a"
