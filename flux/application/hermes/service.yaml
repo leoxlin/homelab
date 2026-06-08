@@ -1,18 +1,22 @@
 ---
-apiVersion: v1
-kind: Service
+apiVersion: networking.istio.io/v1
+kind: ServiceEntry
 metadata:
   name: hermes
 spec:
-  selector:
-    app: hermes
+  hosts:
+    - hermes.junco.local
+  location: MESH_EXTERNAL
   ports:
-    - port: 8642
-      targetPort: 8642
+    - number: 8642
       name: api
-    - port: 9119
-      targetPort: 9119
+      protocol: HTTP
+    - number: 9119
       name: dashboard
+      protocol: HTTP
+  resolution: STATIC
+  endpoints:
+    - address: 192.168.4.11
 ---
 apiVersion: networking.istio.io/v1
 kind: VirtualService
@@ -29,8 +33,16 @@ spec:
       redirect:
         scheme: https
         redirectCode: 301
+    - match:
+        - uri:
+            prefix: /api
+      route:
+        - destination:
+            host: hermes.junco.local
+            port:
+              number: 8642
     - route:
         - destination:
-            host: hermes.hermes.svc.cluster.local
+            host: hermes.junco.local
             port:
               number: 9119

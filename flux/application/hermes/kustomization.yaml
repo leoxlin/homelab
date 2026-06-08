@@ -4,8 +4,4 @@ kind: Kustomization
 namespace: hermes
 resources:
   - namespace.yaml
-  - volume.yaml
-  - secrets.yaml
-  - configmap.yaml
-  - deployment.yaml
   - service.yaml
