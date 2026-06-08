@@ -19,6 +19,9 @@ spec:
     spec:
       securityContext:
         fsGroup: 1121
+        supplementalGroups:
+          - 44   # video
+          - 989  # render
       containers:
         - name: plex
           image: lscr.io/linuxserver/plex:latest
@@ -73,6 +76,8 @@ spec:
             - name: media
               mountPath: /movies
               subPath: Movies
+            - name: dri
+              mountPath: /dev/dri
           resources:
             requests:
               memory: 1Gi
@@ -84,5 +89,9 @@ spec:
           hostPath:
             path: /srv/mergerfs/union_01/media
             type: DirectoryOrCreate
+        - name: dri
+          hostPath:
+            path: /dev/dri
+            type: Directory
       nodeSelector:
         kubernetes.io/hostname: marten
