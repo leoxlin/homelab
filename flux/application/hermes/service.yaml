@@ -41,6 +41,14 @@ spec:
             host: hermes.junco.local
             port:
               number: 8642
+    - match:
+        - uri:
+            prefix: /v1
+      route:
+        - destination:
+            host: hermes.junco.local
+            port:
+              number: 8642
     - route:
         - destination:
             host: hermes.junco.local
