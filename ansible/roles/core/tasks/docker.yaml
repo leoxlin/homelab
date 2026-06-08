@@ -44,15 +44,24 @@
   when: ansible_facts["os_family"] == "Debian"
 
 - name: Install Docker packages (Debian)
-  ansible.builtin.apt:
-    name:
-      - docker-ce
-      - docker-ce-cli
-      - containerd.io
-      - docker-buildx-plugin
-      - docker-compose-plugin
-    state: present
   when: ansible_facts["os_family"] == "Debian"
+  block:
+    - name: Install Docker CE packages
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+  rescue:
+    - name: Install fallback Docker packages
+      ansible.builtin.apt:
+        name:
+          - docker-cli
+          - docker
+        state: present
 
 - name: Install Docker packages (Arch)
   community.general.pacman:
