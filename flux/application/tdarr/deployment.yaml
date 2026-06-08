@@ -48,6 +48,8 @@ spec:
               mountPath: /app/server
             - name: media
               mountPath: /media
+            - name: temp
+              mountPath: /temp
           resources:
             requests:
               memory: 512Mi
@@ -58,6 +60,10 @@ spec:
         - name: media
           hostPath:
             path: /srv/mergerfs/union_01/media
+            type: DirectoryOrCreate
+        - name: temp
+          hostPath:
+            path: /share/docker/tdarr/transcode
             type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/hostname: marten
@@ -86,8 +92,8 @@ spec:
       securityContext:
         fsGroup: 1121
         supplementalGroups:
-          - 44   # video
-          - 989  # render
+          - 44 # video
+          - 989 # render
       containers:
         - name: tdarr-node
           image: ghcr.io/haveagitgat/tdarr_node:latest
@@ -100,6 +106,8 @@ spec:
               value: "1121"
             - name: TZ
               value: "America/New_York"
+            - name: LIBVA_DRIVER_NAME
+              value: "iHD"
             - name: serverIP
               value: "tdarr-server"
             - name: serverPort
