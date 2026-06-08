@@ -26,6 +26,7 @@ resources:
   - application/plex/plex.yaml
   - application/rsshub/rsshub.yaml
   - application/servarr/servarr.yaml
+  - application/tdarr/tdarr.yaml
   - application/tubearchivist/tubearchivist.yaml
 patches:
   - path: ./patches/prefer-worker.yaml

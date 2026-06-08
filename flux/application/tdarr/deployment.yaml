@@ -1,0 +1,131 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tdarr-server
+  labels:
+    app: tdarr
+    component: server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: tdarr
+      component: server
+  template:
+    metadata:
+      labels:
+        app: tdarr
+        component: server
+    spec:
+      securityContext:
+        fsGroup: 1121
+      containers:
+        - name: tdarr-server
+          image: ghcr.io/haveagitgat/tdarr:latest
+          ports:
+            - containerPort: 8265
+            - containerPort: 8266
+          env:
+            - name: PUID
+              value: "1121"
+            - name: PGID
+              value: "1121"
+            - name: TZ
+              value: "America/New_York"
+            - name: serverIP
+              value: "0.0.0.0"
+            - name: serverPort
+              value: "8266"
+            - name: webUIPort
+              value: "8265"
+            - name: internalNode
+              value: "false"
+          volumeMounts:
+            - name: server-config
+              mountPath: /app/server
+            - name: media
+              mountPath: /media
+          resources:
+            requests:
+              memory: 512Mi
+      volumes:
+        - name: server-config
+          persistentVolumeClaim:
+            claimName: tdarr-server-config
+        - name: media
+          hostPath:
+            path: /srv/mergerfs/union_01/media
+            type: DirectoryOrCreate
+      nodeSelector:
+        kubernetes.io/hostname: marten
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tdarr-node
+  labels:
+    app: tdarr
+    component: node
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: tdarr
+      component: node
+  template:
+    metadata:
+      labels:
+        app: tdarr
+        component: node
+    spec:
+      securityContext:
+        fsGroup: 1121
+        supplementalGroups:
+          - 44   # video
+          - 989  # render
+      containers:
+        - name: tdarr-node
+          image: ghcr.io/haveagitgat/tdarr_node:latest
+          env:
+            - name: PUID
+              value: "1121"
+            - name: PGID
+              value: "1121"
+            - name: TZ
+              value: "America/New_York"
+            - name: serverIP
+              value: "tdarr-server"
+            - name: serverPort
+              value: "8266"
+            - name: internalNode
+              value: "false"
+            - name: nodeID
+              value: "node-marten-01"
+          volumeMounts:
+            - name: media
+              mountPath: /media
+            - name: dri
+              mountPath: /dev/dri
+            - name: temp
+              mountPath: /temp
+          resources:
+            requests:
+              memory: 1Gi
+      volumes:
+        - name: media
+          hostPath:
+            path: /srv/mergerfs/union_01/media
+            type: DirectoryOrCreate
+        - name: dri
+          hostPath:
+            path: /dev/dri
+            type: Directory
+        - name: temp
+          emptyDir: {}
+      nodeSelector:
+        kubernetes.io/hostname: marten
