@@ -128,6 +128,8 @@ spec:
             path: /dev/dri
             type: Directory
         - name: temp
-          emptyDir: {}
+          hostPath:
+            path: /share/docker/tdarr/transcode
+            type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/hostname: marten
