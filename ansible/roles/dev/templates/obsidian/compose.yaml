@@ -1,0 +1,19 @@
+---
+name: obsidian
+
+services:
+  obsidian:
+    image: lscr.io/linuxserver/obsidian:latest
+    container_name: obsidian
+    environment:
+      - PUID=1122
+      - PGID=1122
+      - TZ=Etc/UTC
+    volumes:
+      - /home/hermes/.config/obsidian:/config
+      - /home/hermes/Obsidian:/data
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+    shm_size: 1gb
+    restart: unless-stopped
