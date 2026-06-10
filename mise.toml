@@ -8,6 +8,7 @@ istioctl = "latest"
 "kubeconform" = "latest"
 "pipx" = "latest"
 "pipx:ansible" = "13.2.0"
+"pipx:ansible-core" = "2.20.6"
 "pipx:ansible-lint" = "latest"
 "pipx:yamllint" = "latest"
 
