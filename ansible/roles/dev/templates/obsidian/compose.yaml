@@ -13,6 +13,6 @@ services:
       - /home/hermes/.config/obsidian:/config
       - /home/hermes/Obsidian:/data
     ports:
-      - "3000:3000"
+      - "3100:3000"
     shm_size: 1gb
     restart: unless-stopped
