@@ -3,7 +3,7 @@ name: pangolin-client
 
 services:
   pangolin-client:
-    image: fosrl/pangolin-cli:latest
+    image: fosrl/pangolin-cli:latest@sha256:339d041dbdd38f6ba048a99af9c17719c3a44e5eb438deb400c6deca55c0f5b1
     container_name: pangolin-client
     restart: unless-stopped
     network_mode: host
