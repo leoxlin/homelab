@@ -20,6 +20,7 @@ resources:
   - application/kiwix/kiwix.yaml
   - application/matrix/matrix.yaml
   - application/nextcloud/nextcloud.yaml
+  - application/obsidian/obsidian.yaml
   - application/openwebui/openwebui.yaml
   - application/overseerr/overseerr.yaml
   - application/paperless/paperless.yaml
