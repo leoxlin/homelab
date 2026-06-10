@@ -3,7 +3,7 @@ name: cloudflare-tunnel
 
 services:
   cloudflare-tunnel:
-    image: cloudflare/cloudflared:2026.1.1@sha256:5bb6a0870686742d00e171f36c892ba91e5994631bc363d808b9ba822262dad6
+    image: cloudflare/cloudflared:2026.6.0@sha256:ba461b8aa9c042156dbd39c38657fe7431bafa063220eab8d5330a523863da9f
     container_name: cloudflare-tunnel
     hostname: cloudflare-tunnel
     restart: unless-stopped
