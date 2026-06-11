@@ -22,6 +22,7 @@ resources:
   - application/nextcloud/nextcloud.yaml
   - application/obsidian/obsidian.yaml
   - application/openwebui/openwebui.yaml
+  - application/openshell/openshell.yaml
   - application/overseerr/overseerr.yaml
   - application/paperless/paperless.yaml
   - application/plex/plex.yaml
