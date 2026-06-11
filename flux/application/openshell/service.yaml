@@ -1,0 +1,22 @@
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: openshell
+  namespace: openshell
+spec:
+  hosts:
+    - openshell.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: openshell.openshell.svc.cluster.local
+            port:
+              number: 8080
