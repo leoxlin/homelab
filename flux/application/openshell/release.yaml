@@ -30,3 +30,5 @@ spec:
     replicaCount: 1
     server:
       disableTls: true
+      auth:
+        allowUnauthenticatedUsers: true
