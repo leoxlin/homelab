@@ -21,4 +21,3 @@ resources:
   # Monitoring
   - ./victoria-metrics
   - ./node-exporter
-  - ./grafana
