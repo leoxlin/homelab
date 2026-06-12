@@ -146,6 +146,16 @@ spec:
   url: oci://ghcr.io/nvidia/openshell
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: kagent
+  namespace: flux-system
+spec:
+  type: oci
+  interval: 1h
+  url: oci://ghcr.io/kagent-dev/kagent/helm
+---
+apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
   name: agent-sandbox
