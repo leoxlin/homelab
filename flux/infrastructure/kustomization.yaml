@@ -18,6 +18,3 @@ resources:
   - ./longhorn
   - ./longhorn-nodes
   - ./storage-marten
-  # Monitoring
-  - ./victoria-metrics
-  - ./node-exporter

@@ -2,16 +2,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: grafana
+  name: node-exporter
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./flux/application/grafana
+  path: ./flux/application/node-exporter
   prune: true
   sourceRef:
     kind: GitRepository
     name: flux-system
   dependsOn:
     - name: infrastructure
-    - name: database
     - name: victoria-metrics

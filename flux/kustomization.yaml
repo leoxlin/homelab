@@ -22,6 +22,7 @@ resources:
   - application/kiwix/kiwix.yaml
   - application/matrix/matrix.yaml
   - application/nextcloud/nextcloud.yaml
+  - application/node-exporter/node-exporter.yaml
   - application/obsidian/obsidian.yaml
   - application/openwebui/openwebui.yaml
   - application/openshell/openshell.yaml
@@ -32,6 +33,7 @@ resources:
   - application/servarr/servarr.yaml
   - application/tdarr/tdarr.yaml
   - application/tubearchivist/tubearchivist.yaml
+  - application/victoria-metrics/victoria-metrics.yaml
 patches:
   - path: ./patches/prefer-worker.yaml
     target:
