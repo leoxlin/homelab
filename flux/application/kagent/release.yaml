@@ -27,6 +27,23 @@ spec:
     - name: kagent-crds
       namespace: flux-system
   values:
+    database:
+      postgres:
+        urlFile: /var/run/secrets/kagent-postgres/uri
+        bundled:
+          enabled: false
+    controller:
+      volumes:
+        - name: kagent-postgres
+          secret:
+            secretName: kagent-pg-app
+            items:
+              - key: uri
+                path: uri
+      volumeMounts:
+        - name: kagent-postgres
+          mountPath: /var/run/secrets/kagent-postgres
+          readOnly: true
     providers:
       default: openAI
       openAI:

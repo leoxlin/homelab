@@ -13,3 +13,4 @@ spec:
     name: flux-system
   dependsOn:
     - name: infrastructure
+    - name: database
