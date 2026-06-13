@@ -47,11 +47,10 @@ run = [
     name="$(yq -r 'select(.apiVersion == "kustomize.toolkit.fluxcd.io/v1" and .kind == "Kustomization") | .metadata.name' "$kustomization_file")"
     path="$(yq -r 'select(.apiVersion == "kustomize.toolkit.fluxcd.io/v1" and .kind == "Kustomization") | .spec.path' "$kustomization_file")"
     path="${path#./flux/}"
-    mise exec -- flux build kustomization "$name" --path "$path" --kustomization-file "$kustomization_file" --dry-run
+    mise exec -- flux build kustomization "$name" --path "$path" --kustomization-file "$kustomization_file" --dry-run > /dev/null
   done
   ''',
 ]
-
 dir = "flux"
 
 [tasks.ansible]
