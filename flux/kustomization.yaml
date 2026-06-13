@@ -2,8 +2,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - system.yaml
-  - infrastructure.yaml
+  - system/system.yaml
+  - infrastructure/infrastructure.yaml
   - infrastructure/pangolin-newt/pangolin-newt.yaml
   - database/postgres-operator/postgres-operator.yaml
   - database/redis-operator/redis-operator.yaml
