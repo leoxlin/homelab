@@ -11,6 +11,7 @@ istioctl = "latest"
 "pipx:ansible-core" = "2.20.6"
 "pipx:ansible-lint" = "latest"
 "pipx:yamllint" = "latest"
+"yq" = "4.53.3"
 
 [tasks.setup]
 description = "Setup environment"
@@ -41,11 +42,16 @@ dir = "ansible"
 description = "Lint FluxCD manifests"
 run = [
   "mise exec -- yamllint .",
-  "mise exec -- flux build kustomization system --path . --kustomization-file system.yaml --dry-run",
-  "mise exec -- flux build kustomization infrastructure --path . --kustomization-file infrastructure.yaml --dry-run",
-  "mise exec -- flux build kustomization database --path . --kustomization-file database.yaml --dry-run",
-  "mise exec -- flux build kustomization application --path . --kustomization-file application.yaml --dry-run",
+  '''
+  yq -r '.resources[]' kustomization.yaml | while IFS= read -r kustomization_file; do
+    name="$(yq -r 'select(.apiVersion == "kustomize.toolkit.fluxcd.io/v1" and .kind == "Kustomization") | .metadata.name' "$kustomization_file")"
+    path="$(yq -r 'select(.apiVersion == "kustomize.toolkit.fluxcd.io/v1" and .kind == "Kustomization") | .spec.path' "$kustomization_file")"
+    path="${path#./flux/}"
+    mise exec -- flux build kustomization "$name" --path "$path" --kustomization-file "$kustomization_file" --dry-run
+  done
+  ''',
 ]
+
 dir = "flux"
 
 [tasks.ansible]
