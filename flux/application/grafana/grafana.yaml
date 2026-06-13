@@ -13,5 +13,6 @@ spec:
     name: flux-system
   dependsOn:
     - name: infrastructure
-    - name: database
+    - name: postgres-operator
+    - name: redis-operator
     - name: victoria-metrics

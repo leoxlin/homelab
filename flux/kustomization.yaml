@@ -5,7 +5,8 @@ resources:
   - system.yaml
   - infrastructure.yaml
   - infrastructure/pangolin-newt/pangolin-newt.yaml
-  - database.yaml
+  - database/postgres-operator/postgres-operator.yaml
+  - database/redis-operator/redis-operator.yaml
   - application/authentik/authentik.yaml
   - application/bentopdf/bentopdf.yaml
   - application/calibre/calibre.yaml
