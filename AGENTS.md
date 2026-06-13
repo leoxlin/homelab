@@ -1,0 +1,5 @@
+- Read the relevant Flux, Ansible, and `mise.toml` context before changing this repo; do not assume generic Kubernetes or CI patterns apply here.
+- Prefer existing project entrypoints such as `mise lint`, `mise lint-flux`, `mise lint-ansible`, and `mise ansible` when validating changes.
+- Treat Flux pruning, namespace moves, PVCs, database operators, and router changes as stateful operations that need an explicit migration or rollback plan.
+- Never create local cloud credentials or commit secrets; this repo expects 1Password, External Secrets, and environment-based credentials.
+- When a prompt is ambiguous, ask one focused question before making broad infrastructure changes, but keep small fixes moving.
