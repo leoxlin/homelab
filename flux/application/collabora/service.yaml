@@ -27,7 +27,7 @@ spec:
         redirectCode: 301
     - route:
         - destination:
-            host: collabora.default.svc.cluster.local
+            host: collabora.collabora.svc.cluster.local
             port:
               number: 9980
       headers:

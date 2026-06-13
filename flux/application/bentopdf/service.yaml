@@ -27,6 +27,6 @@ spec:
         redirectCode: 301
     - route:
         - destination:
-            host: bentopdf.default.svc.cluster.local
+            host: bentopdf.bentopdf.svc.cluster.local
             port:
               number: 8080
