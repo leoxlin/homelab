@@ -36,6 +36,22 @@ spec:
                 secretKeyRef:
                   name: litellm-pg-app
                   key: uri
+            - name: PROXY_BASE_URL
+              value: https://litellm.hydrahmlb.cc
+            - name: GENERIC_AUTHORIZATION_ENDPOINT
+              value: https://authentik.hydrahmlb.cc/application/o/authorize/
+            - name: GENERIC_TOKEN_ENDPOINT
+              value: https://authentik.hydrahmlb.cc/application/o/token/
+            - name: GENERIC_USERINFO_ENDPOINT
+              value: https://authentik.hydrahmlb.cc/application/o/userinfo/
+            - name: GENERIC_SCOPE
+              value: openid profile email
+            - name: GENERIC_USER_ID_ATTRIBUTE
+              value: sub
+            - name: GENERIC_USER_EMAIL_ATTRIBUTE
+              value: email
+            - name: GENERIC_USER_DISPLAY_NAME_ATTRIBUTE
+              value: name
           volumeMounts:
             - name: config-volume
               mountPath: /app/config.yaml
