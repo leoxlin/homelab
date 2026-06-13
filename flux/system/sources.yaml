@@ -56,6 +56,15 @@ spec:
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
+  name: mongodb
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: https://mongodb.github.io/helm-charts
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
   name: authentik
   namespace: flux-system
 spec:

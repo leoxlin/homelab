@@ -5,6 +5,7 @@ resources:
   - system/system.yaml
   - infrastructure/infrastructure.yaml
   - infrastructure/pangolin-newt/pangolin-newt.yaml
+  - database/mongodb-operator/mongodb-operator.yaml
   - database/postgres-operator/postgres-operator.yaml
   - database/redis-operator/redis-operator.yaml
   - application/authentik/authentik.yaml
