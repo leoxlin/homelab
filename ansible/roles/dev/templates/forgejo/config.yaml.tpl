@@ -9,8 +9,7 @@ runner:
   capacity: 1
   # Extra environment variables to run jobs.
   envs:
-    A_TEST_ENV_NAME_1: a_test_env_value_1
-    A_TEST_ENV_NAME_2: a_test_env_value_2
+    DOCKER_HOST: tcp://forgejo-dind:2375
   # Extra environment variables to run jobs from a file.
   # It will be ignored if it's empty or the file doesn't exist.
   env_file: .env
@@ -45,7 +44,7 @@ runner:
   # If it's empty when registering, it will ask for inputting labels.
   # If it's empty when executing the `daemon`, it will use labels in the `.runner` file.
   labels:
-    -  docker:docker://node:20-bookworm
+    - docker:docker://node:20-bookworm
 
 cache:
   #
@@ -164,7 +163,8 @@ container:
   # Specifies the network to which the container will connect.
   # Could be `host`, `bridge` or the name of a custom network.
   # If it's empty, create a network automatically.
-  network: ""
+  # Must match the compose network so job containers can reach forgejo-dind.
+  network: "forgejo"
   # Whether to create networks with IPv6 enabled. Requires the Docker daemon to be set up accordingly.
   # Only takes effect if "network" is set to "".
   enable_ipv6: false
