@@ -1,0 +1,70 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudcli
+  labels:
+    app: cloudcli
+    k8s.hydrahmlb.cc/schedule: server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: cloudcli
+  template:
+    metadata:
+      labels:
+        app: cloudcli
+    spec:
+      # fsGroup makes the Longhorn PVC writable by the node user (uid/gid 1000)
+      # baked into the cloudcli image.
+      securityContext:
+        fsGroup: 1000
+      containers:
+        # cloudcli listens only on localhost-of-pod (3001); all external traffic
+        # arrives through the oauth2-proxy sidecar so Authentik SSO is mandatory.
+        - name: cloudcli
+          image: leoxlin/cloudcli:latest
+          ports:
+            - containerPort: 3001
+              name: app
+          env:
+            - name: HOME
+              value: /data
+          volumeMounts:
+            - name: cloudcli-data
+              mountPath: /data
+          resources:
+            requests:
+              memory: 1Gi
+        # Authentik SSO gate. Only this port is fronted by the Service/VirtualService.
+        - name: oauth2-proxy
+          image: quay.io/oauth2-proxy/oauth2-proxy:v7.15.3
+          args:
+            - --provider=oidc
+            - --oidc-issuer-url=https://authentik.hydrahmlb.cc/application/o/cloudcli/
+            - --redirect-url=https://code.hydrahmlb.cc/oauth2/callback
+            - --upstream=http://127.0.0.1:3001
+            - --http-address=0.0.0.0:4180
+            - --email-domain=*
+            - --cookie-secure=true
+            - --reverse-proxy=true
+            - --skip-provider-button=true
+            - --pass-access-token=true
+            - --set-xauthrequest=true
+          envFrom:
+            # Provides OAUTH2_PROXY_CLIENT_ID / _CLIENT_SECRET / _COOKIE_SECRET.
+            - secretRef:
+                name: cloudcli-secrets
+          ports:
+            - containerPort: 4180
+              name: http
+          resources:
+            requests:
+              memory: 64Mi
+      volumes:
+        - name: cloudcli-data
+          persistentVolumeClaim:
+            claimName: cloudcli-data
