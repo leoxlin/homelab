@@ -8,7 +8,7 @@ spec:
     app: cloudcli
   ports:
     - port: 80
-      targetPort: 4180
+      targetPort: 3001
       name: http
 ---
 apiVersion: networking.istio.io/v1
