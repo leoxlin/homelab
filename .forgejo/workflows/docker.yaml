@@ -12,9 +12,10 @@ on:
 jobs:
   # Discover all docker/<name>/Dockerfile entries and emit them as a JSON array
   # so the publish job can fan out one matrix leg per image.
-  # Runs on the host (no container:) so python3 is available without extra deps.
   discover:
     runs-on: docker
+    container:
+      image: ghcr.io/catthehacker/ubuntu:act-22.04
     outputs:
       images: ${{ steps.list.outputs.images }}
     steps:
@@ -29,11 +30,17 @@ jobs:
             | python3 -c "import sys, json; print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))")
           echo "images=$images" >> "$GITHUB_OUTPUT"
 
-  # Runs on the host (no container:) so the Docker socket is available for builds.
+  # Job containers are placed on the forgejo compose network (via runner config),
+  # so they can reach forgejo-dind at tcp://forgejo-dind:2375.
+  # DOCKER_HOST is injected by the runner's envs config.
+  # driver: docker uses the daemon's built-in BuildKit — no separate BuildKit
+  # container that would need its own reachable address over TCP.
   publish:
     needs: discover
     if: needs.discover.outputs.images != '[]'
     runs-on: docker
+    container:
+      image: ghcr.io/catthehacker/ubuntu:act-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -44,6 +51,8 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3
+        with:
+          driver: docker
 
       - name: Log in to Docker Hub
         uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3
