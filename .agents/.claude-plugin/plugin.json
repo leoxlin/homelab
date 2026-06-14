@@ -1,0 +1,8 @@
+{
+  "name": "local-skills",
+  "description": "Skills for the homelab repo",
+  "version": "0.1.0",
+  "author": {
+    "name": "Leo Xuzhang Lin"
+  }
+}

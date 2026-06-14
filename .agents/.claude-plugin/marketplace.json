@@ -1,0 +1,13 @@
+{
+  "name": "local",
+  "owner": {
+    "name": "Leo Xuzhang Lin"
+  },
+  "plugins": [
+    {
+      "name": "local-skills",
+      "source": "./",
+      "description": "Skills for the homelab repo"
+    }
+  ]
+}

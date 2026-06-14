@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "local": {
+      "source": {
+        "source": "directory",
+        "path": ".agents"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "local-skills@local": true
+  }
+}
