@@ -1,7 +1,6 @@
-# cloudcli / claudecodeui (siteboon/claudecodeui, published as @cloudcli-ai/cloudcli).
+# cloud-code
+# Based on siteboon/claudecodeui, published as @cloudcli-ai/cloudcli.
 # No upstream production image exists, so we build one from the npm package.
-# Native deps (better-sqlite3, node-pty) need a build toolchain at install time;
-# git + ripgrep are required at runtime for the Claude Code agent SDK.
 FROM node:22-bookworm-slim
 
 # renovate: datasource=npm depName=@cloudcli-ai/cloudcli
