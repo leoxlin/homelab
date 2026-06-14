@@ -20,6 +20,7 @@ RUN apt-get update \
   && npm install -g \
   "@cloudcli-ai/cloudcli@${CLOUDCLI_VERSION}" \
   "@anthropic-ai/claude-code@${CLAUDE_CODE_VERSION}" \
+  "node-pty@1.1.0" \
   && npm cache clean --force
 
 # HOME=/data so both ~/.cloudcli (auth.db) and ~/.claude (session transcripts +
