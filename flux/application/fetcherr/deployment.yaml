@@ -19,7 +19,8 @@ spec:
     spec:
       containers:
         - name: gluetun
-          image: qmcgaw/gluetun
+          # renovate: datasource=docker depName=qmcgaw/gluetun
+          image: qmcgaw/gluetun:latest@sha256:0e999c910d8077458ffbd869acfd9faa2a49decbca02afec6370277854587b3e
           securityContext:
             capabilities:
               add:
@@ -41,7 +42,8 @@ spec:
             requests:
               memory: 128Mi
         - name: nzbget
-          image: lscr.io/linuxserver/nzbget:latest
+          # renovate: datasource=docker depName=lscr.io/linuxserver/nzbget
+          image: lscr.io/linuxserver/nzbget:v26.1-ls248@sha256:9fd97d831a5cfc9749afbdb6b5f5623128eb06f42dbe91053478fd14f00e42b0
           env:
             - name: PUID
               value: "1121"
@@ -68,7 +70,8 @@ spec:
             requests:
               memory: 256Mi
         - name: qbittorrent
-          image: lscr.io/linuxserver/qbittorrent:latest
+          # renovate: datasource=docker depName=lscr.io/linuxserver/qbittorrent
+          image: lscr.io/linuxserver/qbittorrent:5.2.1_v2.0.13-ls461@sha256:1fc3067c4e684a4139be2e17915a63e9355ccba91c954a330d33fcb033bf7e71
           env:
             - name: PUID
               value: "1121"

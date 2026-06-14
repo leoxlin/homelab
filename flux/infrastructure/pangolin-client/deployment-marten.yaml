@@ -23,7 +23,8 @@ spec:
         kubernetes.io/hostname: marten
       containers:
         - name: pangolin-client
-          image: fosrl/pangolin-cli:latest
+          # renovate: datasource=docker depName=fosrl/pangolin-cli
+          image: fosrl/pangolin-cli:0.10.1@sha256:5bc5c71724554695d936c729df92a7096024e029cad560d9644f914b0a1c2612
           envFrom:
             - secretRef:
                 name: pangolin-client-secrets-marten

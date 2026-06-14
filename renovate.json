@@ -3,6 +3,7 @@
   "extends": ["config:best-practices", ":dependencyDashboard"],
   "enabledManagers": [
     "flux",
+    "kubernetes",
     "kustomize",
     "ansible",
     "ansible-galaxy",
@@ -11,6 +12,9 @@
     "custom.regex"
   ],
   "flux": {
+    "managerFilePatterns": ["/^flux/.+\\.ya?ml$/"]
+  },
+  "kubernetes": {
     "managerFilePatterns": ["/^flux/.+\\.ya?ml$/"]
   },
   "docker-compose": {
@@ -31,7 +35,14 @@
       "versioningTemplate": "semver"
     }
   ],
-  "packageRules": [],
+  "packageRules": [
+    {
+      "description": "Group every image, chart, and digest update within a stack directory into a single PR per stack.",
+      "matchFileNames": ["flux/**", "ansible/roles/*/templates/**"],
+      "groupName": "{{parentDir}}",
+      "groupSlug": "{{parentDir}}"
+    }
+  ],
   "prHourlyLimit": 0,
   "prConcurrentLimit": 0
 }

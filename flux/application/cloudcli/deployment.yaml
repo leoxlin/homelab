@@ -26,7 +26,8 @@ spec:
         # cloudcli listens only on localhost-of-pod (3001); all external traffic
         # arrives through the oauth2-proxy sidecar so Authentik SSO is mandatory.
         - name: cloudcli
-          image: hydrahmlb/cloudcli:latest
+          # renovate: datasource=docker depName=hydrahmlb/cloudcli
+          image: hydrahmlb/cloudcli:latest@sha256:c8544b224a89cd01a183d354dd62b4c87d8a42bc30f4ce87dc3a226466bf6985
           ports:
             - containerPort: 3001
               name: app

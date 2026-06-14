@@ -18,7 +18,8 @@ spec:
     spec:
       containers:
         - name: rsshub
-          image: ghcr.io/diygod/rsshub:latest
+          # renovate: datasource=docker depName=ghcr.io/diygod/rsshub
+          image: ghcr.io/diygod/rsshub:latest@sha256:90e2b55993d3cda61a620c10feeac254d7400f3f0e1053a8a6085d3cacbe994d
           ports:
             - containerPort: 1200
           env:
@@ -54,7 +55,8 @@ spec:
             requests:
               memory: 512Mi
         - name: browserless
-          image: browserless/chrome:latest
+          # renovate: datasource=docker depName=browserless/chrome
+          image: browserless/chrome:latest@sha256:57d19e414d9fe4ae9d2ab12ba768c97f38d51246c5b31af55a009205c136012f
           ports:
             - containerPort: 3001
           env:

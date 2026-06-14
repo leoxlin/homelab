@@ -21,7 +21,8 @@ spec:
         fsGroup: 1000
       containers:
         - name: elasticsearch
-          image: bbilly1/tubearchivist-es:latest
+          # renovate: datasource=docker depName=bbilly1/tubearchivist-es
+          image: bbilly1/tubearchivist-es:8.19.0@sha256:9da63fb1973ec3d57daf6916be948eddd0d8a404cc8e447c938480c85fe2c554
           ports:
             - containerPort: 9200
               name: http

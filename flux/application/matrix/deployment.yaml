@@ -22,7 +22,8 @@ spec:
             value: "0"
       containers:
         - name: continuwuity
-          image: forgejo.ellis.link/continuwuation/continuwuity:latest
+          # renovate: datasource=docker depName=forgejo.ellis.link/continuwuation/continuwuity
+          image: forgejo.ellis.link/continuwuation/continuwuity:v0.5.9@sha256:b77b1da1622e948bb8bd50ebe185cba68677b32f6969a5d7171dc54613e59bc6
           command: ["/sbin/conduwuit"]
           imagePullPolicy: IfNotPresent
           ports:

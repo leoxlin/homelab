@@ -18,7 +18,8 @@ spec:
     spec:
       containers:
         - name: bentopdf
-          image: ghcr.io/alam00000/bentopdf-simple:latest
+          # renovate: datasource=docker depName=ghcr.io/alam00000/bentopdf-simple
+          image: ghcr.io/alam00000/bentopdf-simple:latest@sha256:268f3e4a1aeed5d7035b58ab1d679da85b7c559ac3d3c08eb2177520c3647e1f
           ports:
             - containerPort: 8080
           resources:

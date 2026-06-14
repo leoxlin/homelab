@@ -24,7 +24,8 @@ spec:
         fsGroup: 1121
       containers:
         - name: tdarr-server
-          image: ghcr.io/haveagitgat/tdarr:latest
+          # renovate: datasource=docker depName=ghcr.io/haveagitgat/tdarr
+          image: ghcr.io/haveagitgat/tdarr:latest@sha256:e5163f305367b47baacee761aa98f420fb4e46a8e5db22b197f23a550f96dd6b
           ports:
             - containerPort: 8265
             - containerPort: 8266
@@ -96,7 +97,8 @@ spec:
           - 989 # render
       containers:
         - name: tdarr-node
-          image: ghcr.io/haveagitgat/tdarr_node:latest
+          # renovate: datasource=docker depName=ghcr.io/haveagitgat/tdarr_node
+          image: ghcr.io/haveagitgat/tdarr_node:latest@sha256:1ec96caf6735d3c1bae5e71540cfb686bfa3ad960eff5a2a526cc68e53551779
           securityContext:
             privileged: true
           env:

@@ -23,7 +23,8 @@ spec:
         runAsGroup: 1120
       containers:
         - name: kiwix
-          image: ghcr.io/kiwix/kiwix-serve:latest
+          # renovate: datasource=docker depName=ghcr.io/kiwix/kiwix-serve
+          image: ghcr.io/kiwix/kiwix-serve:3.8.2@sha256:7431be257ac0b0b6f14633ef088774f6d5122246940b594b3017a70169058b08
           args:
             - "--verbose"
             - "--skipInvalid"
