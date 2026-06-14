@@ -12,7 +12,7 @@ all:
     ocelot:
       ansible_host: 192.168.2.60
     falcon:
-      ansible_host: 192.168.4.10
+      ansible_host: 46.224.223.92
     junco:
       ansible_host: 192.168.4.11
     ### Control Nodes ###

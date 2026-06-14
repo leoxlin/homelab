@@ -8,8 +8,7 @@ runner:
   # Execute how many tasks concurrently at the same time.
   capacity: 1
   # Extra environment variables to run jobs.
-  envs:
-    DOCKER_HOST: tcp://forgejo-dind:2375
+  envs: {}
   # Extra environment variables to run jobs from a file.
   # It will be ignored if it's empty or the file doesn't exist.
   env_file: .env
@@ -163,8 +162,7 @@ container:
   # Specifies the network to which the container will connect.
   # Could be `host`, `bridge` or the name of a custom network.
   # If it's empty, create a network automatically.
-  # Must match the compose network so job containers can reach forgejo-dind.
-  network: "forgejo"
+  network: ""
   # Whether to create networks with IPv6 enabled. Requires the Docker daemon to be set up accordingly.
   # Only takes effect if "network" is set to "".
   enable_ipv6: false
@@ -191,7 +189,7 @@ container:
   # If it's a url, the specified docker host will be mounted in the job container
   # Example urls: unix:///run/docker.socket or ssh://user@host
   # The specified socket is mounted within the job container at /var/run/docker.sock
-  docker_host: "-"
+  docker_host: "unix:///var/run/docker.sock"
   # Pull docker image(s) even if already present
   force_pull: false
   # Rebuild local docker image(s) even if already present

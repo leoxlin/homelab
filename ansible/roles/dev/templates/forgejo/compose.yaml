@@ -7,7 +7,6 @@ networks:
 
 volumes:
   runner-data:
-  daemon-certs:
 
 services:
   server:
@@ -26,30 +25,17 @@ services:
       - "10101:3000"
       - "10102:22"
 
-  dind:
-    image: docker:dind@sha256:7d85d0eda291f1a7ab6df4a9d1802b5ad4cf9145a088bd11188c78dcb5c7392b
-    container_name: forgejo-dind
-    privileged: "true"
-    command: ["dockerd", "-H", "tcp://0.0.0.0:2375", "--tls=false"]
-    networks:
-      - forgejo
-    restart: "unless-stopped"
-
   runner:
     image: code.forgejo.org/forgejo/runner:12@sha256:379b324d6942824b7487706c0a06be4d63e546c17b62bece4ae18c74364a8fae
     container_name: forgejo-runner
-    links:
-      - dind
     depends_on:
       - server
-      - dind
     networks:
       - forgejo
     user: "0:0"
-    environment:
-      - DOCKER_HOST=tcp://forgejo-dind:2375
     volumes:
       - runner-data:/data
       - ./config.yaml:/data/config.yaml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     restart: "unless-stopped"
     command: "forgejo-runner daemon --config /data/config.yaml"
