@@ -37,7 +37,7 @@ spec:
         # arrives through the oauth2-proxy sidecar so Authentik SSO is mandatory.
         - name: cloud-code
           # renovate: datasource=docker depName=hydrahmlb/cloud-code
-          image: hydrahmlb/cloud-code:latest@sha256:c8544b224a89cd01a183d354dd62b4c87d8a42bc30f4ce87dc3a226466bf6985
+          image: hydrahmlb/cloud-code:latest@sha256:656d56d2a05cbabb140b2eaa40cc2853a861a885aa1e49f34f6987b23190070d
           ports:
             - containerPort: 3001
               name: app
