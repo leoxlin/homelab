@@ -18,6 +18,16 @@ spec:
       labels:
         app: cloud-code
     spec:
+      # Pin to non-arm nodes for now; the cloud-code image is amd64-only.
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: NotIn
+                    values:
+                      - arm64
       # fsGroup makes the Longhorn PVC writable by the node user (uid/gid 1000)
       # baked into the cloud-code image.
       securityContext:
