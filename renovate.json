@@ -43,6 +43,13 @@
       "groupSlug": "{{parentDir}}"
     },
     {
+      "description": "Keep digest pins and digest refreshes in their own PR per stack, separate from version upgrades.",
+      "matchFileNames": ["flux/**", "ansible/roles/*/templates/**"],
+      "matchUpdateTypes": ["pin", "pinDigest", "digest"],
+      "groupName": "{{parentDir}} digests",
+      "groupSlug": "{{parentDir}}-digests"
+    },
+    {
       "description": "Use the stack name instead of the generic OCI chart name 'helm-chart' for openshell.",
       "matchManagers": ["flux"],
       "matchFileNames": ["flux/application/openshell/release.yaml"],
