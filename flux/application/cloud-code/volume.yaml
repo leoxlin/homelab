@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: cloudcli-data
+  name: cloud-code-data
   namespace: default
 spec:
   accessModes:

@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cloudcli
+  name: cloud-code
   labels:
-    app: cloudcli
+    app: cloud-code
     k8s.hydrahmlb.cc/schedule: server
 spec:
   replicas: 1
@@ -12,22 +12,22 @@ spec:
     type: Recreate
   selector:
     matchLabels:
-      app: cloudcli
+      app: cloud-code
   template:
     metadata:
       labels:
-        app: cloudcli
+        app: cloud-code
     spec:
       # fsGroup makes the Longhorn PVC writable by the node user (uid/gid 1000)
-      # baked into the cloudcli image.
+      # baked into the cloud-code image.
       securityContext:
         fsGroup: 1000
       containers:
-        # cloudcli listens only on localhost-of-pod (3001); all external traffic
+        # cloud-code listens only on localhost-of-pod (3001); all external traffic
         # arrives through the oauth2-proxy sidecar so Authentik SSO is mandatory.
-        - name: cloudcli
-          # renovate: datasource=docker depName=hydrahmlb/cloudcli
-          image: hydrahmlb/cloudcli:latest@sha256:c8544b224a89cd01a183d354dd62b4c87d8a42bc30f4ce87dc3a226466bf6985
+        - name: cloud-code
+          # renovate: datasource=docker depName=hydrahmlb/cloud-code
+          image: hydrahmlb/cloud-code:latest@sha256:c8544b224a89cd01a183d354dd62b4c87d8a42bc30f4ce87dc3a226466bf6985
           ports:
             - containerPort: 3001
               name: app
@@ -35,12 +35,12 @@ spec:
             - name: HOME
               value: /data
           volumeMounts:
-            - name: cloudcli-data
+            - name: cloud-code-data
               mountPath: /data
           resources:
             requests:
               memory: 1Gi
       volumes:
-        - name: cloudcli-data
+        - name: cloud-code-data
           persistentVolumeClaim:
-            claimName: cloudcli-data
+            claimName: cloud-code-data

@@ -2,10 +2,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cloudcli
+  name: cloud-code
 spec:
   selector:
-    app: cloudcli
+    app: cloud-code
   ports:
     - port: 80
       targetPort: 3001
@@ -14,7 +14,7 @@ spec:
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
-  name: cloudcli
+  name: cloud-code
 spec:
   hosts:
     - code.hydrahmlb.cc
@@ -28,6 +28,6 @@ spec:
         redirectCode: 301
     - route:
         - destination:
-            host: cloudcli.default.svc.cluster.local
+            host: cloud-code.default.svc.cluster.local
             port:
               number: 80
