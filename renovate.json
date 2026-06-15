@@ -41,6 +41,13 @@
       "matchFileNames": ["flux/**", "ansible/roles/*/templates/**"],
       "groupName": "{{parentDir}}",
       "groupSlug": "{{parentDir}}"
+    },
+    {
+      "description": "Use the stack name instead of the generic OCI chart name 'helm-chart' for openshell.",
+      "matchManagers": ["flux"],
+      "matchFileNames": ["flux/application/openshell/release.yaml"],
+      "matchDepNames": ["helm-chart"],
+      "overrideDepName": "openshell"
     }
   ],
   "prHourlyLimit": 0,
