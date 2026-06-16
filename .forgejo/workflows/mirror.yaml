@@ -22,4 +22,5 @@ jobs:
         run: |
           github_url="https://git:${MIRROR_GITHUB_COM_TOKEN}@github.com/leoxlin/${MIRROR_GITHUB_COM_REPOSITORY#*/}.git"
           git remote add github "$github_url"
-          git push --force github origin/main:main
+          git checkout -B main origin/main
+          git push --force github main
