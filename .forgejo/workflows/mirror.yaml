@@ -1,0 +1,25 @@
+name: Mirror to GitHub
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: docker
+    container:
+      image: ghcr.io/catthehacker/ubuntu:act-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          fetch-depth: 0
+      - name: Push main branch to GitHub
+        env:
+          MIRROR_GITHUB_COM_TOKEN: ${{ secrets.MIRROR_GITHUB_COM_TOKEN }}
+          MIRROR_GITHUB_COM_REPOSITORY: ${{ forgejo.repository }}
+        run: |
+          github_url="https://git:${MIRROR_GITHUB_COM_TOKEN}@github.com/leoxlin/${MIRROR_GITHUB_COM_REPOSITORY#*/}.git"
+          git remote add github "$github_url"
+          git push --force github origin/main:main
