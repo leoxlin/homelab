@@ -24,6 +24,7 @@ resources:
   - application/kiwix/kiwix.yaml
   - application/litellm/litellm.yaml
   - application/matrix/matrix.yaml
+  - application/napdog/napdog.yaml
   - application/nextcloud/nextcloud.yaml
   - application/node-exporter/node-exporter.yaml
   - application/obsidian/obsidian.yaml

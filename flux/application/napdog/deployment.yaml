@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: napdog
+  labels:
+    app: napdog
+    k8s.hydrahmlb.cc/schedule: server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: napdog
+  template:
+    metadata:
+      labels:
+        app: napdog
+    spec:
+      securityContext:
+        fsGroup: 1000
+      initContainers:
+        - name: setup
+          image: hydrahmlb/lapdog:latest
+          securityContext:
+            runAsUser: 0
+          command:
+            - sh
+            - -c
+            - |
+              mkdir -p /data/cache /data/snapshots
+              chown -R 1000:1000 /data
+          volumeMounts:
+            - name: napdog-data
+              mountPath: /data
+      containers:
+        - name: napdog
+          image: hydrahmlb/napdog:latest
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: UPSTREAM_URL
+              value: "https://lapdog.datadoghq.com"
+            - name: HOSTNAME
+              value: "napdog.hydrahmlb.cc"
+            - name: CACHE_DIR
+              value: /data/cache
+          volumeMounts:
+            - name: napdog-data
+              mountPath: /data
+          resources:
+            requests:
+              memory: 256Mi
+        - name: lapdog
+          image: hydrahmlb/lapdog:latest
+          ports:
+            - containerPort: 8126
+              name: apm
+            - containerPort: 4318
+              name: otlp-http
+            - containerPort: 4317
+              name: otlp-grpc
+            - containerPort: 9090
+              name: web-ui
+          env:
+            - name: SNAPSHOT_DIR
+              value: /data/snapshots
+          volumeMounts:
+            - name: napdog-data
+              mountPath: /data
+          resources:
+            requests:
+              memory: 256Mi
+      volumes:
+        - name: napdog-data
+          persistentVolumeClaim:
+            claimName: napdog-data
