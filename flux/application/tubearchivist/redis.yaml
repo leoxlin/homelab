@@ -12,6 +12,8 @@ spec:
     resources:
       requests:
         memory: 64Mi
+  nodeSelector:
+    kubernetes.io/hostname: marten
   storage:
     volumeClaimTemplate:
       spec:

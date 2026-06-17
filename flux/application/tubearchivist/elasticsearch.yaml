@@ -51,6 +51,8 @@ spec:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
+      nodeSelector:
+        kubernetes.io/hostname: marten
       volumes:
         - name: tubearchivist-es
           persistentVolumeClaim:
