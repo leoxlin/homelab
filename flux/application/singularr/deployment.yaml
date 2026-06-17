@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: singularr-app
+  labels:
+    app: singularr-app
+    k8s.hydrahmlb.cc/schedule: worker
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: singularr-app
+  template:
+    metadata:
+      labels:
+        app: singularr-app
+    spec:
+      initContainers:
+        - name: fetch-site
+          # renovate: datasource=docker depName=amazon/aws-cli
+          image: amazon/aws-cli:2.31.13
+          command:
+            - /bin/sh
+            - -c
+            - aws s3 sync "s3://${S3_BUCKET}" /site --endpoint-url "${S3_ENDPOINT}" --delete
+          env:
+            - name: S3_ENDPOINT
+              value: https://s3.eu-central-003.backblazeb2.com
+            - name: S3_BUCKET
+              value: hydra-ecd4ffd5fcf8/singularr-app
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: singularr-app-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: singularr-app-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+          volumeMounts:
+            - name: site
+              mountPath: /site
+      containers:
+        - name: nginx
+          # renovate: datasource=docker depName=nginx
+          image: nginx:1.29.3-alpine
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: site
+              mountPath: /usr/share/nginx/html
+              readOnly: true
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d
+              readOnly: true
+          resources:
+            requests:
+              memory: 64Mi
+      volumes:
+        - name: site
+          emptyDir: {}
+        - name: nginx-conf
+          configMap:
+            name: singularr-app-nginx
