@@ -41,6 +41,6 @@ USER lapdog
 WORKDIR /home/lapdog
 
 VOLUME ["/snapshots", "/vcr-cassettes"]
-EXPOSE 8126
+EXPOSE 8126 4318 4317 9090
 
-CMD ["ddapm-test-agent", "--lapdog-mode", "--disable-llmobs-data-forwarding"]
+CMD ["ddapm-test-agent", "--lapdog-mode", "--disable-llmobs-data-forwarding", "--web-ui-port=9090"]
