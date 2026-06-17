@@ -1,6 +1,6 @@
 ---
 name: homelab-design
-description: Use when the user asks to investigate, audit, design, or plan a change to the Hydra homelab repo (Ansible + FluxCD on k3s) — questions like "how does X work / can I make X faster / how do I add Y / should I change Z". Produces a grounded investigation, a prioritized strategy, and a concise dated memory doc under .agents/memory/. Not for routine one-line edits.
+description: Use when the user asks to investigate, audit, design, or plan a change to the Hydra homelab repo (Ansible + FluxCD on k3s) — questions like "how does X work / can I make X faster / how do I add Y / should I change Z". Produces a grounded investigation, a prioritized strategy, and a concise dated memory doc under .agents/memory/design/. Not for routine one-line edits.
 ---
 
 Design and planning workflow for the homelab repo (`~/Source/homelab`: Ansible roles +
@@ -54,8 +54,11 @@ Turn findings into a prioritized recommendation:
 
 ## Step 3 — Write the memory doc
 
-Persist the analysis to `.agents/memory/` so it survives the session. Match the existing
-format in that directory (read a neighbor file first):
+Persist the analysis to `.agents/memory/design/` so it survives the session. Match the
+existing format in that directory (read a neighbor file first). These docs record
+investigations and recommendations; treat them as design notes, not as authoritative
+implementation guidance unless the corresponding changes were shipped and are referenced in
+`AGENTS.md`:
 
 - Filename: `YYYY-MM-DD-<kebab-slug>.md` (use the real current date).
 - Header: `# <Title>`, then `Date:` and `Scope:` lines. State plainly if it's
