@@ -33,6 +33,14 @@
       "depNameTemplate": "k3s-io/k3s",
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "semver"
+    },
+    {
+      "customType": "regex",
+      "description": "Update version pins in docker/<name>/Dockerfile ARGs.",
+      "managerFilePatterns": ["/^docker/.+/Dockerfile$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[^\\s]+) depName=(?<depName>[^\\s]+)\\nARG [A-Z_]+_VERSION=(?<currentValue>[^\\s]+)"
+      ]
     }
   ],
   "packageRules": [
