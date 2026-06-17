@@ -8,7 +8,7 @@ spec:
     fsGroup: 999
     runAsUser: 999
   kubernetesConfig:
-    image: redis:8-alpine
+    image: redis:8.8-alpine
     resources:
       requests:
         memory: 64Mi
