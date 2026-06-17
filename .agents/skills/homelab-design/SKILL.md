@@ -69,10 +69,12 @@ implementation guidance unless the corresponding changes were shipped and are re
 - Reference concrete paths and host/IP/port facts — the value is that it's grounded in
   this repo, not generic.
 
-### Keep it concise — these get re-read into context
+### Keep it concise — these are loaded on demand
 
-A memory doc is reference material a future session loads, so optimize for fast scanning
-and low token cost, not completeness:
+A memory doc is reference material a future session pulls in **only when explicitly
+referenced** (via an `@` path from a memory doc, skill, or `AGENTS.md`) — it is not
+auto-loaded into context. When it is loaded, optimize for fast scanning and low token
+cost, not completeness:
 
 - **Target ~150 lines / one screen.** If it's longer, you're including too much.
 - **One fact per line.** Cut filler, hedging, and restated reasoning. Prefer terse
@@ -95,5 +97,5 @@ didn't ask to save, Steps 1–2 may be enough — but offer to write the memory.
 - Prefer the repo's own entrypoints (`mise lint-flux`, `mise lint-ansible`, `mise
   ansible`) for any validation you suggest.
 - Keep small fixes moving; reserve this heavier workflow for design-level work.
-- Memory docs are re-read into context later — write them tight (see Step 3). Brevity is a
-  feature, not a shortcut.
+- Memory docs are loaded on demand when explicitly `@`-referenced, not auto-loaded — write
+  them tight (see Step 3). Brevity is a feature, not a shortcut.
