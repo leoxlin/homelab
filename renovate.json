@@ -37,6 +37,11 @@
   ],
   "packageRules": [
     {
+      "description": "Disable Docker digest pinning on a mixed-arch (ARM/x86) cluster. Renovate resolves digests from its own amd64 runtime, producing amd64-only pins that break ARM nodes.",
+      "matchManagers": ["docker-compose", "flux", "kubernetes", "kustomize"],
+      "pinDigests": false
+    },
+    {
       "description": "Group every image, chart, and digest update within a stack directory into a single PR per stack.",
       "matchFileNames": ["flux/**", "ansible/roles/*/templates/**"],
       "groupName": "{{parentDir}}",

@@ -3,7 +3,7 @@ name: newt
 
 services:
   newt:
-    image: fosrl/newt@sha256:63d956c8fdee889255e441ec405193b47b1fd2d975b505492ec848a8007f4fc3
+    image: fosrl/newt
     container_name: newt
     restart: unless-stopped
 

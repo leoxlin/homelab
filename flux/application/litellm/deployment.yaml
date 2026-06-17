@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: litellm
-          image: ghcr.io/berriai/litellm-database:main-stable@sha256:8402d2372a7ba8641cf09d8fa47006088d0705979b4e87c4eb2aec58fb298ce8
+          image: ghcr.io/berriai/litellm-database:main-stable
           args:
             - "--config"
             - "/app/config.yaml"

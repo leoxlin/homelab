@@ -25,7 +25,7 @@ spec:
       containers:
         - name: sonarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/sonarr
-          image: lscr.io/linuxserver/sonarr:4.0.17.2952-ls314@sha256:02bc962946fef994e67a38152446df25c10a52f8583aefeeb6467f9dd44cab99
+          image: lscr.io/linuxserver/sonarr:4.0.17.2952-ls314
           ports:
             - containerPort: 8989
           env:
@@ -88,7 +88,7 @@ spec:
       containers:
         - name: radarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/radarr
-          image: lscr.io/linuxserver/radarr:6.2.1.10461-ls305@sha256:4c490ccd44d31feb49dc4cc542f2148a420fc1ae0c1ba94e59b39ba4bf112716
+          image: lscr.io/linuxserver/radarr:6.2.1.10461-ls305
           ports:
             - containerPort: 7878
           env:
@@ -151,7 +151,7 @@ spec:
       containers:
         - name: bazarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/bazarr
-          image: lscr.io/linuxserver/bazarr:v1.5.6-ls350@sha256:4b5e510042bf471c8bafab89cada9774fba2fb25f16ec64235151cacbe847c10
+          image: lscr.io/linuxserver/bazarr:v1.5.6-ls350
           ports:
             - containerPort: 6767
           env:
@@ -214,7 +214,7 @@ spec:
       containers:
         - name: prowlarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/prowlarr
-          image: lscr.io/linuxserver/prowlarr:2.4.0.5397-ls149@sha256:a46d0ce0a8236bc4e065fe7c91a55d026c9d849620c5845250519b977d8857f3
+          image: lscr.io/linuxserver/prowlarr:2.4.0.5397-ls149
           ports:
             - containerPort: 9696
           env:
@@ -264,7 +264,7 @@ spec:
       containers:
         - name: lidarr
           # renovate: datasource=docker depName=lscr.io/linuxserver/lidarr
-          image: lscr.io/linuxserver/lidarr:3.1.0.4875-ls30@sha256:b08b2194fa4ddb7f7ace9d1bfd82bd9b26f457d79aa70f42d923d2e15a820f0e
+          image: lscr.io/linuxserver/lidarr:3.1.0.4875-ls30
           ports:
             - containerPort: 8686
           env:
@@ -329,7 +329,7 @@ spec:
       containers:
         - name: flaresolverr
           # renovate: datasource=docker depName=ghcr.io/flaresolverr/flaresolverr
-          image: ghcr.io/flaresolverr/flaresolverr:v3.5.0@sha256:139dfee1c6f89249c8d665d1333a42e8ec74ec0a86bc6bb1c8461e10d3a66a47
+          image: ghcr.io/flaresolverr/flaresolverr:v3.5.0
           ports:
             - containerPort: 8191
           env:

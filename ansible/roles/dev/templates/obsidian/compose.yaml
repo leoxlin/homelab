@@ -3,7 +3,7 @@ name: obsidian
 
 services:
   obsidian:
-    image: lscr.io/linuxserver/obsidian:latest@sha256:cdb4c1381bb7d0fe17c20bc002dd8d9eef81438fda7e414a0aed896cabf98200
+    image: lscr.io/linuxserver/obsidian:latest
     container_name: obsidian
     environment:
       - PUID=1122

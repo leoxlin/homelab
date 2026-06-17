@@ -10,7 +10,7 @@ volumes:
 
 services:
   server:
-    image: codeberg.org/forgejo/forgejo:15@sha256:55bb42bec9abef5223744804f164e37d37b20df7e8b8b4807ba213ad4f071d6d
+    image: codeberg.org/forgejo/forgejo:15
     container_name: forgejo
     environment:
       - USER_UID=1000
@@ -26,7 +26,7 @@ services:
       - "10102:22"
 
   runner:
-    image: code.forgejo.org/forgejo/runner:12@sha256:a1a2885261a0b8337d4791dd6949651117206741ba66423c24a57c107a64d4a8
+    image: code.forgejo.org/forgejo/runner:12
     container_name: forgejo-runner
     depends_on:
       - server

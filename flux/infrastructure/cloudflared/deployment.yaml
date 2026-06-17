@@ -21,7 +21,7 @@ spec:
             value: "65532 65532"
       containers:
         # renovate: datasource=docker depName=cloudflare/cloudflared
-        - image: cloudflare/cloudflared:2026.6.0@sha256:ba461b8aa9c042156dbd39c38657fe7431bafa063220eab8d5330a523863da9f
+        - image: cloudflare/cloudflared:2026.6.0
           name: cloudflared
           env:
             # Defines an environment variable for the tunnel token.
