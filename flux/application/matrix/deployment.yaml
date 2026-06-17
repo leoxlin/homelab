@@ -16,6 +16,16 @@ spec:
       labels:
         app: matrix
     spec:
+      # continuwuity image is amd64-only; keep off arm nodes.
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: NotIn
+                    values:
+                      - arm64
       securityContext:
         sysctls:
           - name: net.ipv4.ip_unprivileged_port_start
