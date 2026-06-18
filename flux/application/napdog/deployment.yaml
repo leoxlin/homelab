@@ -39,6 +39,7 @@ spec:
       containers:
         - name: napdog
           image: hydrahmlb/napdog:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8080
               name: http
@@ -57,6 +58,7 @@ spec:
               memory: 256Mi
         - name: lapdog
           image: hydrahmlb/lapdog:latest
+          imagePullPolicy: Always
           ports:
             - containerPort: 8126
               name: apm
