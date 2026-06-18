@@ -29,7 +29,22 @@ spec:
       redirect:
         scheme: https
         redirectCode: 301
-    - route:
+    - corsPolicy:
+        allowOrigins:
+          - regex: ".*"
+        allowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - PATCH
+          - OPTIONS
+        allowHeaders:
+          - "*"
+        exposeHeaders:
+          - "*"
+        allowCredentials: true
+      route:
         - destination:
             host: napdog.default.svc.cluster.local
             port:
@@ -50,7 +65,22 @@ spec:
       redirect:
         scheme: https
         redirectCode: 301
-    - route:
+    - corsPolicy:
+        allowOrigins:
+          - regex: ".*"
+        allowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - PATCH
+          - OPTIONS
+        allowHeaders:
+          - "*"
+        exposeHeaders:
+          - "*"
+        allowCredentials: true
+      route:
         - destination:
             host: napdog.default.svc.cluster.local
             port:
