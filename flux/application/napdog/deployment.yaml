@@ -46,6 +46,10 @@ spec:
           env:
             - name: UPSTREAM_URL
               value: "https://lapdog.datadoghq.com"
+            - name: REWRITE_HOST_TO
+              value: "https://napdog.hydrahmlb.cc:443"
+            - name: REWRITE_BLOCKED_CALLS
+              value: "GET:https://updog.ai/data/third-party-outages.json"
             - name: HOSTNAME
               value: "napdog.hydrahmlb.cc"
             - name: CACHE_DIR
