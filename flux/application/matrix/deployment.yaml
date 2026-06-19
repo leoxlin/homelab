@@ -33,7 +33,7 @@ spec:
       containers:
         - name: continuwuity
           # renovate: datasource=docker depName=forgejo.ellis.link/continuwuation/continuwuity
-          image: forgejo.ellis.link/continuwuation/continuwuity:v0.5.9
+          image: forgejo.ellis.link/continuwuation/continuwuity:v1.1.1
           command: ["/sbin/conduwuit"]
           imagePullPolicy: Always
           ports:
