@@ -5,6 +5,8 @@ all:
     edgerouter:
       ansible_host: 192.168.2.1
     ### Named Nodes ###
+    apodemus:
+      ansible_host: 192.168.1.85
     marten:
       ansible_host: 192.168.2.40
     numbat:
@@ -38,6 +40,7 @@ drivers:
 
 servers:
   hosts:
+    apodemus:
     marten:
     numbat:
     falcon:

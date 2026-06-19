@@ -1,0 +1,7 @@
+---
+system_extra_packages:
+  - open-iscsi
+  - nfs-common
+
+system_extra_services:
+  - iscsid
