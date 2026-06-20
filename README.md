@@ -10,6 +10,7 @@ Infrastructure-as-code repository for my self-hosted Kubernetes homelab.
 | marmot[1:3] | Elitedesk 300 G3 | debain         | k3s server              |
 | pika[1:4]   | RPi 5 8GB        | dietpi         | k3s agent               |
 | numbat      | Jetson AGX Orin  | ubuntu l4t     | ai / ml workloads       |
+| apodemus    | Beelink MINI S12 | debian         | git / docker            |
 
 ## Infrastructure
 
