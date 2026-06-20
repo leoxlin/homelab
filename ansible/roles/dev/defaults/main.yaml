@@ -11,6 +11,8 @@ docker_compose_stacks:
     state: present
     configs:
       - htpasswd.tpl
+  - name: home-assistant
+    state: present
   - name: newt
     state: present
   - name: pangolin-client

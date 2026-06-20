@@ -10,3 +10,4 @@ deploy_stacks:
   - cloudflare-tunnel
   - docker-registry
   - forgejo
+  - home-assistant
