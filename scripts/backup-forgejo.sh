@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-HOST="${FORGEJO_HOST:-falcon}"
+HOST="${FORGEJO_HOST:-apodemus}"
 DEST_DIR="${FORGEJO_BACKUP_DIR:-${HOME}/backups/forgejo}"
 DRY_RUN=0
 RESTARTED=0
@@ -24,7 +24,7 @@ Requires passwordless sudo or root SSH access on the remote host because
 the Forgejo data directory is owned by root.
 
 Environment variables:
-  FORGEJO_HOST          SSH host or alias for the Forgejo server. Default: falcon
+  FORGEJO_HOST          SSH host or alias for the Forgejo server. Default: apodemus
   FORGEJO_BACKUP_DIR    Local directory for backups. Default: ~/backups/forgejo
 
 Options:

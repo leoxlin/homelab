@@ -1,7 +1,7 @@
 ---
 - name: Deploy developer server
   hosts:
-    - falcon
+    - apodemus
   become: true
   roles:
     - role: dev
