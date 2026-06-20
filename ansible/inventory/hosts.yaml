@@ -15,8 +15,6 @@ all:
       ansible_host: 192.168.2.60
     falcon:
       ansible_host: 192.168.4.10
-    junco:
-      ansible_host: 192.168.4.11
     ### Control Nodes ###
     marmot-01:
       ansible_host: 192.168.2.111
@@ -44,7 +42,6 @@ servers:
     marten:
     numbat:
     falcon:
-    junco:
 
 pika:
   hosts:

@@ -15,5 +15,3 @@ docker_compose_stacks:
     state: present
   - name: pangolin-client
     state: present
-  - name: obsidian
-    state: present
