@@ -16,7 +16,6 @@ resources:
   - application/commafeed/commafeed.yaml
   - application/fetcherr/fetcherr.yaml
   - application/grafana/grafana.yaml
-  - application/hermes/hermes.yaml
   - application/immich/immich.yaml
   - application/k8up/k8up.yaml
   - application/kagent/kagent.yaml
