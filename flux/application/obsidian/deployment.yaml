@@ -20,9 +20,7 @@ spec:
         k8s.hydrahmlb.cc/schedule: server
     spec:
       securityContext:
-        fsGroup: 1122
-        runAsUser: 1122
-        runAsGroup: 1122
+        fsGroup: 1000
       containers:
         - name: obsidian
           # renovate: datasource=docker depName=lscr.io/linuxserver/obsidian
@@ -32,9 +30,9 @@ spec:
               protocol: TCP
           env:
             - name: PUID
-              value: "1122"
+              value: "1000"
             - name: PGID
-              value: "1122"
+              value: "1000"
             - name: TZ
               value: "Etc/UTC"
           volumeMounts:
