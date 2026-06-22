@@ -71,6 +71,12 @@ spec:
             - -c
             - |
               set -e
+              for i in $(seq 1 60); do
+                if nc -z localhost 2375 >/dev/null 2>&1; then
+                  break
+                fi
+                sleep 1
+              done
               exec forgejo-runner daemon --config /data/config.yaml
           workingDir: /data
           volumeMounts:
