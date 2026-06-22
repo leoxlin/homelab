@@ -15,6 +15,7 @@ resources:
   - application/collabora/collabora.yaml
   - application/commafeed/commafeed.yaml
   - application/fetcherr/fetcherr.yaml
+  - application/forgejo-runner/forgejo-runner.yaml
   - application/grafana/grafana.yaml
   - application/immich/immich.yaml
   - application/k8up/k8up.yaml

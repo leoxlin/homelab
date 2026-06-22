@@ -1,0 +1,113 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forgejo-runner-amd
+  labels:
+    app: forgejo-runner-amd
+    k8s.hydrahmlb.cc/schedule: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: forgejo-runner-amd
+  template:
+    metadata:
+      labels:
+        app: forgejo-runner-amd
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: forgejo-runner-amd
+      securityContext:
+        runAsUser: 0
+        runAsGroup: 0
+      initContainers:
+        - name: render-config
+          # renovate: datasource=docker depName=code.forgejo.org/forgejo/runner
+          image: code.forgejo.org/forgejo/runner:12
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              sed -e "s|@@UUID@@|${RUNNER_UUID}|g" \
+                  -e "s|@@TOKEN@@|${RUNNER_TOKEN}|g" \
+                  /etc/forgejo-runner/config-amd.yaml.tpl > /data/config.yaml
+          env:
+            - name: RUNNER_UUID
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-runner-secrets
+                  key: DOCKER_AMD_RUNNER_UUID
+            - name: RUNNER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: forgejo-runner-secrets
+                  key: DOCKER_AMD_RUNNER_TOKEN
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /etc/forgejo-runner
+              readOnly: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              memory: 256Mi
+      containers:
+        - name: runner
+          # renovate: datasource=docker depName=code.forgejo.org/forgejo/runner
+          image: code.forgejo.org/forgejo/runner:12
+          command:
+            - sh
+            - -c
+            - |
+              set -e
+              exec forgejo-runner daemon --config /data/config.yaml
+          workingDir: /data
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /etc/forgejo-runner
+              readOnly: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 512Mi
+        - name: dind
+          # renovate: datasource=docker depName=docker
+          image: docker:27-dind
+          securityContext:
+            privileged: true
+          env:
+            - name: DOCKER_TLS_CERTDIR
+              value: ""
+          volumeMounts:
+            - name: docker-data
+              mountPath: /var/lib/docker
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              memory: 4Gi
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: forgejo-runner-config
+        - name: docker-data
+          emptyDir: {}

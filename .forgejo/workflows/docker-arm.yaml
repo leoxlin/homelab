@@ -1,0 +1,70 @@
+name: Build ARM Docker images
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - docker/**
+  workflow_dispatch:
+
+jobs:
+  discover:
+    runs-on: docker-arm
+    outputs:
+      images: ${{ steps.list.outputs.images }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: List images
+        id: list
+        run: |
+          files=$(find docker -mindepth 2 -maxdepth 2 -name Dockerfile \
+            | sed 's|docker/||; s|/Dockerfile||' | sort)
+          images="["
+          sep=""
+          for f in ${files}; do
+            images="${images}${sep}\"${f}\""
+            sep=","
+          done
+          images="${images}]"
+          echo "images=${images}" >> "$GITHUB_OUTPUT"
+
+  publish:
+    needs: discover
+    if: needs.discover.outputs.images != '[]'
+    runs-on: docker-arm
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJson(needs.discover.outputs.images) }}
+    steps:
+      - name: Install Docker CLI
+        run: |
+          apt-get update
+          apt-get install -y docker.io
+
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4
+        with:
+          driver: docker
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push ARM image
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7
+        with:
+          context: docker/${{ matrix.image }}
+          push: true
+          platforms: linux/arm64
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:latest-arm64
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:${{ github.sha }}-arm64

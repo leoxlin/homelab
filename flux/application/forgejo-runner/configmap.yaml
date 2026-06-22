@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: forgejo-runner-config
+data:
+  config-arm.yaml.tpl: |
+    log:
+      level: info
+    runner:
+      capacity: 1
+      envs:
+        DOCKER_HOST: "tcp://localhost:2375"
+    container:
+      docker_host: "tcp://localhost:2375"
+    server:
+      connections:
+        forgejo:
+          url: https://git.hydrahmlb.dev/
+          uuid: "@@UUID@@"
+          token: "@@TOKEN@@"
+          labels:
+            - "docker-arm:docker://node:22-trixie"
+  config-amd.yaml.tpl: |
+    log:
+      level: info
+    runner:
+      capacity: 1
+      envs:
+        DOCKER_HOST: "tcp://localhost:2375"
+    container:
+      docker_host: "tcp://localhost:2375"
+    server:
+      connections:
+        forgejo:
+          url: https://git.hydrahmlb.dev/
+          uuid: "@@UUID@@"
+          token: "@@TOKEN@@"
+          labels:
+            - "docker-amd:docker://node:22-trixie"
