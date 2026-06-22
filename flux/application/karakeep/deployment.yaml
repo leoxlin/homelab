@@ -17,6 +17,8 @@ spec:
       labels:
         app: karakeep
     spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
       containers:
         - name: karakeep
           image: ghcr.io/karakeep-app/karakeep:release
