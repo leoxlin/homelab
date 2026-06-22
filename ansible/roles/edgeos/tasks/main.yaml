@@ -26,6 +26,11 @@
   ansible.netcommon.cli_command:
     command: "set service dns forwarding options strict-order"
 
+- name: Configure DNS address overrides for internal domains
+  ansible.netcommon.cli_command:
+    command: "set service dns forwarding options address=/{{ item.domain }}/{{ item.address }}"
+  loop: "{{ edgeos_dns_address_overrides }}"
+
 - name: Advertise router as DHCP DNS server
   ansible.netcommon.cli_command:
     command: >-
