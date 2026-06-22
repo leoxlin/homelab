@@ -16,18 +16,14 @@ RUN apt-get update \
     "@bitbonsai/mcpvault@${MCPVAULT_VERSION}" \
   && npm cache clean --force
 
-ENV NODE_ENV=production \
-    PORT=3001
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENV NODE_ENV=production
 
 # node:24-trixie-slim ships a non-root `node` user (uid/gid 1000) to match
 # the Obsidian deployment's fsGroup/ownership.
 USER node
 WORKDIR /data
-EXPOSE 3001
 
-CMD ["supergateway", \
-  "--stdio", "npx -y @bitbonsai/mcpvault /data", \
-  "--outputTransport", "streamableHttp", \
-  "--port", "3001", \
-  "--streamableHttpPath", "/mcp", \
-  "--healthEndpoint", "/healthz"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
