@@ -19,6 +19,8 @@ spec:
         app: obsidian
         k8s.hydrahmlb.cc/schedule: server
     spec:
+      nodeSelector:
+        node-role.kubernetes.io/server: "true"
       securityContext:
         fsGroup: 1000
       containers:
@@ -47,6 +49,32 @@ spec:
           resources:
             requests:
               memory: 1Gi
+        - name: mcpvault
+          # renovate: datasource=docker depName=hydrahmlb/mcpvault
+          image: hydrahmlb/mcpvault:latest
+          ports:
+            - containerPort: 3001
+              protocol: TCP
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              subPath: data
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3001
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3001
+            initialDelaySeconds: 10
+            periodSeconds: 30
       volumes:
         - name: data
           persistentVolumeClaim:

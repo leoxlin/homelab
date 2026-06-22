@@ -10,6 +10,9 @@ spec:
     - port: 3000
       targetPort: 3000
       name: http
+    - port: 3001
+      targetPort: 3001
+      name: mcp
 ---
 apiVersion: networking.istio.io/v1
 kind: VirtualService
@@ -26,6 +29,14 @@ spec:
       redirect:
         scheme: https
         redirectCode: 301
+    - match:
+        - uri:
+            prefix: /mcp
+      route:
+        - destination:
+            host: obsidian.default.svc.cluster.local
+            port:
+              number: 3001
     - route:
         - destination:
             host: obsidian.default.svc.cluster.local
