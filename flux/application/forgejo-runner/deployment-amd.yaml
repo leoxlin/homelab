@@ -5,7 +5,6 @@ metadata:
   name: forgejo-runner-amd
   labels:
     app: forgejo-runner-amd
-    k8s.hydrahmlb.cc/schedule: worker
 spec:
   replicas: 1
   selector:
