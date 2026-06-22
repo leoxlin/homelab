@@ -7,7 +7,7 @@ metadata:
     app: litellm
     k8s.hydrahmlb.cc/schedule: server
 spec:
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
