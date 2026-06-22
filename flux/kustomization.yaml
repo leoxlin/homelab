@@ -25,6 +25,7 @@ resources:
   - application/napdog/napdog.yaml
   - application/nextcloud/nextcloud.yaml
   - application/node-exporter/node-exporter.yaml
+  - application/obsidian/obsidian.yaml
   - application/openwebui/openwebui.yaml
   - application/openshell/openshell.yaml
   - application/overseerr/overseerr.yaml
