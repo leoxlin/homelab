@@ -62,6 +62,42 @@ spec:
           resources:
             requests:
               memory: 256Mi
+        - name: karakeep-mcp
+          # renovate: datasource=docker depName=hydrahmlb/karakeep-mcp
+          image: hydrahmlb/karakeep-mcp:latest
+          env:
+            - name: PORT
+              value: "3100"
+            - name: STREAMABLE_HTTP_PATH
+              value: "/mcp"
+            - name: HEALTH_ENDPOINT
+              value: "/healthz"
+            - name: KARAKEEP_API_ADDR
+              value: "http://localhost:3000"
+            - name: KARAKEEP_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: karakeep-secrets
+                  key: KARAKEEP_API_KEY
+          ports:
+            - containerPort: 3100
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3100
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3100
+            initialDelaySeconds: 10
+            periodSeconds: 30
       volumes:
         - name: karakeep-data
           persistentVolumeClaim:

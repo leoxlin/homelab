@@ -37,6 +37,9 @@ data:
       obsidian:
         url: "http://obsidian.default.svc.cluster.local:3100/mcp"
         description: "Obsidian vault MCP (mcpvault)"
+      karakeep:
+        url: "http://karakeep.default.svc.cluster.local:3100/mcp"
+        description: "Karakeep bookmarks MCP"
       context7:
         url: "https://mcp.context7.com/mcp"
         static_headers:
