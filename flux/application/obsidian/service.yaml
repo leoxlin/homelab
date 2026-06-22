@@ -10,8 +10,8 @@ spec:
     - port: 3000
       targetPort: 3000
       name: http
-    - port: 3001
-      targetPort: 3001
+    - port: 3100
+      targetPort: 3100
       name: mcp
 ---
 apiVersion: networking.istio.io/v1
@@ -36,7 +36,7 @@ spec:
         - destination:
             host: obsidian.default.svc.cluster.local
             port:
-              number: 3001
+              number: 3100
     - route:
         - destination:
             host: obsidian.default.svc.cluster.local

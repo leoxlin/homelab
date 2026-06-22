@@ -52,8 +52,15 @@ spec:
         - name: mcpvault
           # renovate: datasource=docker depName=hydrahmlb/mcpvault
           image: hydrahmlb/mcpvault:latest
+          env:
+            - name: PORT
+              value: "3100"
+            - name: STREAMABLE_HTTP_PATH
+              value: "/mcp"
+            - name: HEALTH_ENDPOINT
+              value: "/healthz"
           ports:
-            - containerPort: 3001
+            - containerPort: 3100
               protocol: TCP
           volumeMounts:
             - name: data
@@ -66,13 +73,13 @@ spec:
           readinessProbe:
             httpGet:
               path: /healthz
-              port: 3001
+              port: 3100
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /healthz
-              port: 3001
+              port: 3100
             initialDelaySeconds: 10
             periodSeconds: 30
       volumes:
