@@ -20,7 +20,6 @@ data:
           uuid: "@@UUID@@"
           token: "@@TOKEN@@"
           labels:
-            - "docker:docker://node:22-trixie"
             - "docker-arm:docker://node:22-trixie"
   config-amd.yaml.tpl: |
     log:
