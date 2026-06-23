@@ -57,8 +57,6 @@ spec:
               value: "3100"
             - name: STREAMABLE_HTTP_PATH
               value: "/mcp"
-            - name: HEALTH_ENDPOINT
-              value: "/healthz"
           ports:
             - containerPort: 3100
               protocol: TCP
@@ -71,14 +69,12 @@ spec:
               cpu: 50m
               memory: 128Mi
           readinessProbe:
-            httpGet:
-              path: /healthz
+            tcpSocket:
               port: 3100
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
-            httpGet:
-              path: /healthz
+            tcpSocket:
               port: 3100
             initialDelaySeconds: 10
             periodSeconds: 30

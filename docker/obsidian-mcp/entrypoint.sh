@@ -3,7 +3,6 @@ set -eu
 
 : "${PORT:=3100}"
 : "${STREAMABLE_HTTP_PATH:=/mcp}"
-: "${HEALTH_ENDPOINT:=/healthz}"
 : "${SESSION_TIMEOUT:=1800000}"
 : "${LOG_LEVEL:=none}"
 
@@ -14,6 +13,5 @@ exec supergateway \
   --sessionTimeout "$SESSION_TIMEOUT" \
   --port "$PORT" \
   --streamableHttpPath "$STREAMABLE_HTTP_PATH" \
-  --healthEndpoint "$HEALTH_ENDPOINT" \
   --logLevel "$LOG_LEVEL" \
   "$@"
