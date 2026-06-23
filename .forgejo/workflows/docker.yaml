@@ -29,13 +29,10 @@ jobs:
             | python3 -c "import sys, json; print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))")
           echo "images=$images" >> "$GITHUB_OUTPUT"
 
-  # Job containers get /var/run/docker.sock bind-mounted by the runner (docker_host
-  # config). driver: docker uses the daemon's built-in BuildKit — no separate
-  # BuildKit container, so no connectivity issues.
-  publish:
+  publish-amd:
     needs: discover
     if: needs.discover.outputs.images != '[]'
-    runs-on: docker
+    runs-on: docker-amd
     container:
       image: ghcr.io/catthehacker/ubuntu:act-22.04
     strategy:
@@ -63,5 +60,43 @@ jobs:
           context: docker/${{ matrix.image }}
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:latest-amd64
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:${{ github.sha }}-amd64
+
+  publish-arm:
+    needs: discover
+    if: needs.discover.outputs.images != '[]'
+    runs-on: docker-arm
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJson(needs.discover.outputs.images) }}
+    steps:
+      - name: Install Docker CLI
+        run: |
+          apt-get update
+          apt-get install -y docker.io
+
+      - name: Checkout
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4
+        with:
+          driver: docker
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push ARM image
+        uses: docker/build-push-action@f9f3042f7e2789586610d6e8b85c8f03e5195baf # v7
+        with:
+          context: docker/${{ matrix.image }}
+          push: true
+          platforms: linux/arm64
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:latest-arm64
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:${{ github.sha }}-arm64
