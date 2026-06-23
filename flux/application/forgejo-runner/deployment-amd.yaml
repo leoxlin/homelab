@@ -72,7 +72,7 @@ spec:
             - |
               set -e
               for i in $(seq 1 60); do
-                if nc -z localhost 2375 >/dev/null 2>&1; then
+                if [ -S /var/run/docker.sock ]; then
                   break
                 fi
                 sleep 1
@@ -85,6 +85,8 @@ spec:
             - name: config
               mountPath: /etc/forgejo-runner
               readOnly: true
+            - name: docker-sock
+              mountPath: /var/run
           resources:
             requests:
               cpu: 100m
@@ -102,6 +104,8 @@ spec:
           volumeMounts:
             - name: docker-data
               mountPath: /var/lib/docker
+            - name: docker-sock
+              mountPath: /var/run
           resources:
             requests:
               cpu: 500m
@@ -115,4 +119,6 @@ spec:
           configMap:
             name: forgejo-runner-config
         - name: docker-data
+          emptyDir: {}
+        - name: docker-sock
           emptyDir: {}

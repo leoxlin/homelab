@@ -10,9 +10,9 @@ data:
     runner:
       capacity: 1
       envs:
-        DOCKER_HOST: "tcp://localhost:2375"
+        DOCKER_HOST: "unix:///var/run/docker.sock"
     container:
-      docker_host: "tcp://localhost:2375"
+      docker_host: "unix:///var/run/docker.sock"
     server:
       connections:
         forgejo:
@@ -28,9 +28,9 @@ data:
     runner:
       capacity: 1
       envs:
-        DOCKER_HOST: "tcp://localhost:2375"
+        DOCKER_HOST: "unix:///var/run/docker.sock"
     container:
-      docker_host: "tcp://localhost:2375"
+      docker_host: "unix:///var/run/docker.sock"
     server:
       connections:
         forgejo:
