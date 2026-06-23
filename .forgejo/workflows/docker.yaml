@@ -100,3 +100,33 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:latest-arm64
             ${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}:${{ github.sha }}-arm64
+
+  publish-manifest:
+    needs: [discover, publish-amd, publish-arm]
+    if: needs.discover.outputs.images != '[]'
+    runs-on: docker
+    container:
+      image: ghcr.io/catthehacker/ubuntu:act-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJson(needs.discover.outputs.images) }}
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Create and push multi-arch manifests
+        run: |
+          repo="${{ secrets.DOCKERHUB_USERNAME }}/${{ matrix.image }}"
+          sha="${{ github.sha }}"
+
+          for tag in "latest" "${sha}"; do
+            echo "Creating manifest ${repo}:${tag}"
+            docker manifest create "${repo}:${tag}" \
+              "${repo}:${tag}-amd64" \
+              "${repo}:${tag}-arm64"
+            docker manifest push "${repo}:${tag}"
+          done
