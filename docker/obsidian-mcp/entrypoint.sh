@@ -8,7 +8,7 @@ set -eu
 : "${LOG_LEVEL:=none}"
 
 exec supergateway \
-  --stdio "${KARAKEEP_MCP_COMMAND:-npx -y @karakeep/mcp}" \
+  --stdio "${OBSIDIAN_MCP_COMMAND:-npx -y @bitbonsai/mcpvault /data}" \
   --outputTransport streamableHttp \
   --stateful \
   --sessionTimeout "$SESSION_TIMEOUT" \

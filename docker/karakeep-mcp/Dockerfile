@@ -20,6 +20,7 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENV NODE_ENV=production
+ENV KARAKEEP_MCP_COMMAND=karakeep-mcp
 
 # node:24-trixie-slim ships a non-root `node` user (uid/gid 1000).
 USER node

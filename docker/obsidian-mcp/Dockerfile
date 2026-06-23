@@ -1,4 +1,4 @@
-# mcpvault
+# obsidian-mcp
 # Bridges the stdio-only @bitbonsai/mcpvault MCP server to Streamable HTTP so
 # it can be consumed remotely at obsidian.hydrahmlb.cc/mcp.
 FROM node:24-trixie-slim
@@ -20,6 +20,7 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 ENV NODE_ENV=production
+ENV OBSIDIAN_MCP_COMMAND="mcpvault /data"
 
 # node:24-trixie-slim ships a non-root `node` user (uid/gid 1000) to match
 # the Obsidian deployment's fsGroup/ownership.
