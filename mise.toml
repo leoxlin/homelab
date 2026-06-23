@@ -4,24 +4,30 @@ SSH_AUTH_SOCK = "{{env.HOME}}/.1password/agent.sock"
 [tools]
 "flux2" = "2.7.5"
 "helm" = "4.0.4"
-istioctl = "latest"
+"istioctl" = "latest"
 "kubeconform" = "latest"
-"pipx" = "latest"
-"pipx:ansible" = "13.2.0"
-"pipx:ansible-core" = "2.20.6"
-"pipx:ansible-lint" = "latest"
-"pipx:yamllint" = "latest"
+"python" = "3.14.0"
+"uv" = "latest"
 "yq" = "4.53.3"
+
+[settings]
+python.uv_venv_auto = "create|source"
 
 [tasks.setup]
 description = "Setup environment"
-depends = ["setup-ansible"]
+depends = [
+  "setup-uv",
+  "setup-ansible",
+]
+
+[tasks.setup-uv]
+description = "Install python dependencies"
+run = "uv sync"
 
 [tasks.setup-ansible]
-run = [
-  "mise exec -- ansible-galaxy install -r requirements.yaml",
-  "mise exec -- pip3 install paramiko",
-]
+description = "Install Ansible collections and Python dependencies"
+depends = ["setup-uv"]
+run = "uv run ansible-galaxy install -r requirements.yaml"
 dir = "ansible"
 
 [tasks.lint]
@@ -32,16 +38,19 @@ depends = [
 ]
 
 [tasks.lint-ansible]
+description = "Lint Ansible playbooks and roles"
+depends = ["setup-uv"]
 run = [
-  "mise exec -- yamllint .",
-  "mise exec -- ansible-lint .",
+  "uv run yamllint .",
+  "uv run ansible-lint .",
 ]
 dir = "ansible"
 
 [tasks.lint-flux]
 description = "Lint FluxCD manifests"
+depends = ["setup-uv"]
 run = [
-  "mise exec -- yamllint .",
+  "uv run yamllint .",
   '''
   yq -r '.resources[]' kustomization.yaml | while IFS= read -r kustomization_file; do
     name="$(yq -r 'select(.apiVersion == "kustomize.toolkit.fluxcd.io/v1" and .kind == "Kustomization") | .metadata.name' "$kustomization_file")"
@@ -55,10 +64,11 @@ dir = "flux"
 
 [tasks.ansible]
 description = "Run an ansible playbook"
+depends = ["setup-ansible"]
 usage = '''
 arg "<playbook>"
 flag "--host <host>" help="Limit execution to a specific host or group"
 '''
-run = "mise exec -- ansible-playbook playbooks/${usage_playbook}.yaml ${usage_host:+--limit $usage_host}"
+run = "uv run ansible-playbook playbooks/${usage_playbook}.yaml ${usage_host:+--limit $usage_host}"
 dir = "ansible"
 alias = "a"
