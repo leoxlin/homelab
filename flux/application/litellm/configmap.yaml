@@ -36,7 +36,7 @@ data:
         description: "TickTick task manager MCP"
       obsidian:
         url: "http://obsidian.default.svc.cluster.local:3100/mcp"
-        description: "Obsidian vault MCP (mcpvault)"
+        description: "Obsidian vault MCP"
       karakeep:
         url: "http://karakeep.default.svc.cluster.local:3100/mcp"
         description: "Karakeep bookmarks MCP"

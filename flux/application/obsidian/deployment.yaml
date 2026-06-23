@@ -49,9 +49,9 @@ spec:
           resources:
             requests:
               memory: 1Gi
-        - name: mcpvault
-          # renovate: datasource=docker depName=hydrahmlb/mcpvault
-          image: hydrahmlb/mcpvault:latest
+        - name: obsidian-mcp
+          # renovate: datasource=docker depName=hydrahmlb/obsidian-mcp
+          image: hydrahmlb/obsidian-mcp:latest
           env:
             - name: PORT
               value: "3100"
