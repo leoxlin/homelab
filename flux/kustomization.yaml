@@ -11,7 +11,6 @@ resources:
   - application/authentik/authentik.yaml
   - application/bentopdf/bentopdf.yaml
   - application/calibre/calibre.yaml
-  - application/cloud-code/cloud-code.yaml
   - application/collabora/collabora.yaml
   - application/commafeed/commafeed.yaml
   - application/fetcherr/fetcherr.yaml

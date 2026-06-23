@@ -231,7 +231,7 @@ removed resource is stateful (it deletes the live object) per `AGENTS.md`.
 
 If the app is a custom image (not upstream), it's built under `docker/<name>/` and
 published by `.forgejo/workflows/docker.yaml` to the `hydrahmlb/*` registry (e.g.
-`napdog`, `lapdog`, `cloud-code`). Reference the image as `hydrahmlb/<name>:latest`.
+`napdog`, `lapdog`). Reference the image as `hydrahmlb/<name>:latest`.
 
 ## External references
 
