@@ -5,9 +5,6 @@ networks:
   forgejo:
     name: forgejo
 
-volumes:
-  runner-data:
-
 services:
   server:
     image: codeberg.org/forgejo/forgejo:15
@@ -24,18 +21,3 @@ services:
     ports:
       - "10101:3000"
       - "10102:22"
-
-  runner:
-    image: code.forgejo.org/forgejo/runner:12
-    container_name: forgejo-runner
-    depends_on:
-      - server
-    networks:
-      - forgejo
-    user: "0:0"
-    volumes:
-      - runner-data:/data
-      - ./config.yaml:/data/config.yaml:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: "unless-stopped"
-    command: "forgejo-runner daemon --config /data/config.yaml"
