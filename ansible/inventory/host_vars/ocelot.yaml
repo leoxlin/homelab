@@ -4,3 +4,22 @@ security_fail2ban_enabled: true
 security_sysctl_hardening: false
 system_timezone: America/New_York
 system_auto_updates: false
+
+custom_groups:
+  - name: agents
+    gid: 1130
+
+custom_users:
+  - name: agents
+    uid: 1130
+    group: agents
+    comment: "AI agents service user"
+    shell: /bin/bash
+    create_home: true
+    home_group: agents
+    home_mode: "2770"
+
+group_memberships:
+  - group: agents
+    members:
+      - llin

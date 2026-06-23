@@ -20,6 +20,30 @@
     groups: "{{ item.groups | default([]) | join(',') }}"
     comment: "{{ item.comment | default('') }}"
     shell: "{{ item.shell | default('/bin/bash') }}"
+    home: "{{ item.home | default(omit) }}"
     create_home: "{{ item.create_home | default(true) }}"
     system: "{{ item.system | default(false) }}"
+    state: present
+
+- name: Set custom user home directory permissions
+  loop: "{{ custom_users | default([]) }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - item.create_home | default(true) | bool
+    - item.home_group is defined or item.home_mode is defined
+  ansible.builtin.file:
+    path: "{{ item.home | default('/home/' ~ item.name) }}"
+    owner: "{{ item.name }}"
+    group: "{{ item.home_group | default(omit) }}"
+    mode: "{{ item.home_mode | default(omit) }}"
+
+- name: Add users to supplementary groups
+  loop: "{{ group_memberships | default([]) | subelements('members') }}"
+  loop_control:
+    label: "{{ item.1 }} -> {{ item.0.group }}"
+  ansible.builtin.user:
+    name: "{{ item.1 }}"
+    groups: "{{ item.0.group }}"
+    append: true
     state: present
