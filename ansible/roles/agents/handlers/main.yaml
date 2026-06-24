@@ -24,3 +24,12 @@
   become_user: "{{ agents_user }}"
   environment:
     XDG_RUNTIME_DIR: "/run/user/{{ agents_user_uid }}"
+
+- name: Restart traefik
+  ansible.builtin.systemd:
+    name: traefik.service
+    scope: user
+    state: restarted
+  become_user: "{{ agents_user }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ agents_user_uid }}"

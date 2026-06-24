@@ -11,9 +11,6 @@ system_auto_updates: false
 
 docker_enabled: true
 
-deploy_stacks:
-  - traefik
-
 custom_groups:
   - name: agents
     gid: 1130

@@ -12,5 +12,5 @@ entryPoints:
 
 providers:
   file:
-    filename: /etc/traefik/dynamic.yaml
+    filename: "{{ agents_home }}/.config/traefik/dynamic.yaml"
     watch: true

@@ -1,0 +1,14 @@
+[Unit]
+Description=Traefik reverse proxy
+Documentation=https://doc.traefik.io/traefik/
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/traefik --configFile={{ agents_home }}/.config/traefik/static.yaml
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=default.target
