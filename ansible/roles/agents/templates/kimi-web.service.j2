@@ -8,6 +8,7 @@ Wants=network-online.target
 Type=simple
 Environment=KIMI_CODE_HOME=%h/.kimi-code
 Environment=HOME=%h
+EnvironmentFile=-%h/.kimi-code/.env
 ExecStart=%h/.local/bin/kimi web --foreground --no-open --port 58628
 Restart=on-failure
 RestartSec=5s
