@@ -1,0 +1,26 @@
+---
+- name: Reload agents systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+    scope: user
+  become_user: "{{ agents_user }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ agents_user_uid }}"
+
+- name: Restart hermes-gateway
+  ansible.builtin.systemd:
+    name: hermes-gateway.service
+    scope: user
+    state: restarted
+  become_user: "{{ agents_user }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ agents_user_uid }}"
+
+- name: Restart kimi-web
+  ansible.builtin.systemd:
+    name: kimi-web.service
+    scope: user
+    state: restarted
+  become_user: "{{ agents_user }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ agents_user_uid }}"

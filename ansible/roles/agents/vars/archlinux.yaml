@@ -1,0 +1,8 @@
+---
+agents_hermes_installer: uv
+
+agents_packages:
+  - bash
+  - curl
+  - sudo
+  - uv

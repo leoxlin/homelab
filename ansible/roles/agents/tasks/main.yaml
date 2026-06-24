@@ -1,0 +1,250 @@
+---
+- name: Include OS-specific variables
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - '{{ ansible_facts["distribution"] | lower }}.yaml'
+    - '{{ ansible_facts["os_family"] | lower }}.yaml'
+    - "default.yaml"
+
+- name: Ensure agents group exists
+  ansible.builtin.group:
+    name: "{{ agents_group }}"
+    gid: "{{ agents_group_gid }}"
+    state: present
+
+- name: Ensure agents user exists
+  ansible.builtin.user:
+    name: "{{ agents_user }}"
+    uid: "{{ agents_user_uid }}"
+    group: "{{ agents_group }}"
+    home: "{{ agents_home }}"
+    shell: /bin/bash
+    create_home: true
+    state: present
+
+- name: Ensure agent runtime directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ agents_user }}"
+    group: "{{ agents_group }}"
+    mode: "0750"
+  loop:
+    - "{{ agents_home }}/.local"
+    - "{{ agents_home }}/.local/bin"
+    - "{{ agents_home }}/.local/share"
+    - "{{ agents_home }}/.config"
+    - "{{ agents_home }}/.config/systemd"
+    - "{{ agents_home }}/.config/systemd/user"
+    - "{{ agents_home }}/.config/hermes"
+    - "{{ agents_hermes_home }}"
+
+- name: Ensure llin wrapper directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ agents_llin_user }}"
+    group: "{{ agents_llin_user }}"
+    mode: "0755"
+  loop:
+    - "{{ agents_llin_bin_dir }}"
+    - "{{ agents_llin_apps_dir }}"
+
+- name: Ensure agent dependencies are installed
+  ansible.builtin.package:
+    name: "{{ agents_packages }}"
+    state: present
+
+- name: Check if hermes is already installed
+  ansible.builtin.stat:
+    path: "{{ agents_hermes_bin }}"
+  register: agents_hermes_bin_stat
+  become_user: "{{ agents_user }}"
+
+- name: Install or upgrade hermes-agent with pip
+  ansible.builtin.pip:
+    name: "{{ agents_hermes_pip_spec }}"
+    state: "{{ agents_hermes_pip_state }}"
+    virtualenv: "{{ agents_hermes_venv }}"
+    virtualenv_command: python3 -m venv
+  become_user: "{{ agents_user }}"
+  vars:
+    agents_hermes_pip_spec: >-
+      hermes-agent{{ (agents_hermes_version | length > 0) | ternary('==' ~ agents_hermes_version, '') }}
+    agents_hermes_pip_state: >-
+      {{ (agents_upgrade and agents_hermes_version | length == 0) | ternary('latest', 'present') }}
+  when:
+    - agents_hermes_installer == "pip"
+    - agents_upgrade or not agents_hermes_bin_stat.stat.exists
+  notify: Restart hermes-gateway
+
+- name: Create hermes venv with uv
+  ansible.builtin.command: >-
+    uv venv --python {{ agents_hermes_python_version }} {{ agents_hermes_venv }}
+  args:
+    creates: "{{ agents_hermes_venv }}/bin/python"
+  become_user: "{{ agents_user }}"
+  environment:
+    HOME: "{{ agents_home }}"
+  changed_when: true
+  when:
+    - agents_hermes_installer == "uv"
+    - agents_upgrade or not agents_hermes_bin_stat.stat.exists
+
+- name: Install or upgrade hermes-agent with uv
+  ansible.builtin.command: >-
+    uv pip install {{ agents_hermes_uv_upgrade_flag }} {{ agents_hermes_uv_spec }}
+    --python {{ agents_hermes_venv }}/bin/python
+  become_user: "{{ agents_user }}"
+  environment:
+    HOME: "{{ agents_home }}"
+  changed_when: true
+  vars:
+    agents_hermes_uv_spec: >-
+      hermes-agent{{ (agents_hermes_version | length > 0) | ternary('==' ~ agents_hermes_version, '') }}
+    agents_hermes_uv_upgrade_flag: >-
+      {{ (agents_upgrade and agents_hermes_version | length == 0) | ternary('--upgrade', '') }}
+  when:
+    - agents_hermes_installer == "uv"
+    - agents_upgrade or not agents_hermes_bin_stat.stat.exists
+  notify: Restart hermes-gateway
+
+- name: Symlink hermes binary into agents PATH
+  ansible.builtin.file:
+    src: "{{ agents_hermes_venv }}/bin/hermes"
+    dest: "{{ agents_hermes_bin }}"
+    state: link
+    owner: "{{ agents_user }}"
+    group: "{{ agents_group }}"
+    force: true
+
+- name: Check if kimi is already installed
+  ansible.builtin.stat:
+    path: "{{ agents_kimi_install_dir }}/bin/kimi"
+  register: agents_kimi_bin_stat
+  become_user: "{{ agents_user }}"
+
+- name: Install or upgrade kimi-code
+  ansible.builtin.shell: |
+    set -euo pipefail
+    export KIMI_INSTALL_DIR="{{ agents_kimi_install_dir }}"
+    export KIMI_NO_MODIFY_PATH=1
+    export HOME="{{ agents_home }}"
+    {% if agents_kimi_version | length > 0 %}
+    export KIMI_VERSION="{{ agents_kimi_version }}"
+    {% endif %}
+    curl -fsSL https://code.kimi.com/kimi-code/install.sh | bash
+  args:
+    creates: "{{ agents_kimi_install_dir }}/bin/kimi"
+  become_user: "{{ agents_user }}"
+  environment:
+    HOME: "{{ agents_home }}"
+  changed_when: true
+  when: not agents_upgrade and not agents_kimi_bin_stat.stat.exists
+  notify: Restart kimi-web
+
+- name: Upgrade kimi-code
+  ansible.builtin.shell: |
+    set -euo pipefail
+    export KIMI_INSTALL_DIR="{{ agents_kimi_install_dir }}"
+    export KIMI_NO_MODIFY_PATH=1
+    export HOME="{{ agents_home }}"
+    {% if agents_kimi_version | length > 0 %}
+    export KIMI_VERSION="{{ agents_kimi_version }}"
+    {% endif %}
+    curl -fsSL https://code.kimi.com/kimi-code/install.sh | bash
+  become_user: "{{ agents_user }}"
+  environment:
+    HOME: "{{ agents_home }}"
+  changed_when: true
+  when: agents_upgrade
+  notify: Restart kimi-web
+
+- name: Symlink kimi binary into agents PATH
+  ansible.builtin.file:
+    src: "{{ agents_kimi_install_dir }}/bin/kimi"
+    dest: "{{ agents_kimi_bin }}"
+    state: link
+    owner: "{{ agents_user }}"
+    group: "{{ agents_group }}"
+    force: true
+
+- name: Check if linger is enabled for agents user
+  ansible.builtin.stat:
+    path: "/var/lib/systemd/linger/{{ agents_user }}"
+  register: agents_linger_stat
+
+- name: Enable linger for agents user
+  ansible.builtin.command: loginctl enable-linger {{ agents_user }}
+  changed_when: true
+  when: not agents_linger_stat.stat.exists
+
+- name: Check if hermes gateway unit is installed
+  ansible.builtin.stat:
+    path: "{{ agents_home }}/.config/systemd/user/hermes-gateway.service"
+  register: agents_hermes_gateway_unit_stat
+  become_user: "{{ agents_user }}"
+
+- name: Install hermes gateway systemd user unit
+  ansible.builtin.shell: |
+    set -euo pipefail
+    # hermes gateway install prompts interactively on Linux; pipe defaults.
+    printf 'N\nY\n' | {{ agents_hermes_bin }} gateway install
+  become_user: "{{ agents_user }}"
+  environment:
+    HOME: "{{ agents_home }}"
+    PATH: "{{ agents_hermes_venv }}/bin:/usr/local/bin:/usr/bin:/bin"
+    XDG_RUNTIME_DIR: "/run/user/{{ agents_user_uid }}"
+  changed_when: true
+  when: agents_upgrade or not agents_hermes_gateway_unit_stat.stat.exists
+  register: agents_hermes_gateway_install
+
+- name: Create kimi web systemd user unit
+  ansible.builtin.template:
+    src: kimi-web.service.j2
+    dest: "{{ agents_home }}/.config/systemd/user/kimi-web.service"
+    owner: "{{ agents_user }}"
+    group: "{{ agents_group }}"
+    mode: "0644"
+  notify:
+    - Reload agents systemd
+    - Restart kimi-web
+
+- name: Ensure agent services are enabled and started
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    scope: user
+    state: started
+    enabled: true
+    daemon_reload: true
+  become_user: "{{ agents_user }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ agents_user_uid }}"
+  loop:
+    - hermes-gateway.service
+    - kimi-web.service
+
+- name: Create hermes wrapper for llin
+  ansible.builtin.template:
+    src: hermes-wrapper.sh.j2
+    dest: "{{ agents_llin_bin_dir }}/hermes"
+    owner: "{{ agents_llin_user }}"
+    group: "{{ agents_llin_user }}"
+    mode: "0755"
+
+- name: Allow llin to run agent binaries as agents without a password
+  ansible.builtin.template:
+    src: llin-agents.sudoers.j2
+    dest: /etc/sudoers.d/llin-agents
+    owner: root
+    group: root
+    mode: "0440"
+    validate: visudo -cf %s
+
+- name: Create hermes desktop entry
+  ansible.builtin.template:
+    src: hermes-desktop.desktop.j2
+    dest: "{{ agents_llin_apps_dir }}/hermes-desktop.desktop"
+    owner: "{{ agents_llin_user }}"
+    group: "{{ agents_llin_user }}"
+    mode: "0755"

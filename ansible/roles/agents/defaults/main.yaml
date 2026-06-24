@@ -1,0 +1,33 @@
+---
+# User that owns and runs the agent services.
+agents_user: agents
+agents_user_uid: 1130
+agents_group: agents
+agents_group_gid: 1130
+agents_home: "/home/{{ agents_user }}"
+
+# Interactive desktop user that gets wrapper scripts / launchers.
+agents_llin_user: llin
+agents_llin_home: "/home/{{ agents_llin_user }}"
+agents_llin_bin_dir: "{{ agents_llin_home }}/.local/bin"
+agents_llin_apps_dir: "{{ agents_llin_home }}/.local/share/applications"
+
+# When true, force an upgrade to the latest available version.
+agents_upgrade: false
+
+# Hermes installation settings.
+# Supported installers: pip, uv (uv is used on Arch to pin a compatible Python).
+agents_hermes_installer: pip
+agents_hermes_version: "" # e.g. "0.17.0"; empty = latest
+agents_hermes_python_version: "3.13"
+agents_hermes_install_dir: "{{ agents_home }}/.local/share/hermes"
+agents_hermes_venv: "{{ agents_hermes_install_dir }}/venv"
+agents_hermes_bin: "{{ agents_home }}/.local/bin/hermes"
+
+# Kimi Code installation settings.
+agents_kimi_version: "" # empty = latest
+agents_kimi_install_dir: "{{ agents_home }}/.kimi-code"
+agents_kimi_bin: "{{ agents_home }}/.local/bin/kimi"
+
+# Hermes data directory. The role creates it but does not manage ~/.hermes/.env.
+agents_hermes_home: "{{ agents_home }}/.hermes"
