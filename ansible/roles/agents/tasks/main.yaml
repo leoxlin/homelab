@@ -134,6 +134,38 @@
     group: "{{ agents_llin_user }}"
     mode: "0755"
 
+- name: Ensure hermes desktop icon directory exists for llin
+  ansible.builtin.file:
+    path: "{{ agents_llin_home }}/.local/share/hermes-desktop"
+    state: directory
+    owner: "{{ agents_llin_user }}"
+    group: "{{ agents_llin_user }}"
+    mode: "0755"
+
+- name: Check if hermes desktop icon source exists
+  ansible.builtin.stat:
+    path: "{{ agents_hermes_desktop_icon_src }}"
+  register: agents_hermes_desktop_icon_src_stat
+  become_user: "{{ agents_user }}"
+
+- name: Check if hermes desktop icon destination exists
+  ansible.builtin.stat:
+    path: "{{ agents_hermes_desktop_icon_dest }}"
+  register: agents_hermes_desktop_icon_dest_stat
+  become_user: "{{ agents_llin_user }}"
+
+- name: Copy hermes desktop icon for llin
+  ansible.builtin.copy:
+    src: "{{ agents_hermes_desktop_icon_src }}"
+    dest: "{{ agents_hermes_desktop_icon_dest }}"
+    owner: "{{ agents_llin_user }}"
+    group: "{{ agents_llin_user }}"
+    mode: "0644"
+    remote_src: true
+  when:
+    - agents_hermes_desktop_icon_src_stat.stat.exists
+    - not agents_hermes_desktop_icon_dest_stat.stat.exists
+
 - name: Check if kimi is already installed
   ansible.builtin.stat:
     path: "{{ agents_kimi_install_dir }}/bin/kimi"
@@ -263,4 +295,9 @@
     dest: "{{ agents_llin_apps_dir }}/hermes-desktop.desktop"
     owner: "{{ agents_llin_user }}"
     group: "{{ agents_llin_user }}"
-    mode: "0755"
+    mode: "0644"
+
+- name: Update desktop database for llin
+  ansible.builtin.command: update-desktop-database "{{ agents_llin_apps_dir }}"
+  changed_when: true
+  become_user: "{{ agents_llin_user }}"

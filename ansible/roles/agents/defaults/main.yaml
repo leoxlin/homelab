@@ -31,3 +31,5 @@ agents_hermes_home: "{{ agents_home }}/.hermes"
 # Hermes desktop build output path.
 agents_hermes_desktop_dir: "{{ agents_hermes_home }}/hermes-agent/apps/desktop"
 agents_hermes_desktop_sandbox: "{{ agents_hermes_desktop_dir }}/release/linux-unpacked/chrome-sandbox"
+agents_hermes_desktop_icon_src: "{{ agents_hermes_desktop_dir }}/assets/icon.png"
+agents_hermes_desktop_icon_dest: "{{ agents_llin_home }}/.local/share/hermes-desktop/icon.png"
