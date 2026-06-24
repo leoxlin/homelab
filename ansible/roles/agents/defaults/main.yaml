@@ -33,3 +33,7 @@ agents_hermes_desktop_dir: "{{ agents_hermes_home }}/hermes-agent/apps/desktop"
 agents_hermes_desktop_sandbox: "{{ agents_hermes_desktop_dir }}/release/linux-unpacked/chrome-sandbox"
 agents_hermes_desktop_icon_src: "{{ agents_hermes_desktop_dir }}/assets/icon.png"
 agents_hermes_desktop_icon_dest: "{{ agents_llin_home }}/.local/share/hermes-desktop/icon.png"
+
+# Signal CLI daemon settings.
+agents_signal_cli_bin: /usr/bin/signal-cli
+agents_signal_cli_data_dir: "{{ agents_home }}/.local/share/signal-cli/data"

@@ -1,0 +1,14 @@
+[Unit]
+Description=Signal CLI daemon
+Documentation=https://github.com/AsamK/signal-cli
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart={{ agents_signal_cli_bin }} --account {{ agents_signal_cli_account }} daemon --http 127.0.0.1:8888
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=default.target

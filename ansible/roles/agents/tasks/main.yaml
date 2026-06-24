@@ -328,6 +328,41 @@
     - Reload agents systemd
     - Restart kimi-web
 
+- name: Check if signal-cli data directory exists
+  ansible.builtin.stat:
+    path: "{{ agents_signal_cli_data_dir }}"
+  register: agents_signal_cli_data_stat
+  become_user: "{{ agents_user }}"
+
+- name: Read signal-cli account number
+  ansible.builtin.slurp:
+    path: "{{ agents_signal_cli_data_dir }}/accounts.json"
+  register: agents_signal_cli_accounts_json
+  become_user: "{{ agents_user }}"
+  when: agents_signal_cli_data_stat.stat.exists
+
+- name: Set signal-cli account fact
+  ansible.builtin.set_fact:
+    agents_signal_cli_account: >-
+      {{
+        (agents_signal_cli_accounts_json.content | b64decode | from_json).accounts
+        | map(attribute='number')
+        | first
+      }}
+  when: agents_signal_cli_data_stat.stat.exists
+
+- name: Create signal-cli systemd user unit
+  ansible.builtin.template:
+    src: signal-cli.service.j2
+    dest: "{{ agents_home }}/.config/systemd/user/signal-cli.service"
+    owner: "{{ agents_user }}"
+    group: "{{ agents_group }}"
+    mode: "0644"
+  when: agents_signal_cli_data_stat.stat.exists
+  notify:
+    - Reload agents systemd
+    - Restart signal-cli
+
 - name: Ensure agent services are enabled and started
   ansible.builtin.systemd:
     name: "{{ item }}"
@@ -342,6 +377,8 @@
     - hermes-gateway.service
     - kimi-web.service
     - traefik.service
+    - signal-cli.service
+  when: item != 'signal-cli.service' or agents_signal_cli_data_stat.stat.exists
 
 - name: Create agents wrapper for llin
   ansible.builtin.template:
