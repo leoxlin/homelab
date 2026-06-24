@@ -74,7 +74,7 @@
     path: "{{ agents_home }}/.bashrc"
     block: |
       # Set runtime environment for agents user services
-      export XDG_RUNTIME_DIR="/run/user/$(id - u)"
+      export XDG_RUNTIME_DIR="/run/user/$(id -u)"
       export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"
       umask 002
     marker: "# {mark} ANSIBLE MANAGED: agents runtime env"
