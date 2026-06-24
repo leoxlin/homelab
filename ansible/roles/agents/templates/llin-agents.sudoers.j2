@@ -1,4 +1,7 @@
 Defaults:{{ agents_llin_user }} !requiretty
+Defaults:{{ agents_llin_user }} env_keep += "XDG_RUNTIME_DIR DBUS_SESSION_BUS_ADDRESS WAYLAND_DISPLAY DISPLAY"
+{{ agents_llin_user }} ALL=(root) NOPASSWD: /bin/su - {{ agents_user }}, /bin/su -l {{ agents_user }}, /usr/bin/su - {{ agents_user }}, /usr/bin/su -l {{ agents_user }}
+{{ agents_llin_user }} ALL=({{ agents_user }}) NOPASSWD: ALL
 {{ agents_llin_user }} ALL=(root) NOPASSWD: /usr/local/bin/hermes-desktop-setup
 {{ agents_llin_user }} ALL=({{ agents_user }}) NOPASSWD: {{ agents_hermes_bin }}, {{ agents_kimi_bin }}
 {{ agents_llin_user }} ALL=({{ agents_user }}) NOPASSWD: /usr/bin/env WAYLAND_DISPLAY=* XDG_RUNTIME_DIR=* {{ agents_hermes_desktop_dir }}/release/linux-unpacked/Hermes --ozone-platform=wayland

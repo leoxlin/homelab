@@ -1,0 +1,16 @@
+#!/bin/bash
+set -euo pipefail
+
+AGENTS_UID={{ agents_user_uid }}
+XDG_RUNTIME_DIR="/run/user/${AGENTS_UID}"
+DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"
+
+if [[ $# -eq 0 ]]; then
+  exec sudo -u {{ agents_user }} -i
+else
+  exec sudo -u {{ agents_user }} -- /usr/bin/env \
+    XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR}" \
+    DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS}" \
+    HOME="{{ agents_home }}" \
+    "$@"
+fi

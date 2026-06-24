@@ -39,6 +39,20 @@
     - "{{ agents_home }}/.config/hermes"
     - "{{ agents_hermes_home }}"
 
+- name: Ensure llin is a member of the agents group
+  ansible.builtin.user:
+    name: "{{ agents_llin_user }}"
+    groups: "{{ agents_group }}"
+    append: true
+    state: present
+
+- name: Ensure agents home is shared with the agents group
+  ansible.builtin.file:
+    path: "{{ agents_home }}"
+    owner: "{{ agents_user }}"
+    group: "{{ agents_group }}"
+    mode: "2770"
+
 - name: Ensure llin wrapper directories exist
   ansible.builtin.file:
     path: "{{ item }}"
@@ -54,6 +68,20 @@
   ansible.builtin.package:
     name: "{{ agents_packages }}"
     state: present
+
+- name: Ensure agents shell sets runtime env and shared umask
+  ansible.builtin.blockinfile:
+    path: "{{ agents_home }}/.bashrc"
+    block: |
+      # Set runtime environment for agents user services
+      export XDG_RUNTIME_DIR="/run/user/$(id - u)"
+      export DBUS_SESSION_BUS_ADDRESS="unix:path=${XDG_RUNTIME_DIR}/bus"
+      umask 002
+    marker: "# {mark} ANSIBLE MANAGED: agents runtime env"
+    create: true
+    owner: "{{ agents_user }}"
+    group: "{{ agents_group }}"
+    mode: "0644"
 
 - name: Check if hermes is already installed
   ansible.builtin.stat:
@@ -271,6 +299,14 @@
   loop:
     - hermes-gateway.service
     - kimi-web.service
+
+- name: Create agents wrapper for llin
+  ansible.builtin.template:
+    src: agents-wrapper.sh.j2
+    dest: "{{ agents_llin_bin_dir }}/agents"
+    owner: "{{ agents_llin_user }}"
+    group: "{{ agents_llin_user }}"
+    mode: "0755"
 
 - name: Create hermes wrapper for llin
   ansible.builtin.template:
