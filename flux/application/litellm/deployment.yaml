@@ -75,18 +75,27 @@ spec:
               memory: 1Gi
             limits:
               memory: 2Gi
+          startupProbe:
+            httpGet:
+              path: /health/liveliness
+              port: 4000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 30
           livenessProbe:
             httpGet:
               path: /health/liveliness
               port: 4000
-            initialDelaySeconds: 60
+            initialDelaySeconds: 0
             periodSeconds: 15
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /health/readiness
               port: 4000
-            initialDelaySeconds: 60
+            initialDelaySeconds: 0
             periodSeconds: 15
+            failureThreshold: 3
       volumes:
         - name: config-volume
           configMap:
