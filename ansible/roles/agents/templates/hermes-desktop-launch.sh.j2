@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euo pipefail
+
+DESKTOP_DIR="{{ agents_hermes_desktop_dir }}/release/linux-unpacked"
+
+sudo /usr/local/bin/hermes-desktop-setup "$XDG_RUNTIME_DIR" "$WAYLAND_DISPLAY"
+
+sudo -u {{ agents_user }} -- /usr/bin/env \
+  WAYLAND_DISPLAY="$WAYLAND_DISPLAY" \
+  XDG_RUNTIME_DIR="$XDG_RUNTIME_DIR" \
+  "$DESKTOP_DIR/Hermes" \
+  --ozone-platform=wayland

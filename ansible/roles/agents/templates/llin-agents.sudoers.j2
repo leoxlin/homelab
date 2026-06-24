@@ -1,2 +1,4 @@
 Defaults:{{ agents_llin_user }} !requiretty
+{{ agents_llin_user }} ALL=(root) NOPASSWD: /usr/local/bin/hermes-desktop-setup
 {{ agents_llin_user }} ALL=({{ agents_user }}) NOPASSWD: {{ agents_hermes_bin }}, {{ agents_kimi_bin }}
+{{ agents_llin_user }} ALL=({{ agents_user }}) NOPASSWD: /usr/bin/env WAYLAND_DISPLAY=* XDG_RUNTIME_DIR=* {{ agents_hermes_desktop_dir }}/release/linux-unpacked/Hermes --ozone-platform=wayland

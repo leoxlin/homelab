@@ -1,0 +1,14 @@
+#!/bin/bash
+set -euo pipefail
+
+DESKTOP_DIR="{{ agents_hermes_desktop_dir }}/release/linux-unpacked"
+XDG_RUNTIME_DIR="${1:-}"
+WAYLAND_DISPLAY="${2:-}"
+
+chown root:root "$DESKTOP_DIR/chrome-sandbox"
+chmod 4755 "$DESKTOP_DIR/chrome-sandbox"
+
+if [[ -n "$XDG_RUNTIME_DIR" && -n "$WAYLAND_DISPLAY" ]]; then
+  setfacl -m u:{{ agents_user }}:rx "$XDG_RUNTIME_DIR"
+  setfacl -m u:{{ agents_user }}:rw "$XDG_RUNTIME_DIR/$WAYLAND_DISPLAY"
+fi

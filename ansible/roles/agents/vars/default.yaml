@@ -1,5 +1,6 @@
 ---
 agents_packages:
+  - acl
   - bash
   - curl
   - git

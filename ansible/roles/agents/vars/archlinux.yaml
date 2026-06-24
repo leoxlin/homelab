@@ -2,6 +2,7 @@
 agents_hermes_installer: uv
 
 agents_packages:
+  - acl
   - bash
   - curl
   - git

@@ -118,6 +118,22 @@
     mode: "4755"
   when: agents_upgrade or not agents_hermes_desktop_sandbox_stat.stat.exists
 
+- name: Install hermes desktop setup script
+  ansible.builtin.template:
+    src: hermes-desktop-setup.sh.j2
+    dest: /usr/local/bin/hermes-desktop-setup
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install hermes desktop launcher for llin
+  ansible.builtin.template:
+    src: hermes-desktop-launch.sh.j2
+    dest: "{{ agents_llin_bin_dir }}/hermes-desktop"
+    owner: "{{ agents_llin_user }}"
+    group: "{{ agents_llin_user }}"
+    mode: "0755"
+
 - name: Check if kimi is already installed
   ansible.builtin.stat:
     path: "{{ agents_kimi_install_dir }}/bin/kimi"
