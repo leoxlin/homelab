@@ -29,6 +29,11 @@ data:
       store_model_in_db: true
 
     mcp_servers:
+      context7:
+        url: "https://mcp.context7.com/mcp"
+        static_headers:
+          CONTEXT7_API_KEY: os.environ/CONTEXT7_API_KEY
+        description: "Context7 documentation MCP"
       ticktick:
         url: "https://mcp.ticktick.com"
         auth_type: "bearer_token"
@@ -40,11 +45,6 @@ data:
       karakeep:
         url: "http://karakeep.default.svc.cluster.local:3100/mcp"
         description: "Karakeep bookmarks MCP"
-      context7:
-        url: "https://mcp.context7.com/mcp"
-        static_headers:
-          CONTEXT7_API_KEY: os.environ/CONTEXT7_API_KEY
-        description: "Context7 documentation MCP"
       fastmail:
         url: "https://api.fastmail.com/mcp"
         auth_type: "bearer_token"
