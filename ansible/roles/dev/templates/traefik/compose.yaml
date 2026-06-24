@@ -1,0 +1,15 @@
+---
+name: traefik
+
+services:
+  traefik:
+    image: traefik:v3.4
+    container_name: traefik
+    restart: unless-stopped
+    network_mode: host
+    command:
+      - --configFile=/etc/traefik/static.yaml
+    volumes:
+      - ./static.yaml:/etc/traefik/static.yaml:ro
+      - ./dynamic.yaml:/etc/traefik/dynamic.yaml:ro
+      - /etc/localtime:/etc/localtime:ro

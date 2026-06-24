@@ -2,6 +2,7 @@
 - name: Deploy developer server
   hosts:
     - apodemus
+    - ocelot
   become: true
   roles:
     - role: dev

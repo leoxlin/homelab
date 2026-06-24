@@ -1,0 +1,16 @@
+---
+api:
+  dashboard: false
+  insecure: false
+
+log:
+  level: INFO
+
+entryPoints:
+  web:
+    address: ":52000"
+
+providers:
+  file:
+    filename: /etc/traefik/dynamic.yaml
+    watch: true

@@ -13,3 +13,8 @@ docker_compose_stacks:
     state: present
   - name: newt
     state: present
+  - name: traefik
+    state: present
+    configs:
+      - static.yaml
+      - dynamic.yaml

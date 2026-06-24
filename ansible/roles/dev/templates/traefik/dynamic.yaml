@@ -1,0 +1,23 @@
+---
+http:
+  routers:
+    kimi:
+      rule: "Host(`kimi.hydrahmlb.cc`)"
+      service: kimi
+      entryPoints:
+        - web
+    hermes:
+      rule: "Host(`hermes.hydrahmlb.cc`)"
+      service: hermes
+      entryPoints:
+        - web
+
+  services:
+    kimi:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:58628"
+    hermes:
+      loadBalancer:
+        servers:
+          - url: "http://localhost:9119/"
