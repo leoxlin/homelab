@@ -13,6 +13,7 @@ resources:
   - ./cloudflared
   - ./adguard
   - ./external-dns
+  - ./static-routes
   # Storage
   - ./longhorn
   - ./longhorn-nodes

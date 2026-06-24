@@ -1,0 +1,78 @@
+---
+apiVersion: networking.istio.io/v1
+kind: ServiceEntry
+metadata:
+  name: kimi-ocelot
+  namespace: istio-ingress
+spec:
+  hosts:
+    - kimi.ocelot.local
+  location: MESH_EXTERNAL
+  ports:
+    - number: 58628
+      name: http
+      protocol: HTTP
+  resolution: STATIC
+  endpoints:
+    - address: 192.168.2.60
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: kimi
+  namespace: istio-ingress
+spec:
+  hosts:
+    - kimi.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: kimi.ocelot.local
+            port:
+              number: 58628
+---
+apiVersion: networking.istio.io/v1
+kind: ServiceEntry
+metadata:
+  name: hermes-ocelot
+  namespace: istio-ingress
+spec:
+  hosts:
+    - hermes.ocelot.local
+  location: MESH_EXTERNAL
+  ports:
+    - number: 9119
+      name: http
+      protocol: HTTP
+  resolution: STATIC
+  endpoints:
+    - address: 192.168.2.60
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: hermes
+  namespace: istio-ingress
+spec:
+  hosts:
+    - hermes.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: hermes.ocelot.local
+            port:
+              number: 9119
