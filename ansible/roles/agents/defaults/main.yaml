@@ -16,13 +16,9 @@ agents_llin_apps_dir: "{{ agents_llin_home }}/.local/share/applications"
 agents_upgrade: false
 
 # Hermes installation settings.
-# Supported installers: pip, uv (uv is used on Arch to pin a compatible Python).
-agents_hermes_installer: pip
-agents_hermes_version: "" # e.g. "0.17.0"; empty = latest
-agents_hermes_python_version: "3.13"
-agents_hermes_install_dir: "{{ agents_home }}/.local/share/hermes"
-agents_hermes_venv: "{{ agents_hermes_install_dir }}/venv"
 agents_hermes_bin: "{{ agents_home }}/.local/bin/hermes"
+agents_hermes_install_script_url: "https://hermes-agent.nousresearch.com/install.sh"
+agents_hermes_install_script_flags: "--non-interactive --skip-setup --skip-browser"
 
 # Kimi Code installation settings.
 agents_kimi_version: "" # empty = latest

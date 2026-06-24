@@ -61,62 +61,37 @@
   register: agents_hermes_bin_stat
   become_user: "{{ agents_user }}"
 
-- name: Install or upgrade hermes-agent with pip
-  ansible.builtin.pip:
-    name: "{{ agents_hermes_pip_spec }}"
-    state: "{{ agents_hermes_pip_state }}"
-    virtualenv: "{{ agents_hermes_venv }}"
-    virtualenv_command: python3 -m venv
-  become_user: "{{ agents_user }}"
-  vars:
-    agents_hermes_pip_spec: >-
-      hermes-agent{{ (agents_hermes_version | length > 0) | ternary('==' ~ agents_hermes_version, '') }}
-    agents_hermes_pip_state: >-
-      {{ (agents_upgrade and agents_hermes_version | length == 0) | ternary('latest', 'present') }}
-  when:
-    - agents_hermes_installer == "pip"
-    - agents_upgrade or not agents_hermes_bin_stat.stat.exists
-  notify: Restart hermes-gateway
-
-- name: Create hermes venv with uv
-  ansible.builtin.command: >-
-    uv venv --python {{ agents_hermes_python_version }} {{ agents_hermes_venv }}
+- name: Install or upgrade hermes-agent via install.sh
+  ansible.builtin.shell: |
+    set -euo pipefail
+    export HOME="{{ agents_home }}"
+    export HERMES_HOME="{{ agents_hermes_home }}"
+    export UV_NO_CONFIG=1
+    curl -fsSL {{ agents_hermes_install_script_url }} | bash -s -- {{ agents_hermes_install_script_flags }}
   args:
-    creates: "{{ agents_hermes_venv }}/bin/python"
+    creates: "{{ agents_hermes_bin }}"
   become_user: "{{ agents_user }}"
   environment:
     HOME: "{{ agents_home }}"
+    PATH: "{{ agents_hermes_home }}/bin:{{ agents_home }}/.local/bin:/usr/local/bin:/usr/bin:/bin"
   changed_when: true
-  when:
-    - agents_hermes_installer == "uv"
-    - agents_upgrade or not agents_hermes_bin_stat.stat.exists
-
-- name: Install or upgrade hermes-agent with uv
-  ansible.builtin.command: >-
-    uv pip install {{ agents_hermes_uv_upgrade_flag }} {{ agents_hermes_uv_spec }}
-    --python {{ agents_hermes_venv }}/bin/python
-  become_user: "{{ agents_user }}"
-  environment:
-    HOME: "{{ agents_home }}"
-  changed_when: true
-  vars:
-    agents_hermes_uv_spec: >-
-      hermes-agent{{ (agents_hermes_version | length > 0) | ternary('==' ~ agents_hermes_version, '') }}
-    agents_hermes_uv_upgrade_flag: >-
-      {{ (agents_upgrade and agents_hermes_version | length == 0) | ternary('--upgrade', '') }}
-  when:
-    - agents_hermes_installer == "uv"
-    - agents_upgrade or not agents_hermes_bin_stat.stat.exists
+  when: not agents_upgrade and not agents_hermes_bin_stat.stat.exists
   notify: Restart hermes-gateway
 
-- name: Symlink hermes binary into agents PATH
-  ansible.builtin.file:
-    src: "{{ agents_hermes_venv }}/bin/hermes"
-    dest: "{{ agents_hermes_bin }}"
-    state: link
-    owner: "{{ agents_user }}"
-    group: "{{ agents_group }}"
-    force: true
+- name: Upgrade hermes-agent via install.sh
+  ansible.builtin.shell: |
+    set -euo pipefail
+    export HOME="{{ agents_home }}"
+    export HERMES_HOME="{{ agents_hermes_home }}"
+    export UV_NO_CONFIG=1
+    curl -fsSL {{ agents_hermes_install_script_url }} | bash -s -- {{ agents_hermes_install_script_flags }}
+  become_user: "{{ agents_user }}"
+  environment:
+    HOME: "{{ agents_home }}"
+    PATH: "{{ agents_hermes_home }}/bin:{{ agents_home }}/.local/bin:/usr/local/bin:/usr/bin:/bin"
+  changed_when: true
+  when: agents_upgrade
+  notify: Restart hermes-gateway
 
 - name: Check if kimi is already installed
   ansible.builtin.stat:
@@ -193,7 +168,7 @@
   become_user: "{{ agents_user }}"
   environment:
     HOME: "{{ agents_home }}"
-    PATH: "{{ agents_hermes_venv }}/bin:/usr/local/bin:/usr/bin:/bin"
+    PATH: "{{ agents_home }}/.local/bin:/usr/local/bin:/usr/bin:/bin"
     XDG_RUNTIME_DIR: "/run/user/{{ agents_user_uid }}"
   changed_when: true
   when: agents_upgrade or not agents_hermes_gateway_unit_stat.stat.exists
