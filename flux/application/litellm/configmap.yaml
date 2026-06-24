@@ -45,6 +45,11 @@ data:
         static_headers:
           CONTEXT7_API_KEY: os.environ/CONTEXT7_API_KEY
         description: "Context7 documentation MCP"
+      fastmail:
+        url: "https://api.fastmail.com/mcp"
+        auth_type: "bearer_token"
+        auth_value: os.environ/FASTMAIL_API_TOKEN
+        description: "Fastmail email, calendar, and contacts MCP"
 
     litellm_settings:
       drop_params: true
