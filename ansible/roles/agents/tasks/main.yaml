@@ -93,6 +93,31 @@
   when: agents_upgrade
   notify: Restart hermes-gateway
 
+- name: Check if hermes desktop is built
+  ansible.builtin.stat:
+    path: "{{ agents_hermes_desktop_sandbox }}"
+  register: agents_hermes_desktop_sandbox_stat
+  become_user: "{{ agents_user }}"
+
+- name: Build hermes desktop
+  ansible.builtin.shell: |
+    set -euo pipefail
+    {{ agents_hermes_bin }} desktop --build-only
+  become_user: "{{ agents_user }}"
+  environment:
+    HOME: "{{ agents_home }}"
+    PATH: "{{ agents_home }}/.local/bin:/usr/local/bin:/usr/bin:/bin"
+  changed_when: true
+  when: agents_upgrade or not agents_hermes_desktop_sandbox_stat.stat.exists
+
+- name: Set chrome-sandbox owner
+  ansible.builtin.file:
+    path: "{{ agents_hermes_desktop_sandbox }}"
+    owner: root
+    group: root
+    mode: "4755"
+  when: agents_upgrade or not agents_hermes_desktop_sandbox_stat.stat.exists
+
 - name: Check if kimi is already installed
   ansible.builtin.stat:
     path: "{{ agents_kimi_install_dir }}/bin/kimi"

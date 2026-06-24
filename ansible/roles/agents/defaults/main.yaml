@@ -27,3 +27,7 @@ agents_kimi_bin: "{{ agents_home }}/.local/bin/kimi"
 
 # Hermes data directory. The role creates it but does not manage ~/.hermes/.env.
 agents_hermes_home: "{{ agents_home }}/.hermes"
+
+# Hermes desktop build output path.
+agents_hermes_desktop_dir: "{{ agents_hermes_home }}/hermes-agent/apps/desktop"
+agents_hermes_desktop_sandbox: "{{ agents_hermes_desktop_dir }}/release/linux-unpacked/chrome-sandbox"
