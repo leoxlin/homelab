@@ -6,10 +6,10 @@ metadata:
   namespace: istio-ingress
 spec:
   hosts:
-    - kimi.ocelot.local
+    - kimi.hydrahmlb.cc
   location: MESH_EXTERNAL
   ports:
-    - number: 58628
+    - number: 52000
       name: http
       protocol: HTTP
   resolution: STATIC
@@ -34,9 +34,9 @@ spec:
         redirectCode: 301
     - route:
         - destination:
-            host: kimi.ocelot.local
+            host: kimi.hydrahmlb.cc
             port:
-              number: 58628
+              number: 52000
 ---
 apiVersion: networking.istio.io/v1
 kind: ServiceEntry
@@ -45,10 +45,10 @@ metadata:
   namespace: istio-ingress
 spec:
   hosts:
-    - hermes.ocelot.local
+    - hermes.hydrahmlb.cc
   location: MESH_EXTERNAL
   ports:
-    - number: 9119
+    - number: 52000
       name: http
       protocol: HTTP
   resolution: STATIC
@@ -73,6 +73,6 @@ spec:
         redirectCode: 301
     - route:
         - destination:
-            host: hermes.ocelot.local
+            host: hermes.hydrahmlb.cc
             port:
-              number: 9119
+              number: 52000
