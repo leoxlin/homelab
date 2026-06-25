@@ -18,7 +18,6 @@ resources:
   - application/grafana/grafana.yaml
   - application/immich/immich.yaml
   - application/k8up/k8up.yaml
-  - application/kagent/kagent.yaml
   - application/karakeep/karakeep.yaml
   - application/kiwix/kiwix.yaml
   - application/litellm/litellm.yaml
