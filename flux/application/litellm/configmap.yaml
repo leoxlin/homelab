@@ -65,7 +65,7 @@ data:
           - update_note
       grafana:
         url: "http://grafana-mcp.monitoring.svc.cluster.local:8000/mcp"
-        transport: "streamable-http"
+        transport: "http"
         description: "Grafana MCP"
 
     litellm_settings:
