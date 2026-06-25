@@ -64,6 +64,8 @@ spec:
               value: email
             - name: GENERIC_USER_DISPLAY_NAME_ATTRIBUTE
               value: name
+            - name: AUTO_REDIRECT_UI_LOGIN_TO_SSO
+              value: "true"
           volumeMounts:
             - name: config-volume
               mountPath: /app/config.yaml
