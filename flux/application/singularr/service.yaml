@@ -16,14 +16,21 @@ metadata:
   name: singularr-app
 spec:
   hosts:
-    - singularr.hydrahmlb.cc
+    - singularr.app
+    - www.singularr.app
   gateways:
-    - istio-ingress/hydrahmlb-gateway
+    - istio-public-ingress/hydrahmlb-public-gateway
   http:
     - match:
         - port: 80
       redirect:
         scheme: https
+        redirectCode: 301
+    - match:
+        - authority:
+            exact: www.singularr.app
+      redirect:
+        authority: singularr.app
         redirectCode: 301
     - route:
         - destination:
