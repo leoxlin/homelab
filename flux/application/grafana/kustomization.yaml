@@ -7,4 +7,5 @@ resources:
   - datasources.yaml
   - secrets.yaml
   - deployment.yaml
+  - deployment-mcp.yaml
   - service.yaml

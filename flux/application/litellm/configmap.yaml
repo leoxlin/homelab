@@ -63,6 +63,10 @@ data:
           - read_note
           - search_notes
           - update_note
+      grafana:
+        url: "http://grafana-mcp.monitoring.svc.cluster.local:8000/mcp"
+        transport: "streamable-http"
+        description: "Grafana MCP"
 
     litellm_settings:
       drop_params: true
