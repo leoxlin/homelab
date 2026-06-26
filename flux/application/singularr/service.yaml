@@ -14,6 +14,8 @@ apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
   name: singularr-app
+  annotations:
+    external-dns.kubernetes.io/target: ${CLOUDFLARE_TUNNEL_CNAME}
 spec:
   hosts:
     - singularr.app

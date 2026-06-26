@@ -13,3 +13,7 @@ spec:
     name: flux-system
   dependsOn:
     - name: infrastructure
+  postBuild:
+    substituteFrom:
+      - kind: Secret
+        name: flux-build-secrets
