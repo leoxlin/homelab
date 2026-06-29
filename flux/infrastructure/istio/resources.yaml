@@ -52,6 +52,23 @@ spec:
       hosts:
         - "*.hydrahmlb.cc"
         - "hydrahmlb.cc"
+    - port:
+        number: 443
+        name: https-singularr
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: singularr-app-tls
+      hosts:
+        - "singularr.app"
+        - "www.singularr.app"
+    - port:
+        number: 80
+        name: http-singularr
+        protocol: HTTP
+      hosts:
+        - "singularr.app"
+        - "www.singularr.app"
 ---
 apiVersion: networking.istio.io/v1
 kind: ServiceEntry
