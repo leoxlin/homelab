@@ -90,8 +90,9 @@ spec:
 
     meilisearch:
       enabled: true
+      # renovate: datasource=docker depName=getmeili/meilisearch
       image:
-        tag: v1.14.3
+        tag: v1.35.1
       persistence:
         enabled: true
         storageClass: longhorn
