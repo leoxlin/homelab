@@ -23,7 +23,7 @@ spec:
           command:
             - /bin/sh
             - -c
-            - aws s3 sync "s3://${S3_BUCKET}" /site --endpoint-url "${S3_ENDPOINT}" --delete
+            - aws s3 sync "s3://$${S3_BUCKET}" /site --endpoint-url "$${S3_ENDPOINT}" --delete
           env:
             - name: S3_ENDPOINT
               value: https://s3.eu-central-003.backblazeb2.com
