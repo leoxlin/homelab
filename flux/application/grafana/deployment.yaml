@@ -65,10 +65,6 @@ spec:
             - name: dashboards
               mountPath: /var/lib/grafana/dashboards
               readOnly: true
-            - name: dashboards-node
-              mountPath: /var/lib/grafana/dashboards/node-exporter-full.json
-              subPath: node-exporter-full.json
-              readOnly: true
       volumes:
         - name: datasources
           configMap:
@@ -79,6 +75,3 @@ spec:
         - name: dashboards
           configMap:
             name: grafana-dashboards
-        - name: dashboards-node
-          configMap:
-            name: grafana-dashboards-node
