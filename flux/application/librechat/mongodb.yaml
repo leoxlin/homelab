@@ -1,0 +1,36 @@
+---
+apiVersion: mongodbcommunity.mongodb.com/v1
+kind: MongoDBCommunity
+metadata:
+  name: librechat-mongo
+spec:
+  members: 1
+  type: ReplicaSet
+  version: "7.0.16"
+  security:
+    authentication:
+      modes: ["SCRAM"]
+  users:
+    - name: app
+      db: LibreChat
+      passwordSecretRef:
+        name: librechat-secrets
+        key: MONGO_PASSWORD
+      roles:
+        - name: readWrite
+          db: LibreChat
+        - name: dbAdmin
+          db: LibreChat
+      scramCredentialsSecretName: librechat-mongo-scram
+  statefulSet:
+    spec:
+      volumeClaimTemplates:
+        - metadata:
+            name: data-volume
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            storageClassName: longhorn
+            resources:
+              requests:
+                storage: 5Gi

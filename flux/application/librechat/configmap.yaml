@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: librechat-config
+data:
+  HOST: "0.0.0.0"
+  PORT: "3080"
+  SERVER_DOMAIN: "librechat.hydrahmlb.cc"
+  NODE_ENV: "production"
+  USE_REDIS: "true"
+  REDIS_URI: "redis://librechat-redis.default.svc.cluster.local:6379"
+  MEILI_HOST: "http://localhost:7700"
+  MEILI_NO_ANALYTICS: "true"
+  # Registration is managed by the administrator via the LibreChat UI.
+  ALLOW_REGISTRATION: "false"
+  # Shared links are private by default.
+  ALLOW_SHARED_LINKS_PUBLIC: "false"

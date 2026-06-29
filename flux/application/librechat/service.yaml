@@ -1,0 +1,33 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: librechat
+spec:
+  selector:
+    app: librechat
+  ports:
+    - port: 3080
+      targetPort: 3080
+      name: http
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: librechat
+spec:
+  hosts:
+    - librechat.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: librechat.default.svc.cluster.local
+            port:
+              number: 3080
