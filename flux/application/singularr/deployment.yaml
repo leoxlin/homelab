@@ -29,6 +29,8 @@ spec:
               value: https://s3.eu-central-003.backblazeb2.com
             - name: S3_BUCKET
               value: hydra-ecd4ffd5fcf8/singularr-app
+            - name: AWS_DEFAULT_REGION
+              value: eu-central-003
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
