@@ -5,7 +5,13 @@ resources:
   - database.yaml
   - configmap.yaml
   - datasources.yaml
+  - dashboards-provider.yaml
   - secrets.yaml
   - deployment.yaml
   - deployment-mcp.yaml
   - service.yaml
+configMapGenerator:
+  - name: grafana-dashboards
+    namespace: monitoring
+    files:
+      - dashboards/node-exporter.json

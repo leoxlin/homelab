@@ -9,6 +9,7 @@ data:
     apiVersion: 1
     datasources:
       - name: vm-prom
+        uid: vm-prom
         type: prometheus
         access: proxy
         url: http://vmselect-vmcluster.monitoring.svc:8481/select/0/prometheus
