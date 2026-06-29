@@ -14,4 +14,18 @@ configMapGenerator:
   - name: grafana-dashboards
     namespace: monitoring
     files:
-      - dashboards/node-exporter.json
+      - dashboards/flux-cluster.json
+      - dashboards/flux-control-plane.json
+      - dashboards/istio-control-plane.json
+      - dashboards/istio-mesh.json
+      - dashboards/istio-performance.json
+      - dashboards/istio-service.json
+      - dashboards/istio-workload.json
+      - dashboards/istio-ztunnel.json
+      - dashboards/kubernetes-cluster.json
+      - dashboards/longhorn-monitoring.json
+      - dashboards/metallb.json
+  - name: grafana-dashboards-node
+    namespace: monitoring
+    files:
+      - dashboards/node-exporter-full.json
