@@ -109,7 +109,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "100 - (avg by (instance_hostname) (rate(node_cpu_seconds_total{mode=\"idle\"}[$__rate_interval])) * 100)",
+          "expr": "100 - (avg by (instance_hostname) (rate(node_cpu_seconds_total{mode=\"idle\", instance_hostname=~\"${node}\"}[$__rate_interval])) * 100)",
           "instant": false,
           "legendFormat": "{{instance_hostname}}",
           "range": true,
@@ -206,7 +206,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100",
+          "expr": "(node_memory_MemTotal_bytes{instance_hostname=~\"${node}\"} - node_memory_MemAvailable_bytes{instance_hostname=~\"${node}\"}) / node_memory_MemTotal_bytes{instance_hostname=~\"${node}\"} * 100",
           "instant": false,
           "legendFormat": "{{instance_hostname}}",
           "range": true,
@@ -303,7 +303,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "(node_filesystem_size_bytes{mountpoint!~\"/boot.*|/run.*|/dev.*|/sys.*\"} - node_filesystem_avail_bytes{mountpoint!~\"/boot.*|/run.*|/dev.*|/sys.*\"}) / node_filesystem_size_bytes{mountpoint!~\"/boot.*|/run.*|/dev.*|/sys.*\"} * 100",
+          "expr": "(node_filesystem_size_bytes{mountpoint!~\"/boot.*|/run.*|/dev.*|/sys.*\", instance_hostname=~\"${node}\"} - node_filesystem_avail_bytes{mountpoint!~\"/boot.*|/run.*|/dev.*|/sys.*\", instance_hostname=~\"${node}\"}) / node_filesystem_size_bytes{mountpoint!~\"/boot.*|/run.*|/dev.*|/sys.*\", instance_hostname=~\"${node}\"} * 100",
           "instant": false,
           "legendFormat": "{{instance_hostname}} - {{mountpoint}}",
           "range": true,
@@ -400,7 +400,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])",
+          "expr": "rate(node_network_receive_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\", instance_hostname=~\"${node}\"}[$__rate_interval])",
           "instant": false,
           "legendFormat": "{{instance_hostname}} - {{device}}",
           "range": true,
@@ -497,7 +497,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\"}[$__rate_interval])",
+          "expr": "rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|br-.*|docker.*\", instance_hostname=~\"${node}\"}[$__rate_interval])",
           "instant": false,
           "legendFormat": "{{instance_hostname}} - {{device}}",
           "range": true,
@@ -594,7 +594,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "node_load1",
+          "expr": "node_load1{instance_hostname=~\"${node}\"}",
           "instant": false,
           "legendFormat": "{{instance_hostname}}",
           "range": true,
@@ -657,7 +657,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "node_time_seconds - node_boot_time_seconds",
+          "expr": "node_time_seconds{instance_hostname=~\"${node}\"} - node_boot_time_seconds{instance_hostname=~\"${node}\"}",
           "instant": true,
           "legendFormat": "{{instance_hostname}}",
           "range": false,
@@ -720,7 +720,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "count(up{job=\"node-exporter\"} == 1)",
+          "expr": "count(up{job=\"node-exporter\", instance_hostname=~\"${node}\"} == 1)",
           "instant": true,
           "legendFormat": "",
           "range": false,
@@ -755,6 +755,37 @@
         "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(node_cpu_seconds_total, instance_hostname)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": true,
+        "name": "node",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(node_cpu_seconds_total, instance_hostname)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
