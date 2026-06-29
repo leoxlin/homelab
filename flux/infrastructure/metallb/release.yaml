@@ -28,5 +28,5 @@ spec:
       logLevel: info
     speaker:
       logLevel: info
-      frr:
+      frrk8s:
         enabled: true
