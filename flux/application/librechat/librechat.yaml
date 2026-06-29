@@ -13,5 +13,3 @@ spec:
     name: flux-system
   dependsOn:
     - name: infrastructure
-    - name: mongodb-operator
-    - name: redis-operator
