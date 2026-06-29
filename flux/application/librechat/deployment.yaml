@@ -35,7 +35,7 @@ spec:
             - name: MONGO_URI
               valueFrom:
                 secretKeyRef:
-                  name: librechat-mongo-LibreChat-app
+                  name: librechat-mongo-librechat-app
                   key: connectionString.standard
           volumeMounts:
             - name: librechat-data

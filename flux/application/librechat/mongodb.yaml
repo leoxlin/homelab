@@ -12,15 +12,15 @@ spec:
       modes: ["SCRAM"]
   users:
     - name: app
-      db: LibreChat
+      db: librechat
       passwordSecretRef:
         name: librechat-secrets
         key: MONGO_PASSWORD
       roles:
         - name: readWrite
-          db: LibreChat
+          db: librechat
         - name: dbAdmin
-          db: LibreChat
+          db: librechat
       scramCredentialsSecretName: librechat-mongo-scram
   statefulSet:
     spec:
