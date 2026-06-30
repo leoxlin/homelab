@@ -669,5 +669,8 @@
   "title": "Istio Ztunnel Dashboard",
   "uid": "12c58766acc81a1c835dd5059eaf2741",
   "gnetId": 21306,
-  "id": null
+  "id": null,
+  "tags": [
+    "istio"
+  ]
 }

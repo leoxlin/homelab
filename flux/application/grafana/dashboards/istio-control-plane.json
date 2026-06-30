@@ -931,5 +931,8 @@
   "title": "Istio Control Plane Dashboard",
   "uid": "1813f692a8e4ac77155348d4c7d2fba8",
   "gnetId": 7645,
-  "id": null
+  "id": null,
+  "tags": [
+    "istio"
+  ]
 }

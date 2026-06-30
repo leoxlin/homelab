@@ -2328,9 +2328,7 @@
   "refresh": "5m",
   "schemaVersion": 42,
   "tags": [
-    "Storage",
-    "K8s",
-    "Longhorn"
+    "longhorn"
   ],
   "templating": {
     "list": [

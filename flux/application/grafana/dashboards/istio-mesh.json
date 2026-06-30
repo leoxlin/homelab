@@ -771,5 +771,8 @@
   "title": "Istio Mesh Dashboard",
   "uid": "1a9a8ea49444aae205c7737573e894f9",
   "gnetId": 7639,
-  "id": null
+  "id": null,
+  "tags": [
+    "istio"
+  ]
 }
