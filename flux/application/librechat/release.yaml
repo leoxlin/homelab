@@ -68,11 +68,24 @@ spec:
         HOST: "0.0.0.0"
         PORT: "3080"
         SERVER_DOMAIN: "librechat.hydrahmlb.cc"
+        DOMAIN_CLIENT: "https://librechat.hydrahmlb.cc"
+        DOMAIN_SERVER: "https://librechat.hydrahmlb.cc"
         NODE_ENV: "production"
         USE_REDIS: "true"
         MEILI_NO_ANALYTICS: "true"
         ALLOW_REGISTRATION: "false"
         ALLOW_SHARED_LINKS_PUBLIC: "false"
+        # OIDC via Authentik (secrets live in the 1Password-backed librechat-secrets secret)
+        ALLOW_SOCIAL_LOGIN: "true"
+        ALLOW_SOCIAL_REGISTRATION: "false"
+        OPENID_ISSUER: "https://authentik.hydrahmlb.cc/application/o/librechat/"
+        OPENID_CALLBACK_URL: "/oauth/openid/callback"
+        OPENID_SCOPE: "openid profile email"
+        OPENID_BUTTON_LABEL: "Sign in with Authentik"
+        OPENID_USE_PKCE: "true"
+        OPENID_USERNAME_CLAIM: "preferred_username"
+        OPENID_NAME_CLAIM: "name"
+        OPENID_EMAIL_CLAIM: "email"
       imageVolume:
         enabled: true
         size: 5Gi
