@@ -64,6 +64,7 @@ spec:
 
     librechat:
       existingSecretName: librechat-secrets
+      adminPanelUrl: "https://admin.librechat.hydrahmlb.cc"
       configEnv:
         HOST: "0.0.0.0"
         PORT: "3080"
@@ -86,6 +87,10 @@ spec:
         OPENID_USERNAME_CLAIM: "preferred_username"
         OPENID_NAME_CLAIM: "name"
         OPENID_EMAIL_CLAIM: "email"
+        # OIDC admin elevation via existing Authentik group
+        OPENID_ADMIN_ROLE: "authentik Admins"
+        OPENID_ADMIN_ROLE_PARAMETER_PATH: "groups"
+        OPENID_ADMIN_ROLE_TOKEN_KIND: "userinfo"
       imageVolume:
         enabled: true
         size: 5Gi
