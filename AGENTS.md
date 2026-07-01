@@ -3,4 +3,4 @@
 - Treat Flux pruning, namespace moves, PVCs, database operators, and router changes as stateful operations that need an explicit migration or rollback plan.
 - Never create local cloud credentials or commit secrets; this repo expects 1Password, External Secrets, and environment-based credentials.
 - When a prompt is ambiguous, ask one focused question before making broad infrastructure changes, but keep small fixes moving.
-- Treat `.agents/memory/design/` as on-demand reference only: do not read or load those design docs into context unless a memory doc, skill, or `AGENTS.md` references the specific file with an explicit `@` path. They are session-scoped design notes, not authoritative guidance.
+- Treat `docs/homelab/specs/` and `docs/homelab/plans/` as on-demand reference only: do not read or load those design docs into context unless a skill or `AGENTS.md` references the specific file with an explicit `@` path. They are session-scoped design notes, not authoritative guidance.
