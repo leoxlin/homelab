@@ -6,3 +6,5 @@ resources:
   - secrets.yaml
   - release.yaml
   - service.yaml
+  - deployment-admin.yaml
+  - service-admin.yaml

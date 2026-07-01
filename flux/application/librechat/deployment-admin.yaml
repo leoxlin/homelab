@@ -1,0 +1,98 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: librechat-admin-panel
+  namespace: librechat
+  labels:
+    app: librechat-admin-panel
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: librechat-admin-panel
+  template:
+    metadata:
+      labels:
+        app: librechat-admin-panel
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      containers:
+        - name: admin-panel
+          # renovate: datasource=docker depName=ghcr.io/clickhouse/librechat-admin-panel
+          image: ghcr.io/clickhouse/librechat-admin-panel:latest
+          ports:
+            - containerPort: 3000
+              name: http
+          env:
+            - name: PORT
+              value: "3000"
+            - name: VITE_API_BASE_URL
+              value: "https://librechat.hydrahmlb.cc"
+            - name: API_SERVER_URL
+              value: "http://librechat.librechat.svc.cluster.local:3080"
+            - name: ADMIN_SSO_ONLY
+              value: "true"
+            - name: SESSION_COOKIE_SECURE
+              value: "true"
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: librechat-secrets
+                  key: ADMIN_PANEL_SESSION_SECRET
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: librechat-admin-panel
+  namespace: librechat
+spec:
+  selector:
+    app: librechat-admin-panel
+  ports:
+    - port: 3000
+      targetPort: 3000
+      name: http
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: librechat-admin-panel
+  namespace: librechat
+spec:
+  hosts:
+    - librechat-admin.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: librechat-admin-panel.librechat.svc.cluster.local
+            port:
+              number: 3000

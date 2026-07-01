@@ -64,7 +64,7 @@ spec:
 
     librechat:
       existingSecretName: librechat-secrets
-      adminPanelUrl: "https://admin.librechat.hydrahmlb.cc"
+      adminPanelUrl: "https://librechat-admin.hydrahmlb.cc"
       configEnv:
         HOST: "0.0.0.0"
         PORT: "3080"
