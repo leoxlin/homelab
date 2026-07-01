@@ -1,4 +1,13 @@
 ---
+- name: Reload system systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+
+- name: Restart obsidian vault mount
+  ansible.builtin.systemd:
+    name: "{{ agents_obsidian_vault_mount_unit }}"
+    state: restarted
+
 - name: Reload agents systemd
   ansible.builtin.systemd:
     daemon_reload: true

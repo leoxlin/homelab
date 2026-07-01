@@ -53,6 +53,72 @@
     group: "{{ agents_group }}"
     mode: "2770"
 
+- name: Ensure Obsidian vault source directory exists
+  ansible.builtin.file:
+    path: "{{ agents_obsidian_vault_src }}"
+    state: directory
+    owner: "{{ agents_llin_user }}"
+    group: "{{ agents_group }}"
+    mode: "2775"
+
+- name: Stat Obsidian vault mount point
+  ansible.builtin.stat:
+    path: "{{ agents_obsidian_vault_mount }}"
+  register: agents_obsidian_vault_mount_stat
+
+- name: Remove legacy Obsidian vault symlink if present
+  ansible.builtin.file:
+    path: "{{ agents_obsidian_vault_mount }}"
+    state: absent
+  when:
+    - agents_obsidian_vault_mount_stat.stat.exists
+    - agents_obsidian_vault_mount_stat.stat.islnk
+
+- name: Ensure Obsidian vault mount point directory exists
+  ansible.builtin.file:
+    path: "{{ agents_obsidian_vault_mount }}"
+    state: directory
+    owner: "{{ agents_user }}"
+    group: "{{ agents_group }}"
+    mode: "0755"
+
+- name: Ensure existing Obsidian vault files are accessible to agents
+  ansible.posix.acl:
+    path: "{{ agents_obsidian_vault_src }}"
+    entity: "{{ agents_user }}"
+    etype: user
+    permissions: rwX
+    recursive: true
+    state: present
+
+- name: Ensure new Obsidian vault files inherit agents access
+  ansible.posix.acl:
+    path: "{{ agents_obsidian_vault_src }}"
+    entity: "{{ agents_user }}"
+    etype: user
+    permissions: rwX
+    default: true
+    recursive: true
+    state: present
+
+- name: Create Obsidian vault bind mount unit
+  ansible.builtin.template:
+    src: obsidian-vault.mount.j2
+    dest: "/etc/systemd/system/{{ agents_obsidian_vault_mount_unit }}"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload system systemd
+    - Restart obsidian vault mount
+
+- name: Ensure Obsidian vault bind mount is enabled and started
+  ansible.builtin.systemd:
+    name: "{{ agents_obsidian_vault_mount_unit }}"
+    daemon_reload: true
+    enabled: true
+    state: started
+
 - name: Ensure llin wrapper directories exist
   ansible.builtin.file:
     path: "{{ item }}"

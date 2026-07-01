@@ -1,0 +1,13 @@
+[Unit]
+Description=Bind mount Obsidian vault for agents user
+After=local-fs.target
+Before=user@{{ agents_user_uid }}.service
+
+[Mount]
+What={{ agents_obsidian_vault_src }}
+Where={{ agents_obsidian_vault_mount }}
+Type=none
+Options=bind
+
+[Install]
+WantedBy=multi-user.target
