@@ -16,7 +16,7 @@ agents_llin_apps_dir: "{{ agents_llin_home }}/.local/share/applications"
 # The source vault is owned by the interactive desktop user; it is bind-mounted
 # into the agents home so the agents user never needs traversal permission on
 # the desktop user's home directory.
-agents_obsidian_vault_src: "{{ agents_llin_home }}/Notes"
+agents_obsidian_vault_src: "{{ agents_llin_home }}/Obsidian"
 agents_obsidian_vault_mount: "{{ agents_home }}/vault"
 agents_obsidian_vault_mount_unit: >-
   {{

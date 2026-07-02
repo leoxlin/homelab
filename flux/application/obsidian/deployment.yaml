@@ -58,7 +58,7 @@ spec:
             - name: STREAMABLE_HTTP_PATH
               value: "/mcp"
             - name: OBSIDIAN_MCP_COMMAND
-              value: "mcpvault /data/Notes"
+              value: "mcpvault /data/Obsidian"
           ports:
             - containerPort: 3100
               protocol: TCP
