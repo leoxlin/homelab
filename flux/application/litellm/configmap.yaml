@@ -39,9 +39,6 @@ data:
         auth_type: "bearer_token"
         auth_value: os.environ/TICKTICK_MCP_TOKEN
         description: "TickTick task manager MCP"
-      obsidian:
-        url: "http://obsidian.default.svc.cluster.local:3100/mcp"
-        description: "Obsidian vault MCP"
       karakeep:
         url: "http://karakeep.default.svc.cluster.local:3100/mcp"
         description: "Karakeep bookmarks MCP"
