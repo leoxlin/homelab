@@ -5,7 +5,7 @@ metadata:
   name: mem0-config
 data:
   APP_DB_NAME: app
-  AUTH_DISABLED: "false"
+  AUTH_DISABLED: "true"
   DASHBOARD_URL: https://mem0.hydrahmlb.cc
   HISTORY_DB_PATH: /app/history/history.db
   MEM0_TELEMETRY: "false"
