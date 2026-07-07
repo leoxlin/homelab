@@ -1,0 +1,66 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mem0-dashboard
+spec:
+  selector:
+    app: mem0
+  ports:
+    - port: 3000
+      targetPort: 3000
+      name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mem0-api
+spec:
+  selector:
+    app: mem0
+  ports:
+    - port: 8000
+      targetPort: 8000
+      name: http
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: mem0
+spec:
+  hosts:
+    - mem0.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: mem0-dashboard.default.svc.cluster.local
+            port:
+              number: 3000
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: mem0-api
+spec:
+  hosts:
+    - mem0-api.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - route:
+        - destination:
+            host: mem0-api.default.svc.cluster.local
+            port:
+              number: 8000

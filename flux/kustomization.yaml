@@ -23,6 +23,7 @@ resources:
   - application/kube-state-metrics/kube-state-metrics.yaml
   - application/librechat/librechat.yaml
   - application/litellm/litellm.yaml
+  - application/mem0/mem0.yaml
   - application/napdog/napdog.yaml
   - application/nextcloud/nextcloud.yaml
   - application/node-exporter/node-exporter.yaml

@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mem0-config
+data:
+  APP_DB_NAME: app
+  AUTH_DISABLED: "false"
+  DASHBOARD_URL: https://mem0.hydrahmlb.cc
+  HISTORY_DB_PATH: /app/history/history.db
+  MEM0_TELEMETRY: "false"
+  NEXT_PUBLIC_API_URL: https://mem0-api.hydrahmlb.cc
+  NEXT_PUBLIC_INSTANCE_NAME: Mem0
+  API_INTERNAL_URL: http://127.0.0.1:8000
+  API_HOST: "0.0.0.0"
+  API_PORT: "8000"
+  PORT: "3000"
+  HOSTNAME: "0.0.0.0"
+  POSTGRES_COLLECTION_NAME: memories
+  POSTGRES_DB: app
+  POSTGRES_HOST: mem0-pg-rw.default.svc.cluster.local
+  POSTGRES_PORT: "5432"
+  POSTGRES_USER: app
