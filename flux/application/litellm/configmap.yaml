@@ -6,6 +6,40 @@ metadata:
 data:
   config.yaml: |
     model_list:
+      - model_name: kimi-k2.7-code
+        litellm_params:
+          model: anthropic/kimi-k2.7-code
+          api_base: https://api.kimi.com/coding/
+          api_key: os.environ/KIMI_CODE_API_KEY
+          extra_headers:
+            User-Agent: claude-code/0.1.0
+      - model_name: kimi-k2.6
+        litellm_params:
+          model: anthropic/kimi-k2.6
+          api_base: https://api.kimi.com/coding/
+          api_key: os.environ/KIMI_CODE_API_KEY
+          extra_headers:
+            User-Agent: claude-code/0.1.0
+      - model_name: gpt-5.3-codex
+        litellm_params:
+          model: chatgpt/gpt-5.3-codex
+          mode: responses
+      - model_name: gpt-5.5
+        litellm_params:
+          model: chatgpt/gpt-5.5
+          mode: responses
+      - model_name: gpt-5.6
+        litellm_params:
+          model: chatgpt/gpt-5.6
+          mode: responses
+      - model_name: gpt-5.6-terra
+        litellm_params:
+          model: chatgpt/gpt-5.6-terra
+          mode: responses
+      - model_name: gpt-5.6-luna
+        litellm_params:
+          model: chatgpt/gpt-5.6-luna
+          mode: responses
       - model_name: claude-opus-4-8
         litellm_params:
           model: openrouter/anthropic/claude-opus-4-8

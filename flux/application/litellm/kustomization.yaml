@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: default
 resources:
   - database.yaml
+  - volume.yaml
   - secrets.yaml
   - configmap.yaml
   - deployment.yaml
