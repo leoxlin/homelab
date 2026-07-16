@@ -8,6 +8,7 @@ resources:
   - database/mongodb-operator/mongodb-operator.yaml
   - database/postgres-operator/postgres-operator.yaml
   - database/redis-operator/redis-operator.yaml
+  - application/agent-canvas/agent-canvas.yaml
   - application/authentik/authentik.yaml
   - application/bentopdf/bentopdf.yaml
   - application/calibre/calibre.yaml

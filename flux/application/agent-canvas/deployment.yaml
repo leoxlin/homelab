@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: agent-canvas
+  labels:
+    app: agent-canvas
+    k8s.hydrahmlb.cc/schedule: server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: agent-canvas
+  template:
+    metadata:
+      labels:
+        app: agent-canvas
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: agent-canvas
+          # renovate: datasource=docker depName=ghcr.io/openhands/agent-canvas
+          image: ghcr.io/openhands/agent-canvas:1.2.1
+          ports:
+            - containerPort: 8001
+              name: http-public
+          env:
+            - name: PUBLIC_MODE_PORT
+              value: "8001"
+            - name: AUTOMATION_BASE_URL
+              value: https://agents.hydrahmlb.cc
+            - name: LOCAL_BACKEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: agent-canvas-secrets
+                  key: LOCAL_BACKEND_API_KEY
+          volumeMounts:
+            - name: state
+              mountPath: /home/openhands/.openhands
+            - name: projects
+              mountPath: /projects
+          resources:
+            requests:
+              cpu: 500m
+              memory: 2Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+          startupProbe:
+            httpGet:
+              path: /ready
+              port: http-public
+            periodSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: http-public
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /alive
+              port: http-public
+            periodSeconds: 30
+      volumes:
+        - name: state
+          persistentVolumeClaim:
+            claimName: agent-canvas-state
+        - name: projects
+          persistentVolumeClaim:
+            claimName: agent-canvas-projects
