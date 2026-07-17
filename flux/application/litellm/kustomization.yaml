@@ -6,6 +6,9 @@ resources:
   - database.yaml
   - volume.yaml
   - secrets.yaml
-  - configmap.yaml
   - deployment.yaml
   - service.yaml
+configMapGenerator:
+  - name: litellm-config
+    files:
+      - config.yaml
