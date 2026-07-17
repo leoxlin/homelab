@@ -41,6 +41,14 @@ spec:
           volumeMounts:
             - name: state
               mountPath: /home/openhands/.openhands
+            - name: agent-profiles
+              mountPath: /home/openhands/.openhands/agent-profiles/codex-terra.json
+              subPath: codex-terra.json
+              readOnly: true
+            - name: agent-profiles
+              mountPath: /home/openhands/.openhands/agent-profiles/codex-sol.json
+              subPath: codex-sol.json
+              readOnly: true
             - name: projects
               mountPath: /projects
           resources:
@@ -71,6 +79,9 @@ spec:
         - name: state
           persistentVolumeClaim:
             claimName: agent-canvas-state
+        - name: agent-profiles
+          configMap:
+            name: agent-canvas-profiles
         - name: projects
           persistentVolumeClaim:
             claimName: agent-canvas-projects

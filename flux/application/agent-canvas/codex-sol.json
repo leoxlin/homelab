@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "id": "9a81f78c-5387-445e-8465-fab722a3a726",
+  "name": "codex-sol",
+  "revision": 0,
+  "mcp_server_refs": null,
+  "agent_kind": "acp",
+  "acp_server": "codex",
+  "acp_model": "gpt-5.6-sol",
+  "acp_session_mode": "agent-full-access",
+  "acp_prompt_timeout": 1800,
+  "acp_command": "npx -y @agentclientprotocol/codex-acp@1.1.4",
+  "acp_args": null
+}
