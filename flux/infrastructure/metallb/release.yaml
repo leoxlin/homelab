@@ -28,5 +28,17 @@ spec:
       logLevel: info
     speaker:
       logLevel: info
+      tolerations:
+        - key: node-role.kubernetes.io/storage
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
       frrk8s:
         enabled: true
+    frr-k8s:
+      frrk8s:
+        tolerations:
+          - key: node-role.kubernetes.io/storage
+            operator: Equal
+            value: "true"
+            effect: NoSchedule

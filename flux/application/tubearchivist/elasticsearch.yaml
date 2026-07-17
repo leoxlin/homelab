@@ -53,6 +53,11 @@ spec:
             runAsGroup: 1000
       nodeSelector:
         kubernetes.io/hostname: marten
+      tolerations:
+        - key: node-role.kubernetes.io/storage
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
       volumes:
         - name: tubearchivist-es
           persistentVolumeClaim:

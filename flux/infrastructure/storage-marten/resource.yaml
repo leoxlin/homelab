@@ -38,3 +38,8 @@ spec:
             claimName: marten-union-01-immich
       nodeSelector:
         kubernetes.io/hostname: marten
+      tolerations:
+        - key: node-role.kubernetes.io/storage
+          operator: Equal
+          value: "true"
+          effect: NoSchedule

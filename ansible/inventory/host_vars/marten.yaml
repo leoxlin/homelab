@@ -38,3 +38,6 @@ k3s_node_type: agent
 
 k3s_node_labels:
   node-role.kubernetes.io/storage: "true"
+
+k3s_node_taints:
+  node-role.kubernetes.io/storage: "true:NoSchedule"

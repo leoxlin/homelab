@@ -29,8 +29,6 @@ spec:
       extraEnvFrom:
         - secretRef:
             name: loki-secrets
-      labels:
-        k8s.hydrahmlb.cc/schedule: storage
     loki:
       auth_enabled: false
       commonConfig:

@@ -68,6 +68,11 @@ spec:
             type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/hostname: marten
+      tolerations:
+        - key: node-role.kubernetes.io/storage
+          operator: Equal
+          value: "true"
+          effect: NoSchedule
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -143,3 +148,8 @@ spec:
             type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/hostname: marten
+      tolerations:
+        - key: node-role.kubernetes.io/storage
+          operator: Equal
+          value: "true"
+          effect: NoSchedule

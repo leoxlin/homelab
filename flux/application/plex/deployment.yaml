@@ -96,3 +96,8 @@ spec:
             type: Directory
       nodeSelector:
         kubernetes.io/hostname: marten
+      tolerations:
+        - key: node-role.kubernetes.io/storage
+          operator: Equal
+          value: "true"
+          effect: NoSchedule

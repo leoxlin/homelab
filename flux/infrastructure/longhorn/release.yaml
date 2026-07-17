@@ -26,3 +26,10 @@ spec:
   values:
     defaultSettings:
       createDefaultDiskLabeledNodes: true
+      taintToleration: node-role.kubernetes.io/storage=true:NoSchedule
+    longhornManager:
+      tolerations:
+        - key: node-role.kubernetes.io/storage
+          operator: Equal
+          value: "true"
+          effect: NoSchedule

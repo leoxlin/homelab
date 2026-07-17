@@ -50,6 +50,11 @@ spec:
                       operator: In
                       values:
                         - marten
+        tolerations:
+          - key: node-role.kubernetes.io/storage
+            operator: Equal
+            value: "true"
+            effect: NoSchedule
       - name: marmot-01-tunnel
         enabled: true
         auth:

@@ -49,7 +49,7 @@ patches:
     target:
       kind: Deployment
       labelSelector: k8s.hydrahmlb.cc/schedule=server
-  - path: ./patches/prefer-storage.yaml
+  - path: ./patches/select-marten.yaml
     target:
       kind: Deployment
       labelSelector: k8s.hydrahmlb.cc/schedule=storage
