@@ -52,3 +52,5 @@ spec:
             claimName: marten-union-01-calibre
         - name: ingest
           emptyDir: {}
+      nodeSelector:
+        kubernetes.io/hostname: marten
