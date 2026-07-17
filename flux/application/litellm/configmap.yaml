@@ -36,6 +36,10 @@ data:
         litellm_params:
           model: chatgpt/gpt-5.6-terra
           mode: responses
+      - model_name: gpt-5.6-sol
+        litellm_params:
+          model: chatgpt/gpt-5.6-sol
+          mode: responses
       - model_name: gpt-5.6-luna
         litellm_params:
           model: chatgpt/gpt-5.6-luna
