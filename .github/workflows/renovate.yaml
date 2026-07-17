@@ -16,7 +16,7 @@ on:
 
 jobs:
   renovate:
-    runs-on: docker
+    runs-on: ubuntu-latest
     container:
       image: ghcr.io/renovatebot/renovate:43@sha256:459b7e28aa54fa2fa7db83df6a2d6ad26de416a054ee554e7833203adf3d9a47
     steps:
@@ -25,12 +25,10 @@ jobs:
       - name: Run Renovate
         run: renovate
         env:
-          RENOVATE_PLATFORM: forgejo
-          RENOVATE_ENDPOINT: https://git.hydrahmlb.dev/
+          RENOVATE_PLATFORM: github
           RENOVATE_AUTODISCOVER: "false"
           RENOVATE_REPOSITORIES: leoxlin/homelab
-          RENOVATE_TOKEN: ${{ secrets.RENOVATE_TOKEN }}
-          RENOVATE_GITHUB_COM_TOKEN: ${{ secrets.RENOVATE_GITHUB_COM_TOKEN }}
+          RENOVATE_TOKEN: ${{ secrets.RENOVATE_GITHUB_COM_TOKEN }}
           RENOVATE_GIT_AUTHOR: "Renovate Bot <renovate@hydrahmlb.cc>"
           RENOVATE_CONFIG_FILE: ${{ github.workspace }}/renovate.json
           LOG_LEVEL: ${{ inputs.log_level || 'info' }}

@@ -12,9 +12,7 @@ jobs:
   # Discover all docker/<name>/Dockerfile entries and emit them as a JSON array
   # so the publish job can fan out one matrix leg per image.
   discover:
-    runs-on: docker
-    container:
-      image: ghcr.io/catthehacker/ubuntu:act-22.04
+    runs-on: ubuntu-latest
     outputs:
       images: ${{ steps.list.outputs.images }}
     steps:
@@ -32,9 +30,7 @@ jobs:
   publish-amd:
     needs: discover
     if: needs.discover.outputs.images != '[]'
-    runs-on: docker-amd
-    container:
-      image: ghcr.io/catthehacker/ubuntu:act-22.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -66,17 +62,12 @@ jobs:
   publish-arm:
     needs: discover
     if: needs.discover.outputs.images != '[]'
-    runs-on: docker-arm
+    runs-on: ubuntu-24.04-arm
     strategy:
       fail-fast: false
       matrix:
         image: ${{ fromJson(needs.discover.outputs.images) }}
     steps:
-      - name: Install Docker CLI
-        run: |
-          apt-get update
-          apt-get install -y docker.io
-
       - name: Checkout
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
@@ -104,9 +95,7 @@ jobs:
   publish-manifest:
     needs: [discover, publish-amd, publish-arm]
     if: needs.discover.outputs.images != '[]'
-    runs-on: docker
-    container:
-      image: ghcr.io/catthehacker/ubuntu:act-22.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
