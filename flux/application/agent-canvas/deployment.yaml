@@ -38,6 +38,15 @@ spec:
                 secretKeyRef:
                   name: agent-canvas-secrets
                   key: LOCAL_BACKEND_API_KEY
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: agent-canvas-litellm-secrets
+                  key: LITELLM_KEY
+            - name: OPENAI_BASE_URL
+              value: http://litellm.default.svc.cluster.local:4000/v1
+            - name: DEFAULT_AUTH_REQUEST
+              value: '{"methodId":"api-key"}'
           volumeMounts:
             - name: state
               mountPath: /home/openhands/.openhands
