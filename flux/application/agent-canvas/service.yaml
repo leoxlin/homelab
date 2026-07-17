@@ -28,6 +28,6 @@ spec:
         redirectCode: 301
     - route:
         - destination:
-            host: agent-canvas.default.svc.cluster.local
+            host: agent-canvas.agent-canvas.svc.cluster.local
             port:
               number: 8002
