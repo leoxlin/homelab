@@ -66,6 +66,11 @@ mcp_servers:
     static_headers:
       CONTEXT7_API_KEY: os.environ/CONTEXT7_API_KEY
     description: "Context7 documentation MCP"
+  kagi:
+    url: "https://mcp.kagi.com/mcp"
+    auth_type: "bearer_token"
+    auth_value: os.environ/KAGI_API_KEY
+    description: "Kagi search and content extraction MCP"
   ticktick:
     url: "https://mcp.ticktick.com"
     auth_type: "bearer_token"
