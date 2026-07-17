@@ -1,0 +1,87 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: flux-system
+spec:
+  releaseName: loki
+  interval: 30m
+  chart:
+    spec:
+      chart: loki
+      version: "18.5.0"
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-community
+        namespace: flux-system
+  targetNamespace: monitoring
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  values:
+    deploymentMode: Monolithic
+    defaults:
+      extraEnvFrom:
+        - secretRef:
+            name: loki-secrets
+      labels:
+        k8s.hydrahmlb.cc/schedule: storage
+    loki:
+      auth_enabled: false
+      commonConfig:
+        replication_factor: 1
+      schemaConfig:
+        configs:
+          - from: "2024-04-01"
+            store: tsdb
+            object_store: s3
+            schema: v13
+            index:
+              prefix: index_
+              period: 24h
+      storage:
+        type: s3
+        bucketNames:
+          chunks: hydra-logs-81f5865f11c2
+          ruler: hydra-logs-81f5865f11c2
+        s3:
+          endpoint: https://s3.eu-central-003.backblazeb2.com
+          region: eu-central-003
+          accessKeyId: ${AWS_ACCESS_KEY_ID}
+          secretAccessKey: ${AWS_SECRET_ACCESS_KEY}
+          signatureVersion: v4
+          s3ForcePathStyle: true
+    singleBinary:
+      replicas: 1
+      persistence:
+        enabled: true
+        enableStatefulSetAutoDeletePVC: false
+        whenDeleted: Retain
+        whenScaled: Retain
+        storageClass: longhorn
+        size: 5Gi
+      resources:
+        requests:
+          cpu: 100m
+          memory: 512Mi
+        limits:
+          memory: 1Gi
+    backend:
+      replicas: 0
+    read:
+      replicas: 0
+    write:
+      replicas: 0
+    chunksCache:
+      enabled: false
+    resultsCache:
+      enabled: false
+    lokiCanary:
+      enabled: false
+    test:
+      enabled: false

@@ -15,3 +15,9 @@ data:
         url: http://vmselect-vmcluster.monitoring.svc:8481/select/0/prometheus
         isDefault: true
         editable: false
+      - name: loki
+        uid: loki
+        type: loki
+        access: proxy
+        url: http://loki-gateway.monitoring.svc
+        editable: false
