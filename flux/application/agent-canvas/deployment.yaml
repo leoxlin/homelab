@@ -26,11 +26,11 @@ spec:
           # renovate: datasource=docker depName=ghcr.io/openhands/agent-canvas
           image: ghcr.io/openhands/agent-canvas:1.2.1
           ports:
-            - containerPort: 8001
+            - containerPort: 8002
               name: http-public
           env:
             - name: PUBLIC_MODE_PORT
-              value: "8001"
+              value: "8002"
             - name: AUTOMATION_BASE_URL
               value: https://agents.hydrahmlb.cc
             - name: LOCAL_BACKEND_API_KEY
@@ -53,8 +53,7 @@ spec:
               drop:
                 - ALL
           startupProbe:
-            httpGet:
-              path: /ready
+            tcpSocket:
               port: http-public
             periodSeconds: 5
             failureThreshold: 60

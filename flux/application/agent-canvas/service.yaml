@@ -7,7 +7,7 @@ spec:
   selector:
     app: agent-canvas
   ports:
-    - port: 8001
+    - port: 8002
       targetPort: http-public
       name: http
 ---
@@ -30,4 +30,4 @@ spec:
         - destination:
             host: agent-canvas.default.svc.cluster.local
             port:
-              number: 8001
+              number: 8002
