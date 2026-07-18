@@ -4,15 +4,6 @@ security_firewall_trusted_subnet: "192.168.0.0/16"
 security_firewall_rules:
   - port: 52000
     comment: "Traefik ingress on ocelot"
-  - port: 4646
-    comment: "Nomad HTTP API"
-  - port: 4647
-    comment: "Nomad RPC"
-  - port: 4648
-    comment: "Nomad Serf TCP"
-  - port: 4648
-    proto: udp
-    comment: "Nomad Serf UDP"
 security_fail2ban_enabled: true
 security_sysctl_hardening: false
 system_timezone: America/New_York
