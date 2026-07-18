@@ -1,0 +1,110 @@
+---
+- name: Install Nomad control plane
+  hosts: ocelot
+  become: true
+  vars:
+    nomad_advertise_address: "{{ ansible_facts['default_ipv4']['address'] }}"
+
+  pre_tasks:
+    - name: Require Arch Linux
+      ansible.builtin.assert:
+        that: ansible_facts["os_family"] == "Archlinux"
+        fail_msg: The Nomad playbook supports Arch Linux hosts only.
+
+  tasks:
+    - name: Install Nomad
+      community.general.pacman:
+        name: nomad
+        state: present
+        update_cache: true
+
+    - name: Create Nomad service user
+      ansible.builtin.user:
+        name: nomad
+        system: true
+        home: /etc/nomad.d
+        shell: /usr/bin/nologin
+        create_home: false
+
+    - name: Create Nomad data directory
+      ansible.builtin.file:
+        path: /var/lib/nomad
+        state: directory
+        owner: nomad
+        group: nomad
+        mode: "0750"
+
+    - name: Configure Nomad server
+      ansible.builtin.copy:
+        dest: /etc/nomad.d/server.hcl
+        owner: root
+        group: nomad
+        mode: "0640"
+        content: |
+          name       = "{{ inventory_hostname }}"
+          datacenter = "homelab"
+          bind_addr  = "0.0.0.0"
+
+          advertise {
+            http = "{{ nomad_advertise_address }}"
+            rpc  = "{{ nomad_advertise_address }}"
+            serf = "{{ nomad_advertise_address }}"
+          }
+
+          server {
+            enabled          = true
+            bootstrap_expect = 1
+          }
+
+          acl {
+            enabled = true
+          }
+      notify: Restart Nomad
+
+    - name: Create Nomad systemd override directory
+      ansible.builtin.file:
+        path: /etc/systemd/system/nomad.service.d
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Run Nomad server as an unprivileged user
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/nomad.service.d/server.conf
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          [Service]
+          User=nomad
+          Group=nomad
+      notify: Restart Nomad
+
+    - name: Validate Nomad configuration
+      ansible.builtin.command: nomad config validate /etc/nomad.d
+      become_user: nomad
+      changed_when: false
+
+    - name: Apply Nomad firewall rules
+      ansible.builtin.include_role:
+        name: core
+        tasks_from: firewall
+      when: security_firewall_enabled
+
+    - name: Apply Nomad configuration changes
+      ansible.builtin.meta: flush_handlers
+
+    - name: Enable Nomad
+      ansible.builtin.systemd_service:
+        name: nomad
+        enabled: true
+        state: started
+
+  handlers:
+    - name: Restart Nomad
+      ansible.builtin.systemd_service:
+        name: nomad
+        enabled: true
+        state: restarted
+        daemon_reload: true
