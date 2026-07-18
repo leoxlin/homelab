@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dagu
+  labels:
+    app: dagu
+    k8s.hydrahmlb.cc/schedule: server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: dagu
+  template:
+    metadata:
+      labels:
+        app: dagu
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: dagu
+          # renovate: datasource=docker depName=ghcr.io/dagucloud/dagu
+          image: ghcr.io/dagucloud/dagu:2.7.5
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: DAGU_AUTH_MODE
+              value: builtin
+            - name: DAGU_TZ
+              value: America/New_York
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/dagu
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          startupProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 5
+            failureThreshold: 30
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 30
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: dagu-data
