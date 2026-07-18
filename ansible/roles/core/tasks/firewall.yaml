@@ -4,6 +4,12 @@
     name: ufw
     state: present
 
+- name: Align UFW IPv6 support with system configuration
+  ansible.builtin.lineinfile:
+    path: /etc/default/ufw
+    regexp: "^IPV6="
+    line: "IPV6={{ 'yes' if ipv6_enabled | default(false) else 'no' }}"
+
 - name: Set UFW default policies
   community.general.ufw:
     direction: "{{ item.direction }}"
