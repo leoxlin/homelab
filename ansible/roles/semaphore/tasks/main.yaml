@@ -75,6 +75,24 @@
   changed_when: false
   no_log: true
 
+- name: Read Semaphore cookie hash
+  ansible.builtin.command:
+    cmd: op read op://Hydra/dev.semaphore/cookie_hash
+  register: semaphore_cookie_hash
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  no_log: true
+
+- name: Read Semaphore cookie encryption key
+  ansible.builtin.command:
+    cmd: op read op://Hydra/dev.semaphore/cookie_encryption
+  register: semaphore_cookie_encryption
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  no_log: true
+
 - name: Create Semaphore configuration
   ansible.builtin.template:
     src: config.json.j2
