@@ -2,7 +2,7 @@
 security_firewall_enabled: true
 security_firewall_trusted_subnet: "192.168.0.0/16"
 security_firewall_rules:
-  - port: 3000
+  - port: 8787
     comment: "Semaphore UI"
   - port: 52000
     comment: "Traefik ingress on ocelot"

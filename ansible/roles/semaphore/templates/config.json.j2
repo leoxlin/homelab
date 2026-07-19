@@ -1,0 +1,12 @@
+{
+  "dialect": "sqlite",
+  "sqlite": {
+    "host": "{{ semaphore_home }}/semaphore.sqlite"
+  },
+  "port": ":8787",
+  "tmp_path": "{{ semaphore_home }}/tmp",
+  "access_key_encryption": "{{ semaphore_access_key.stdout }}",
+  "schedule": {
+    "timezone": "America/New_York"
+  }
+}

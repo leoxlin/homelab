@@ -1,49 +1,191 @@
 ---
+- name: Verify Semaphore architecture
+  ansible.builtin.assert:
+    that: ansible_facts["architecture"] == "x86_64"
+    fail_msg: "The Semaphore role currently supports x86_64 only."
+
+- name: Install Semaphore runtime dependencies
+  ansible.builtin.package:
+    name:
+      - ansible
+      - git
+    state: present
+
+- name: Create Semaphore group
+  ansible.builtin.group:
+    name: "{{ semaphore_user }}"
+    system: true
+
+- name: Create Semaphore user
+  ansible.builtin.user:
+    name: "{{ semaphore_user }}"
+    group: "{{ semaphore_user }}"
+    home: "{{ semaphore_home }}"
+    shell: /bin/bash
+    system: true
+    create_home: true
+
 - name: Create Semaphore directories
   ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
-    owner: "{{ item.owner }}"
-    group: "{{ item.group }}"
+    owner: "{{ semaphore_user }}"
+    group: "{{ semaphore_user }}"
     mode: "{{ item.mode }}"
   loop:
-    - path: "{{ semaphore_compose_dir }}"
-      owner: root
-      group: root
-      mode: "0755"
-    - path: "{{ semaphore_data_dir }}"
-      owner: "1001"
-      group: "1001"
+    - path: "{{ semaphore_home }}/releases/{{ semaphore_version }}"
+      mode: "0750"
+    - path: "{{ semaphore_home }}/tmp"
+      mode: "0700"
+    - path: "{{ semaphore_config_dir }}"
       mode: "0750"
 
-- name: Inject Semaphore secrets
+- name: Download Semaphore
+  ansible.builtin.get_url:
+    url: >-
+      https://github.com/semaphoreui/semaphore/releases/download/v{{ semaphore_version
+      }}/semaphore_{{ semaphore_version }}_linux_amd64.tar.gz
+    dest: "/tmp/semaphore-{{ semaphore_version }}.tar.gz"
+    checksum: "sha256:{{ semaphore_archive_checksum }}"
+    mode: "0644"
+
+- name: Extract Semaphore
+  ansible.builtin.unarchive:
+    src: "/tmp/semaphore-{{ semaphore_version }}.tar.gz"
+    dest: "{{ semaphore_home }}/releases/{{ semaphore_version }}"
+    remote_src: true
+    creates: "{{ semaphore_home }}/releases/{{ semaphore_version }}/semaphore"
+    owner: "{{ semaphore_user }}"
+    group: "{{ semaphore_user }}"
+
+- name: Install Semaphore binary
+  ansible.builtin.file:
+    src: "{{ semaphore_home }}/releases/{{ semaphore_version }}/semaphore"
+    dest: /usr/local/bin/semaphore
+    state: link
+    force: true
+  register: semaphore_binary
+
+- name: Read Semaphore encryption key
   ansible.builtin.command:
-    cmd: "op inject -i {{ role_path }}/templates/.env.tpl"
-  register: semaphore_env
+    cmd: op read op://Hydra/dev.semaphore/access_key_encryption
+  register: semaphore_access_key
   delegate_to: localhost
   become: false
   changed_when: false
   no_log: true
 
-- name: Create Semaphore environment file
-  ansible.builtin.copy:
-    content: "{{ semaphore_env.stdout }}"
-    dest: "{{ semaphore_compose_dir }}/.env"
-    owner: root
-    group: root
+- name: Create Semaphore configuration
+  ansible.builtin.template:
+    src: config.json.j2
+    dest: "{{ semaphore_config_dir }}/config.json"
+    owner: "{{ semaphore_user }}"
+    group: "{{ semaphore_user }}"
     mode: "0600"
+  register: semaphore_config_file
   no_log: true
 
-- name: Copy Semaphore Compose file
-  ansible.builtin.copy:
-    src: compose.yaml
-    dest: "{{ semaphore_compose_dir }}/compose.yaml"
+- name: Install Semaphore systemd service
+  ansible.builtin.template:
+    src: semaphore.service.j2
+    dest: /etc/systemd/system/semaphore.service
     owner: root
     group: root
     mode: "0644"
+  register: semaphore_service
 
-- name: Start Semaphore
-  community.docker.docker_compose_v2:
-    project_src: "{{ semaphore_compose_dir }}"
-    state: present
-    pull: always
+- name: Check Semaphore database
+  ansible.builtin.stat:
+    path: "{{ semaphore_home }}/semaphore.sqlite"
+  register: semaphore_database
+
+- name: Stop Semaphore before database migration
+  ansible.builtin.systemd:
+    name: semaphore.service
+    daemon_reload: "{{ semaphore_service.changed }}"
+    state: stopped
+  when:
+    - semaphore_database.stat.exists
+    - semaphore_binary.changed or semaphore_config_file.changed
+
+- name: Back up Semaphore database before migration
+  ansible.builtin.copy:
+    src: "{{ semaphore_home }}/semaphore.sqlite"
+    dest: "{{ semaphore_home }}/semaphore.sqlite.pre-{{ semaphore_version }}"
+    remote_src: true
+    force: false
+    owner: "{{ semaphore_user }}"
+    group: "{{ semaphore_user }}"
+    mode: "0600"
+  when:
+    - semaphore_database.stat.exists
+    - semaphore_binary.changed
+
+- name: Migrate Semaphore database
+  ansible.builtin.command:
+    argv:
+      - /usr/local/bin/semaphore
+      - migrate
+      - --config
+      - "{{ semaphore_config_dir }}/config.json"
+  become_user: "{{ semaphore_user }}"
+  changed_when: not semaphore_database.stat.exists
+  when: semaphore_binary.changed or semaphore_config_file.changed or not semaphore_database.stat.exists
+
+- name: Check for Semaphore admin
+  ansible.builtin.command:
+    argv:
+      - /usr/local/bin/semaphore
+      - user
+      - get
+      - --login
+      - admin
+      - --config
+      - "{{ semaphore_config_dir }}/config.json"
+  become_user: "{{ semaphore_user }}"
+  register: semaphore_admin
+  changed_when: false
+  failed_when: false
+
+- name: Read Semaphore admin password
+  ansible.builtin.command:
+    cmd: op read op://Hydra/dev.semaphore/admin_password
+  delegate_to: localhost
+  become: false
+  register: semaphore_admin_password
+  changed_when: false
+  no_log: true
+  when: semaphore_admin.rc != 0
+
+- name: Create Semaphore admin
+  ansible.builtin.command:
+    argv:
+      - /usr/local/bin/semaphore
+      - user
+      - add
+      - --admin
+      - --login
+      - admin
+      - --name
+      - Admin
+      - --email
+      - admin@hydrahmlb.cc
+      - --password
+      - "{{ semaphore_admin_password.stdout }}"
+      - --config
+      - "{{ semaphore_config_dir }}/config.json"
+  become_user: "{{ semaphore_user }}"
+  no_log: true
+  when: semaphore_admin.rc != 0
+
+- name: Start Semaphore systemd service
+  ansible.builtin.systemd:
+    name: semaphore.service
+    daemon_reload: "{{ semaphore_service.changed }}"
+    enabled: true
+    state: >-
+      {{
+        'restarted'
+        if semaphore_binary.changed or semaphore_config_file.changed or semaphore_service.changed
+        else 'started'
+      }}

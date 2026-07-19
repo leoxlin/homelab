@@ -1,0 +1,22 @@
+[Unit]
+Description=Semaphore UI
+Documentation=https://semaphoreui.com/docs
+Wants=network-online.target
+After=network-online.target
+ConditionPathExists=/usr/local/bin/semaphore
+ConditionPathExists={{ semaphore_config_dir }}/config.json
+
+[Service]
+Type=simple
+User={{ semaphore_user }}
+Group={{ semaphore_user }}
+WorkingDirectory={{ semaphore_home }}
+Environment=HOME={{ semaphore_home }}
+ExecStart=/usr/local/bin/semaphore server --config {{ semaphore_config_dir }}/config.json
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=10s
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

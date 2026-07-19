@@ -1,3 +1,6 @@
 ---
-semaphore_compose_dir: /opt/docker/compose/semaphore
-semaphore_data_dir: /opt/semaphore
+semaphore_version: 2.18.27
+semaphore_archive_checksum: fb925f91e979ac9ed21d8fb9fab35e40be975f74778af6045fbea1010c560b06
+semaphore_user: semaphore
+semaphore_home: /var/lib/semaphore
+semaphore_config_dir: /etc/semaphore
