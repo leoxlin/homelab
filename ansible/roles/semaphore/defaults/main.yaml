@@ -1,0 +1,3 @@
+---
+semaphore_compose_dir: /opt/docker/compose/semaphore
+semaphore_data_dir: /opt/semaphore
