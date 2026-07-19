@@ -24,7 +24,7 @@ spec:
       containers:
         - name: agent-canvas
           # renovate: datasource=docker depName=ghcr.io/openhands/agent-canvas
-          image: ghcr.io/openhands/agent-canvas:1.2.1
+          image: ghcr.io/openhands/agent-canvas:1.5.0
           ports:
             - containerPort: 8002
               name: http-public
