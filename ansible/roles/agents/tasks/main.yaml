@@ -135,48 +135,6 @@
     name: "{{ agents_packages }}"
     state: present
 
-- name: Ensure traefik package is installed
-  ansible.builtin.package:
-    name: traefik
-    state: present
-
-- name: Ensure traefik config directory exists
-  ansible.builtin.file:
-    path: "{{ agents_home }}/.config/traefik"
-    state: directory
-    owner: "{{ agents_user }}"
-    group: "{{ agents_group }}"
-    mode: "0750"
-
-- name: Create traefik static config
-  ansible.builtin.template:
-    src: traefik-static.yaml.j2
-    dest: "{{ agents_home }}/.config/traefik/static.yaml"
-    owner: "{{ agents_user }}"
-    group: "{{ agents_group }}"
-    mode: "0644"
-  notify: Restart traefik
-
-- name: Create traefik dynamic config
-  ansible.builtin.template:
-    src: traefik-dynamic.yaml.j2
-    dest: "{{ agents_home }}/.config/traefik/dynamic.yaml"
-    owner: "{{ agents_user }}"
-    group: "{{ agents_group }}"
-    mode: "0644"
-  notify: Restart traefik
-
-- name: Create traefik systemd user unit
-  ansible.builtin.template:
-    src: traefik.service.j2
-    dest: "{{ agents_home }}/.config/systemd/user/traefik.service"
-    owner: "{{ agents_user }}"
-    group: "{{ agents_group }}"
-    mode: "0644"
-  notify:
-    - Reload agents systemd
-    - Restart traefik
-
 - name: Ensure agents shell sets runtime env and shared umask
   ansible.builtin.blockinfile:
     path: "{{ agents_home }}/.bashrc"
@@ -442,7 +400,6 @@
   loop:
     - hermes-gateway.service
     - kimi-web.service
-    - traefik.service
     - signal-cli.service
   when: item != 'signal-cli.service' or agents_signal_cli_data_stat.stat.exists
 

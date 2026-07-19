@@ -1,0 +1,5 @@
+---
+traefik_user: agents
+traefik_user_uid: 1130
+traefik_group: agents
+traefik_home: "/home/{{ traefik_user }}"

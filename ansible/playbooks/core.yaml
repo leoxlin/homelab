@@ -1,7 +1,6 @@
 ---
 - name: Apply core configuration
   hosts:
-    - drivers
     - servers
     - marmot
     - pika

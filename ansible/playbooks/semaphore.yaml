@@ -1,7 +1,0 @@
----
-- name: Deploy Semaphore UI
-  hosts:
-    - ocelot
-  become: true
-  roles:
-    - role: semaphore

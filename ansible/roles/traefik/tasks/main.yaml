@@ -1,0 +1,53 @@
+---
+- name: Ensure traefik package is installed
+  ansible.builtin.package:
+    name: traefik
+    state: present
+
+- name: Ensure traefik config directory exists
+  ansible.builtin.file:
+    path: "{{ traefik_home }}/.config/traefik"
+    state: directory
+    owner: "{{ traefik_user }}"
+    group: "{{ traefik_group }}"
+    mode: "0750"
+
+- name: Create traefik static config
+  ansible.builtin.template:
+    src: static.yaml.j2
+    dest: "{{ traefik_home }}/.config/traefik/static.yaml"
+    owner: "{{ traefik_user }}"
+    group: "{{ traefik_group }}"
+    mode: "0644"
+  notify: Restart traefik
+
+- name: Create traefik dynamic config
+  ansible.builtin.template:
+    src: dynamic.yaml.j2
+    dest: "{{ traefik_home }}/.config/traefik/dynamic.yaml"
+    owner: "{{ traefik_user }}"
+    group: "{{ traefik_group }}"
+    mode: "0644"
+  notify: Restart traefik
+
+- name: Create traefik systemd user unit
+  ansible.builtin.template:
+    src: traefik.service.j2
+    dest: "{{ traefik_home }}/.config/systemd/user/traefik.service"
+    owner: "{{ traefik_user }}"
+    group: "{{ traefik_group }}"
+    mode: "0644"
+  notify:
+    - Reload traefik systemd
+    - Restart traefik
+
+- name: Ensure traefik is enabled and started
+  ansible.builtin.systemd:
+    name: traefik.service
+    scope: user
+    state: started
+    enabled: true
+    daemon_reload: true
+  become_user: "{{ traefik_user }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ traefik_user_uid }}"

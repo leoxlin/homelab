@@ -30,10 +30,6 @@ all:
     pika-04:
       ansible_host: 192.168.2.104
 
-drivers:
-  hosts:
-    ocelot:
-
 servers:
   hosts:
     apodemus:

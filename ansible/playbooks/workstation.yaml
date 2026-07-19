@@ -1,0 +1,10 @@
+---
+- name: Configure workstation
+  hosts:
+    - ocelot
+  become: true
+  roles:
+    - role: core
+    - role: agents
+    - role: semaphore
+    - role: traefik

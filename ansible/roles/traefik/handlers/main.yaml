@@ -1,0 +1,17 @@
+---
+- name: Reload traefik systemd
+  ansible.builtin.systemd:
+    daemon_reload: true
+    scope: user
+  become_user: "{{ traefik_user }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ traefik_user_uid }}"
+
+- name: Restart traefik
+  ansible.builtin.systemd:
+    name: traefik.service
+    scope: user
+    state: restarted
+  become_user: "{{ traefik_user }}"
+  environment:
+    XDG_RUNTIME_DIR: "/run/user/{{ traefik_user_uid }}"

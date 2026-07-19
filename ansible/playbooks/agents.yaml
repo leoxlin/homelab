@@ -1,7 +1,0 @@
----
-- name: Deploy AI agents on the agents user
-  hosts:
-    - ocelot
-  become: true
-  roles:
-    - role: agents

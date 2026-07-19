@@ -6,7 +6,7 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/traefik --configFile={{ agents_home }}/.config/traefik/static.yaml
+ExecStart=/usr/bin/traefik --configFile={{ traefik_home }}/.config/traefik/static.yaml
 Restart=on-failure
 RestartSec=5s
 
