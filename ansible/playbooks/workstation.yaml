@@ -5,6 +5,10 @@
   become: true
   roles:
     - role: core
+      tags: role-core
     - role: agents
+      tags: role-agents
     - role: semaphore
+      tags: role-semaphore
     - role: traefik
+      tags: role-traefik

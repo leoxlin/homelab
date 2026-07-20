@@ -68,7 +68,8 @@ depends = ["setup-ansible"]
 usage = '''
 arg "<playbook>"
 flag "--host <host>" help="Limit execution to a specific host or group"
+flag "--tags <tags>" help="Run only tasks matching comma-separated Ansible tags"
 '''
-run = "uv run ansible-playbook playbooks/${usage_playbook}.yaml ${usage_host:+--limit $usage_host}"
+run = "uv run ansible-playbook playbooks/${usage_playbook}.yaml ${usage_host:+--limit $usage_host} ${usage_tags:+--tags $usage_tags}"
 dir = "ansible"
 alias = "a"
