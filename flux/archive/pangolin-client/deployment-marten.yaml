@@ -24,7 +24,7 @@ spec:
       containers:
         - name: pangolin-client
           # renovate: datasource=docker depName=fosrl/pangolin-cli
-          image: fosrl/pangolin-cli:0.10.1
+          image: fosrl/pangolin-cli:0.15.0
           envFrom:
             - secretRef:
                 name: pangolin-client-secrets-marten
