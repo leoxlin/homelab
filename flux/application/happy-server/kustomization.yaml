@@ -4,8 +4,7 @@ kind: Kustomization
 namespace: happy-server
 resources:
   - namespace.yaml
-  - postgres.yaml
-  - redis.yaml
+  - volume.yaml
   - secrets.yaml
   - deployment.yaml
   - service.yaml
