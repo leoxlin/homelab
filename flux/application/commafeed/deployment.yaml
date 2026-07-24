@@ -22,7 +22,7 @@ spec:
       containers:
         - name: commafeed
           # renovate: datasource=docker depName=athou/commafeed
-          image: athou/commafeed:7.1.0-postgresql
+          image: athou/commafeed:7.2.0-postgresql
           ports:
             - containerPort: 8082
           env:
