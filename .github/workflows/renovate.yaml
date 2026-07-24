@@ -32,7 +32,7 @@ jobs:
           configurationFile: renovate.json
           token: ${{ steps.app-token.outputs.token }}
           # renovate: datasource=docker depName=ghcr.io/renovatebot/renovate
-          renovate-version: 43@sha256:459b7e28aa54fa2fa7db83df6a2d6ad26de416a054ee554e7833203adf3d9a47
+          renovate-version: 43@sha256:12ff9ccbded485ab4187f0b56713ca3514fd5802e347441236a9153efa033aeb
         env:
           RENOVATE_PLATFORM: github
           RENOVATE_AUTODISCOVER: "false"
