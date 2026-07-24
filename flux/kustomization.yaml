@@ -18,7 +18,6 @@ resources:
   - application/fetcherr/fetcherr.yaml
   - application/forgejo-runner/forgejo-runner.yaml
   - application/grafana/grafana.yaml
-  - application/happy-server/happy-server.yaml
   - application/immich/immich.yaml
   - application/k8up/k8up.yaml
   - application/karakeep/karakeep.yaml
