@@ -7,6 +7,11 @@ metadata:
     app: happy-server
     k8s.hydrahmlb.cc/schedule: server
 spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
   replicas: 1
   selector:
     matchLabels:
@@ -57,8 +62,13 @@ spec:
               value: redis://happy-server-redis.default.svc.cluster.local:6379
             - name: PORT
               value: "3005"
-            - name: S3_USE_SSL
-              value: "true"
+            - name: NODE_ENV
+              value: production
+            - name: HANDY_MASTER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: happy-server-secrets
+                  key: SEED
             - name: METRICS_ENABLED
               value: "false"
           startupProbe:
@@ -87,3 +97,13 @@ spec:
               memory: 512Mi
             limits:
               memory: 1Gi
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: happy-server-pdb
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: happy-server

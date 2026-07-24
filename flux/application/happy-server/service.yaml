@@ -4,6 +4,7 @@ kind: Service
 metadata:
   name: happy-server
 spec:
+  type: ClusterIP
   selector:
     app: happy-server
   ports:
@@ -20,7 +21,6 @@ spec:
     - happy.hydrahmlb.cc
   gateways:
     - istio-ingress/hydrahmlb-gateway
-    - istio-public-ingress/hydrahmlb-public-gateway
   http:
     - match:
         - port: 80
