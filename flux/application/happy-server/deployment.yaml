@@ -1,0 +1,89 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: happy-server
+  labels:
+    app: happy-server
+    k8s.hydrahmlb.cc/schedule: server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: happy-server
+  template:
+    metadata:
+      labels:
+        app: happy-server
+    spec:
+      initContainers:
+        - name: migrate
+          image: hydrahmlb/happy-server:latest
+          imagePullPolicy: Always
+          command:
+            - yarn
+            - prisma
+            - migrate
+            - deploy
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: happy-server-pg-app
+                  key: uri
+          resources:
+            requests:
+              cpu: 25m
+              memory: 128Mi
+            limits:
+              memory: 256Mi
+      containers:
+        - name: happy-server
+          image: hydrahmlb/happy-server:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3005
+              name: http
+          envFrom:
+            - secretRef:
+                name: happy-server-secrets
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: happy-server-pg-app
+                  key: uri
+            - name: REDIS_URL
+              value: redis://happy-server-redis.default.svc.cluster.local:6379
+            - name: PORT
+              value: "3005"
+            - name: S3_USE_SSL
+              value: "true"
+            - name: METRICS_ENABLED
+              value: "false"
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 3005
+            periodSeconds: 5
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3005
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3005
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 512Mi
+            limits:
+              memory: 1Gi
