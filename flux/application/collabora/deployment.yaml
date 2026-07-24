@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: collabora
-          image: collabora/code:25.04.8.2.1
+          image: collabora/code:25.04.10.3.1
           ports:
             - containerPort: 9980
               protocol: TCP
