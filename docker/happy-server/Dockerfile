@@ -1,8 +1,10 @@
-# Stage 1: install dependencies with workspace context
+# Standalone happy-server: single container, no external dependencies
+# Uses PGlite (embedded Postgres), local filesystem storage, no Redis
+
+# Stage 1: install dependencies
 FROM node:20 AS deps
 
-# Install build dependencies
-RUN apt-get update && apt-get install -y python3 ffmpeg make g++ build-essential && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y python3 make g++ build-essential && rm -rf /var/lib/apt/lists/*
 RUN corepack enable && corepack prepare pnpm@10.11.0 --activate
 
 WORKDIR /repo
@@ -11,11 +13,12 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 COPY scripts ./scripts
 COPY patches ./patches
 
-RUN mkdir -p packages/happy-app packages/happy-server packages/happy-cli packages/happy-wire
+RUN mkdir -p packages/happy-app packages/happy-server packages/happy-cli packages/happy-agent packages/happy-wire
 
 COPY packages/happy-app/package.json packages/happy-app/
 COPY packages/happy-server/package.json packages/happy-server/
 COPY packages/happy-cli/package.json packages/happy-cli/
+COPY packages/happy-agent/package.json packages/happy-agent/
 COPY packages/happy-wire/package.json packages/happy-wire/
 
 # Workspace postinstall requirements
@@ -26,7 +29,7 @@ COPY packages/happy-cli/tools packages/happy-cli/tools
 
 RUN SKIP_HAPPY_WIRE_BUILD=1 pnpm install --frozen-lockfile
 
-# Stage 2: build the server
+# Stage 2: copy source and type-check
 FROM deps AS builder
 
 COPY packages/happy-wire ./packages/happy-wire
@@ -36,25 +39,23 @@ RUN pnpm --filter @slopus/happy-wire build
 RUN pnpm --filter happy-server build
 
 # Stage 3: runtime
-FROM node:20 AS runner
+FROM node:20-slim AS runner
 
 WORKDIR /repo
 
-# Runtime dependencies
-RUN apt-get update && apt-get install -y python3 ffmpeg && rm -rf /var/lib/apt/lists/*
-RUN corepack enable && corepack prepare pnpm@10.11.0 --activate
+RUN apt-get update && apt-get install -y ffmpeg curl && rm -rf /var/lib/apt/lists/*
 
-# Set environment to production
 ENV NODE_ENV=production
+ENV DATA_DIR=/data
+ENV PGLITE_DIR=/data/pglite
 
-# Copy necessary files from the builder stage
 COPY --from=builder /repo/node_modules /repo/node_modules
 COPY --from=builder /repo/packages/happy-wire /repo/packages/happy-wire
 COPY --from=builder /repo/packages/happy-server /repo/packages/happy-server
 
-# Expose the port the app will run on
-EXPOSE 3000
+VOLUME /data
+EXPOSE 3005
 
-# Command to run the application
-COPY --from=builder /repo/package.json /repo/pnpm-workspace.yaml /repo/
-CMD ["pnpm", "--filter", "happy-server", "start"]
+WORKDIR /repo/packages/happy-server
+
+CMD ["sh", "-c", "../../node_modules/.bin/tsx sources/standalone.ts migrate && exec ../../node_modules/.bin/tsx sources/standalone.ts serve"]
