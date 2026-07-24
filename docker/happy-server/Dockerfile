@@ -1,43 +1,60 @@
-# Happy Server is archived upstream without a published image, so build the
-# documented server from its final commit.
-# renovate: datasource=docker depName=node
-FROM node:20-bookworm-slim AS builder
+# Stage 1: install dependencies with workspace context
+FROM node:20 AS deps
 
-ARG HAPPY_SERVER_COMMIT=922a62fab5a6563ec0b636f3b26520e6bbec6af4
+# Install build dependencies
+RUN apt-get update && apt-get install -y python3 ffmpeg make g++ build-essential && rm -rf /var/lib/apt/lists/*
+RUN corepack enable && corepack prepare pnpm@10.11.0 --activate
 
-WORKDIR /app
+WORKDIR /repo
 
-ADD --checksum=sha256:b1765cfa0a6da66f0526f5f191f60ebc5cb7e7fe6def8aa16858b66f25823d60 \
-  https://github.com/slopus/happy-server/archive/${HAPPY_SERVER_COMMIT}.tar.gz \
-  /tmp/happy-server.tar.gz
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+COPY scripts ./scripts
+COPY patches ./patches
 
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends build-essential ffmpeg python3 \
-  && rm -rf /var/lib/apt/lists/* \
-  && tar -xzf /tmp/happy-server.tar.gz --strip-components=1 \
-  && rm /tmp/happy-server.tar.gz \
-  && yarn install --frozen-lockfile --ignore-engines \
-  && yarn build
+RUN mkdir -p packages/happy-app packages/happy-server packages/happy-cli packages/happy-wire
 
-# renovate: datasource=docker depName=node
-FROM node:20-bookworm-slim
+COPY packages/happy-app/package.json packages/happy-app/
+COPY packages/happy-server/package.json packages/happy-server/
+COPY packages/happy-cli/package.json packages/happy-cli/
+COPY packages/happy-wire/package.json packages/happy-wire/
 
-WORKDIR /app
+# Workspace postinstall requirements
+COPY packages/happy-app/patches packages/happy-app/patches
+COPY packages/happy-server/prisma packages/happy-server/prisma
+COPY packages/happy-cli/scripts packages/happy-cli/scripts
+COPY packages/happy-cli/tools packages/happy-cli/tools
 
+RUN SKIP_HAPPY_WIRE_BUILD=1 pnpm install --frozen-lockfile
+
+# Stage 2: build the server
+FROM deps AS builder
+
+COPY packages/happy-wire ./packages/happy-wire
+COPY packages/happy-server ./packages/happy-server
+
+RUN pnpm --filter @slopus/happy-wire build
+RUN pnpm --filter happy-server build
+
+# Stage 3: runtime
+FROM node:20 AS runner
+
+WORKDIR /repo
+
+# Runtime dependencies
+RUN apt-get update && apt-get install -y python3 ffmpeg && rm -rf /var/lib/apt/lists/*
+RUN corepack enable && corepack prepare pnpm@10.11.0 --activate
+
+# Set environment to production
 ENV NODE_ENV=production
 
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends ffmpeg python3 \
-  && rm -rf /var/lib/apt/lists/*
+# Copy necessary files from the builder stage
+COPY --from=builder /repo/node_modules /repo/node_modules
+COPY --from=builder /repo/packages/happy-wire /repo/packages/happy-wire
+COPY --from=builder /repo/packages/happy-server /repo/packages/happy-server
 
-COPY --from=builder --chown=node:node /app/package.json /app/yarn.lock ./
-COPY --from=builder --chown=node:node /app/node_modules ./node_modules
-COPY --from=builder --chown=node:node /app/prisma ./prisma
-COPY --from=builder --chown=node:node /app/sources ./sources
-COPY --from=builder --chown=node:node /app/tsconfig.json ./
+# Expose the port the app will run on
+EXPOSE 3000
 
-USER node
-
-EXPOSE 3005
-
-CMD ["yarn", "start"]
+# Command to run the application
+COPY --from=builder /repo/package.json /repo/pnpm-workspace.yaml /repo/
+CMD ["pnpm", "--filter", "happy-server", "start"]
