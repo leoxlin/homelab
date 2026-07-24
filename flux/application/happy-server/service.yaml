@@ -29,6 +29,6 @@ spec:
         redirectCode: 301
     - route:
         - destination:
-            host: happy-server.default.svc.cluster.local
+            host: happy-server.happy-server.svc.cluster.local
             port:
               number: 3005

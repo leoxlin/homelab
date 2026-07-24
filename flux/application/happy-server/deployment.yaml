@@ -64,7 +64,7 @@ spec:
               value: "3005"
             - name: NODE_ENV
               value: production
-            - name: HANDY_MASTER_SECRET
+            - name: SEED
               valueFrom:
                 secretKeyRef:
                   name: happy-server-secrets
