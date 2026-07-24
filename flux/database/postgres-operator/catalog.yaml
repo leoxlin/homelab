@@ -13,14 +13,14 @@ metadata:
 spec:
   images:
     - major: 13
-      image: ghcr.io/cloudnative-pg/postgresql:13.22-202511100817-minimal-trixie
+      image: ghcr.io/cloudnative-pg/postgresql:15.14-202511100817-minimal-trixie
     - major: 14
-      image: ghcr.io/cloudnative-pg/postgresql:14.20-202601120807-minimal-trixie
+      image: ghcr.io/cloudnative-pg/postgresql:18.1-202601120807-minimal-trixie
     - major: 15
-      image: ghcr.io/cloudnative-pg/postgresql:15.15-202601120807-minimal-trixie
+      image: ghcr.io/cloudnative-pg/postgresql:18.1-202601120807-minimal-trixie
     - major: 16
-      image: ghcr.io/cloudnative-pg/postgresql:16.11-202601120807-minimal-trixie
+      image: ghcr.io/cloudnative-pg/postgresql:18.1-202601120807-minimal-trixie
     - major: 17
-      image: ghcr.io/cloudnative-pg/postgresql:17.7-202601120807-minimal-trixie
+      image: ghcr.io/cloudnative-pg/postgresql:18.1-202601120807-minimal-trixie
     - major: 18
       image: ghcr.io/cloudnative-pg/postgresql:18.1-202601120807-minimal-trixie
