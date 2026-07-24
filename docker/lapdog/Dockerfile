@@ -7,7 +7,7 @@
 FROM python:3.13-slim
 
 # renovate: datasource=pypi depName=ddapm-test-agent
-ARG LAPDOG_VERSION=1.62.0
+ARG LAPDOG_VERSION=1.63.1
 
 WORKDIR /src
 
