@@ -95,7 +95,7 @@ spec:
               memory: 512Mi
         - name: dind
           # renovate: datasource=docker depName=docker
-          image: docker:27-dind
+          image: docker:29-dind
           securityContext:
             privileged: true
           env:
