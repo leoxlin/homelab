@@ -40,6 +40,7 @@ resources:
   - application/servarr/servarr.yaml
   - application/singularr/singularr-app.yaml
   - application/tdarr/tdarr.yaml
+  - application/tempo/tempo.yaml
   - application/tubearchivist/tubearchivist.yaml
   - application/victoria-metrics/victoria-metrics.yaml
 patches:

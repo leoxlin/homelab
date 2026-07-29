@@ -1,0 +1,24 @@
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: tempo
+spec:
+  hosts:
+    - tempo.hydrahmlb.cc
+  gateways:
+    - istio-ingress/hydrahmlb-gateway
+  http:
+    - match:
+        - port: 80
+      redirect:
+        scheme: https
+        redirectCode: 301
+    - match:
+        - uri:
+            exact: /v1/traces
+      route:
+        - destination:
+            host: tempo.monitoring.svc.cluster.local
+            port:
+              number: 4318

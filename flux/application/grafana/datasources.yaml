@@ -21,3 +21,12 @@ data:
         access: proxy
         url: http://loki-gateway.monitoring.svc
         editable: false
+      - name: tempo
+        uid: tempo
+        type: tempo
+        access: proxy
+        url: http://tempo.monitoring.svc:3200
+        editable: false
+        jsonData:
+          nodeGraph:
+            enabled: true
