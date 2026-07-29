@@ -1,6 +1,6 @@
 ---
 name: homelab-flux
-description: Use when the user wants to add a new application/stack to the Hydra homelab repo (FluxCD on k3s) — "deploy X", "add an app for Y", "set up <service> in the cluster". Scaffolds the per-app Flux Kustomization, manifests (Deployment/Service/PVC/VirtualService), optional Postgres/Redis/secrets, wires it into flux/kustomization.yaml, and validates with mise lint-flux. Not for editing an existing app or non-app infra.
+description: Use when the user wants to add a new application/stack to the Hydra homelab repo (FluxCD on k3s) — "deploy X", "add an app for Y", "set up <service> in the cluster". Scaffolds the per-app Flux Kustomization, namespace, manifests (Deployment/Service/PVC/VirtualService), optional Postgres/Redis/secrets, wires it into flux/kustomization.yaml, and validates with mise lint-flux. Not for editing an existing app or non-app infra.
 ---
 
 Scaffold a new application stack in the homelab repo (`~/Source/homelab`: FluxCD GitOps on
@@ -11,12 +11,14 @@ shape rather than inventing one. Ground every choice in `AGENTS.md` (project rul
 ## What "a stack" is here
 
 Every app lives in `flux/application/<app>/` and is one Flux **Kustomization** registered in
-`flux/kustomization.yaml`. Apps deploy into the **`default`** namespace by convention
-(set on the inner kustomize `namespace:` field). Two shapes exist:
+`flux/kustomization.yaml`. Each stack gets its own **`<app>` namespace** by default
+(created by `namespace.yaml` and set on the inner kustomize `namespace:` field). Share an
+existing namespace only when the stack is intentionally part of that namespace's domain,
+such as monitoring components. Two shapes exist:
 
 - **Raw manifests** (most apps) — Deployment + Service + VirtualService (+ PVC, ConfigMap,
-  Secret, DB). Models: `napdog` (simplest, single Deployment + PVC + VS), `commafeed`
-  (+Postgres), `paperless` (+Postgres +Redis +ConfigMap +Secret, the full template).
+  Secret, DB). Models: `bentopdf` (simplest isolated stack), `happy-server` (Deployment +
+  PVC + Secret), `paperless` (+Postgres +Redis +ConfigMap +Secret, the full template).
 - **HelmRelease** (when a good chart exists) — `release.yaml` with a `HelmRelease`. Models:
   `authentik`, `litellm` is raw. Needs a `HelmRepository` in `flux/system/sources.yaml`.
 
@@ -35,12 +37,15 @@ if a choice is load-bearing and unguessable (per `AGENTS.md`).
   adds a `dependsOn` (below) and a generated secret.
 - **Secrets**: any? → 1Password `OnePasswordItem` (never inline secrets — `AGENTS.md`).
 - **Helm vs raw**: prefer raw manifests unless the upstream chart is the supported path.
+- **Resources**: start small (`50m` CPU, `128Mi` memory, `1Gi` disk) unless upstream
+  requirements or a close neighbor justify more. Requests are starting reservations, not
+  capacity planning; increase them after observing actual use.
 
 ## Step 1 — Scaffold the files
 
 Create `flux/application/<app>/` with this set (drop the ones you don't need). **Resource
-order in `kustomization.yaml` matters**: DB → redis → volume → configmap → secrets →
-deployment → service.
+order in `kustomization.yaml` matters**: namespace → DB → redis → volume → configmap →
+secrets → deployment → service.
 
 ### `<app>.yaml` — the Flux Kustomization (the entrypoint)
 ```yaml
@@ -63,13 +68,23 @@ spec:
     - name: redis-operator          # only if it has a Redis
 ```
 
-### `kustomization.yaml` — the inner kustomize (note `namespace: default`)
+### `namespace.yaml`
+```yaml
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: <app>
+```
+
+### `kustomization.yaml` — the inner kustomize
 ```yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: default
+namespace: <app>
 resources:
+  - namespace.yaml
   - postgres.yaml      # if present, in this order
   - redis.yaml
   - volume.yaml
@@ -88,7 +103,14 @@ resources:
   to a node class — `flux/patches/prefer-*.yaml` injects nodeAffinity by that label.
 - Wire DB/secret env via `valueFrom.secretKeyRef` (operator-generated secret, below);
   bulk config via `envFrom.configMapRef` / `secretRef`.
-- Set `resources.requests.memory` (and `cpu` if known) + liveness/readiness probes.
+- Add liveness/readiness probes and start with these resource requests unless the app's
+  documented minimum is higher:
+  ```yaml
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+  ```
 
 ### `service.yaml` — Service + Istio VirtualService
 ```yaml
@@ -122,7 +144,7 @@ spec:
         redirectCode: 301
     - route:
         - destination:
-            host: <app>.default.svc.cluster.local
+            host: <app>.<app>.svc.cluster.local
             port:
               number: <port>
 ```
@@ -139,7 +161,7 @@ spec:
   storageClassName: longhorn
   resources:
     requests:
-      storage: 5Gi
+      storage: 1Gi
 ```
 
 ### `postgres.yaml` (CloudNativePG) — generates secret `<app>-pg-app` (keys: `password`, `uri`)
@@ -160,12 +182,12 @@ spec:
     storageClass: longhorn
     size: 1Gi
 ```
-Connect via host `<app>-pg-rw.default.svc.cluster.local:5432`, db/user `app`. Pull the
+Connect via host `<app>-pg-rw.<app>.svc.cluster.local:5432`, db/user `app`. Pull the
 password from `secretKeyRef: {name: <app>-pg-app, key: password}` (or full `uri` key — see
 `litellm`).
 
 ### `redis.yaml` (opstree operator) — see `paperless/redis.yaml`
-Reach it at `redis://<app>-redis.default.svc.cluster.local:6379`.
+Reach it at `redis://<app>-redis.<app>.svc.cluster.local:6379`.
 
 ### `secrets.yaml` (1Password) — never inline secrets
 ```yaml
@@ -174,7 +196,7 @@ apiVersion: onepassword.com/v1
 kind: OnePasswordItem
 metadata:
   name: <app>-secrets
-  namespace: default
+  namespace: <app>
   annotations:
     operator.1password.io/auto-restart: "true"   # restart pods on secret change
 spec:
