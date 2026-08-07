@@ -24,7 +24,7 @@ spec:
       containers:
         - name: goose
           # renovate: datasource=docker depName=ghcr.io/aaif-goose/goose
-          image: ghcr.io/aaif-goose/goose:v1.36.0
+          image: ghcr.io/aaif-goose/goose:v1.45.0
           args:
             - serve
             - --platform
