@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goose
+  labels:
+    app: goose
+    k8s.hydrahmlb.cc/schedule: worker
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: goose
+  template:
+    metadata:
+      labels:
+        app: goose
+    spec:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+        - name: goose
+          # renovate: datasource=docker depName=ghcr.io/aaif-goose/goose
+          image: ghcr.io/aaif-goose/goose:v1.36.0
+          args:
+            - serve
+            - --platform
+            - desktop
+            - --host
+            - 0.0.0.0
+            - --port
+            - "3000"
+          ports:
+            - name: http
+              containerPort: 3000
+          env:
+            - name: GOOSE_DISABLE_KEYRING
+              value: "1"
+            - name: GOOSE_SERVER__SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: goose-secrets
+                  key: SECRET_KEY
+          volumeMounts:
+            - name: data
+              mountPath: /home/goose
+          startupProbe:
+            httpGet:
+              path: /status
+              port: http
+            periodSeconds: 5
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: http
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /status
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: goose-data
